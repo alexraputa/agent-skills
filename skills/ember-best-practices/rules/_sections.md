@@ -37,5 +37,5 @@ The section ID (in parentheses) is the filename prefix used to group rules.
 
 ## 7. Advanced Patterns (advanced)
 
-**Impact:** LOW-MEDIUM  
-**Description:** Advanced patterns for specific cases including custom modifiers, renderless components, and performance monitoring.
+**Impact:** MEDIUM-HIGH  
+**Description:** Modern Ember patterns including Resources for lifecycle management, ember-concurrency for async operations, strict mode components, event handling with {{on}}, argument validation, memory leak prevention, route caching strategies, and comprehensive testing patterns.

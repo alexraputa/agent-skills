@@ -9,7 +9,7 @@ metadata:
 
 # Ember.js Best Practices
 
-Comprehensive performance optimization and accessibility guide for Ember.js applications. Contains 20+ rules across 7 categories, prioritized by impact to guide automated refactoring and code generation.
+Comprehensive performance optimization and accessibility guide for Ember.js applications. Contains 33 rules across 7 categories, prioritized by impact to guide automated refactoring and code generation.
 
 ## When to Apply
 
@@ -74,10 +74,20 @@ Reference these guidelines when:
 - `template-each-key` - Use {{#each}} with @key for efficient list updates
 - `template-avoid-computation` - Move expensive work to cached getters
 
-### 7. Advanced Patterns (LOW-MEDIUM)
+### 7. Advanced Patterns (MEDIUM-HIGH)
 
 - `advanced-modifiers` - Use modifiers for DOM side effects
 - `advanced-helpers` - Extract reusable logic into helpers
+- `advanced-resources` - Use Resources for declarative data management
+- `advanced-concurrency` - Use ember-concurrency for task management
+- `component-on-modifier` - Use {{on}} modifier for event handling
+- `template-helper-imports` - Import helpers directly in templates
+- `component-args-validation` - Validate component arguments
+- `component-memory-leaks` - Prevent memory leaks in components
+- `component-strict-mode` - Use strict mode and template-only components
+- `route-templates` - Use route templates with co-located syntax
+- `route-model-caching` - Implement smart route model caching
+- `testing-modern-patterns` - Use modern testing patterns
 
 ## How to Use
 

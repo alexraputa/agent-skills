@@ -1,0 +1,121 @@
+---
+title: Import Helpers Directly in Templates
+impact: MEDIUM
+impactDescription: Better tree-shaking and clarity
+tags: helpers, imports, templates, gjs
+---
+
+## Import Helpers Directly in Templates
+
+Import helpers directly in gjs/gts files for better tree-shaking, clearer dependencies, and improved type safety.
+
+**Incorrect (global helper resolution):**
+
+```javascript
+// app/components/user-profile.gjs
+<template>
+  <div class="profile">
+    <h1>{{capitalize @user.name}}</h1>
+    <p>Joined: {{format-date @user.createdAt}}</p>
+    <p>Posts: {{pluralize @user.postCount "post"}}</p>
+  </div>
+</template>
+```
+
+**Correct (explicit helper imports):**
+
+```javascript
+// app/components/user-profile.gjs
+import { capitalize } from 'ember-string-helpers';
+import { formatDate } from 'ember-intl';
+import { pluralize } from 'ember-inflector';
+
+<template>
+  <div class="profile">
+    <h1>{{capitalize @user.name}}</h1>
+    <p>Joined: {{formatDate @user.createdAt}}</p>
+    <p>Posts: {{pluralize @user.postCount "post"}}</p>
+  </div>
+</template>
+```
+
+**Built-in helpers from Ember:**
+
+```javascript
+// app/components/conditional-content.gjs
+import { array } from '@ember/helper';
+import { fn, hash } from '@ember/helper';
+import { eq, not } from 'ember-truth-helpers';
+
+<template>
+  <div class="content">
+    {{#if (eq @status "active")}}
+      <span class="badge">Active</span>
+    {{/if}}
+    
+    {{#if (not @isLoading)}}
+      <button {{on "click" (fn @onSave (hash id=@id data=@data))}}>
+        Save
+      </button>
+    {{/if}}
+  </div>
+</template>
+```
+
+**Custom helper with imports:**
+
+```javascript
+// app/helpers/format-currency.js
+import { helper } from '@ember/component/helper';
+
+export function formatCurrency([amount], { currency = 'USD' }) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency
+  }).format(amount);
+}
+
+export default helper(formatCurrency);
+```
+
+```javascript
+// app/components/price-display.gjs
+import { formatCurrency } from '../helpers/format-currency';
+
+<template>
+  <div class="price">
+    {{formatCurrency @amount currency="EUR"}}
+  </div>
+</template>
+```
+
+**Type-safe helpers with TypeScript:**
+
+```typescript
+// app/components/typed-component.gts
+import { fn } from '@ember/helper';
+import type { TOC } from '@ember/component/template-only';
+
+interface Signature {
+  Args: {
+    items: Array<{ id: string; name: string }>;
+    onSelect: (id: string) => void;
+  };
+}
+
+const TypedComponent: TOC<Signature> = <template>
+  <ul>
+    {{#each @items as |item|}}
+      <li {{on "click" (fn @onSelect item.id)}}>
+        {{item.name}}
+      </li>
+    {{/each}}
+  </ul>
+</template>;
+
+export default TypedComponent;
+```
+
+Explicit helper imports enable better tree-shaking, make dependencies clear, and improve IDE support with proper type checking.
+
+Reference: [Template Imports](https://github.com/ember-template-imports/ember-template-imports)
