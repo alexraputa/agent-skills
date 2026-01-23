@@ -24,30 +24,18 @@ module.exports = function (defaults) {
 };
 ```
 
-**Correct (Embroider with route splitting):**
+**Correct (Embroider with Vite and route splitting):**
 
 ```javascript
 // ember-cli-build.js
-const { Webpack } = require('@embroider/webpack');
+const { Vite } = require('@embroider/vite');
 
-module.exports = require('@embroider/compat').compatBuild(app, Webpack, {
+module.exports = require('@embroider/compat').compatBuild(app, Vite, {
   staticAddonTestSupportTrees: true,
   staticAddonTrees: true,
   staticHelpers: true,
   staticModifiers: true,
   staticComponents: true,
-  packagerOptions: {
-    webpackConfig: {
-      module: {
-        rules: [
-          {
-            test: /\.css$/,
-            use: ['style-loader', 'css-loader']
-          }
-        ]
-      }
-    }
-  },
   splitAtRoutes: ['admin', 'reports', 'settings'] // Routes to split
 });
 ```

@@ -21,7 +21,7 @@ module.exports = function (defaults) {
 };
 ```
 
-**Correct (Embroider with static optimizations):**
+**Correct (Embroider with Vite and static optimizations):**
 
 ```javascript
 // ember-cli-build.js
@@ -34,8 +34,8 @@ module.exports = async function (defaults) {
     },
   });
 
-  const { Webpack } = require('@embroider/webpack');
-  return require('@embroider/compat').compatBuild(app, Webpack, {
+  const { Vite } = require('@embroider/vite');
+  return require('@embroider/compat').compatBuild(app, Vite, {
     staticAddonTestSupportTrees: true,
     staticAddonTrees: true,
     staticHelpers: true,
