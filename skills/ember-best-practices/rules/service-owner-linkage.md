@@ -140,23 +140,36 @@ class My extends Component {
   </template>
 }```
 
-### Owner Passing with Libraries
+### Owner Passing with Modern Libraries
 
-**Using ember-could-get-used-to-this for explicit dependency injection:**
+**Using reactiveweb's link() for ownership and destruction:**
+
+The `link()` function from `reactiveweb` provides both ownership transfer and automatic destruction linkage.
 
 ```glimmer-js
 // app/components/advanced-form.gjs
 import Component from '@glimmer/component';
-import { use } from 'ember-could-get-used-to-this';
-import { ValidationService } from '../services/validation';
-import { FormStateManager } from '../utils/form-state';
+import { link } from 'reactiveweb/link';
 
-class AdvancedForm extends Component {
-  // Explicitly request services with use()
-  @use validation = ValidationService;
+class ValidationService {
+  validate(data) {
+    // Validation logic
+    return data.email && data.email.includes('@');
+  }
+}
+
+class FormStateManager {
+  data = { email: '' };
   
-  // Create utility with owner automatically passed
-  @use formState = FormStateManager;
+  updateEmail(value) {
+    this.data.email = value;
+  }
+}
+
+export class AdvancedForm extends Component {
+  // link() handles both owner and destruction automatically
+  validation = link(this, () => new ValidationService());
+  formState = link(this, () => new FormStateManager());
   
   get isValid() {
     return this.validation.validate(this.formState.data);
@@ -166,101 +179,66 @@ class AdvancedForm extends Component {
     <form>
       <input value={{this.formState.data.email}} />
       {{#if (not this.isValid)}}
-        <span class="error">Invalid form</span>
+        <span>Invalid form</span>
       {{/if}}
     </form>
   </template>
-}```
+}
+```
 
-**Using ember-provide-consume-context for dependency injection:**
-
-```glimmer-js
-// app/components/dashboard-container.gjs
-import Component from '@glimmer/component';
-import { provide } from 'ember-provide-consume-context';
-import { DashboardContext } from '../contexts/dashboard';
-
-class DashboardContainer extends Component {
-  // Provide context to child components
-  @provide(DashboardContext)
-  dashboardContext = {
-    theme: 'dark',
-    layout: 'grid',
-    permissions: this.args.userPermissions
-  };
-
-  <template>
-    <div class="dashboard">
-      {{yield}}
-    </div>
-  </template>
-}```
-
-```glimmer-js
-// app/components/dashboard-widget.gjs
-import Component from '@glimmer/component';
-import { consume } from 'ember-provide-consume-context';
-import { DashboardContext } from '../contexts/dashboard';
-
-class DashboardWidget extends Component {
-  // Consume context from parent
-  @consume(DashboardContext) dashboard;
-  
-  get themeClass() {
-    return `widget-${this.dashboard.theme}`;
-  }
-
-  <template>
-    <div class={{this.themeClass}}>
-      {{@title}}
-    </div>
-  </template>
-}```
+**Why use link():**
+- Automatically transfers owner from parent to child instance
+- Registers destructor so child is cleaned up when parent is destroyed
+- No manual `setOwner` or `registerDestructor` calls needed
+- See [RFC #1067](https://github.com/emberjs/rfcs/pull/1067) for the proposal and reasoning
+- Documentation: https://reactive.nullvoxpopuli.com/functions/link.link.html
 
 ### Services Outside app/services Directory
 
-**Inline service definitions:**
+**Using createService from ember-primitives:**
 
 ```glimmer-js
 // app/components/analytics-tracker.gjs
 import Component from '@glimmer/component';
-import { service } from '@ember/service';
-import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { registerDestructor } from '@ember/destroyable';
+import { createService } from 'ember-primitives/utils';
 
-// Define service inline with component
-class AnalyticsService extends Service {
-  @tracked events = [];
+// Define service logic as a plain function
+function AnalyticsService() {
+  let events = [];
   
-  track(event) {
-    this.events.push({ ...event, timestamp: Date.now() });
+  return {
+    get events() {
+      return events;
+    },
     
-    // Send to analytics endpoint
-    fetch('/analytics', {
-      method: 'POST',
-      body: JSON.stringify(event)
-    });
-  }
+    track(event) {
+      events.push({ ...event, timestamp: Date.now() });
+      
+      // Send to analytics endpoint
+      fetch('/analytics', {
+        method: 'POST',
+        body: JSON.stringify(event)
+      });
+    }
+  };
 }
 
-class AnalyticsTracker extends Component {
-  // Use inline service
-  analytics = new AnalyticsService();
-  
-  constructor(owner, args) {
-    super(owner, args);
-    
-    // Register cleanup
-    registerDestructor(this, () => {
-      this.analytics.destroy();
-    });
-  }
+export class AnalyticsTracker extends Component {
+  // createService handles owner linkage and cleanup automatically
+  analytics = createService(this, AnalyticsService);
 
   <template>
     <div>Tracking {{this.analytics.events.length}} events</div>
   </template>
-}```
+}
+```
+
+**Why createService:**
+- No need to extend Service class
+- Automatic owner linkage and cleanup
+- Simpler than manual setOwner/registerDestructor
+- Documentation: https://ce1d7e18.ember-primitives.pages.dev/6-utils/createService.md
 
 **Co-located services with components:**
 
@@ -450,18 +428,20 @@ class FeatureGated extends Component {
 ### Best Practices
 
 1. **Use @service decorator** for app/services - cleanest and most maintainable
-2. **Manual owner passing** for utilities that need occasional service access
-3. **Co-located services** for component-specific state that doesn't need global access
-4. **Runtime registration** for dynamic services or testing scenarios
-5. **Context providers** (ember-provide-consume-context) for prop drilling alternatives
-6. **Always use setOwner** when manually instantiating classes that need services
+2. **Use link() from reactiveweb** for ownership and destruction linkage
+3. **Use createService from ember-primitives** for component-scoped services without extending Service class
+4. **Manual owner passing** for utilities that need occasional service access
+5. **Co-located services** for component-specific state that doesn't need global access
+6. **Runtime registration** for dynamic services or testing scenarios
+7. **Always use setOwner** when manually instantiating classes that need services
 
 ### When to Use Each Pattern
 
 - **app/services**: Global singletons needed across the app
+- **link() from reactiveweb**: When you need both owner and destruction linkage
+- **createService from ember-primitives**: Component-scoped services without Service class
 - **Co-located services**: Component-specific state, not needed elsewhere
 - **Utils with owner**: Stateless utilities that occasionally need config/services
-- **Context providers**: Avoid prop drilling in component trees
 - **Runtime registration**: Dynamic configuration, feature flags, testing
 
-Reference: [Ember Owner API](https://api.emberjs.com/ember/release/functions/@ember%2Fapplication/getOwner), [Dependency Injection](https://guides.emberjs.com/release/applications/dependency-injection/)
+Reference: [Ember Owner API](https://api.emberjs.com/ember/release/functions/@ember%2Fapplication/getOwner), [Dependency Injection](https://guides.emberjs.com/release/applications/dependency-injection/), [reactiveweb link()](https://reactive.nullvoxpopuli.com/functions/link.link.html), [ember-primitives createService](https://ce1d7e18.ember-primitives.pages.dev/6-utils/createService.md)
