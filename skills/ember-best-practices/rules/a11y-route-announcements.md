@@ -120,7 +120,7 @@ export default class ApplicationRoute extends Route {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/routes/application.gjs
 <template>
   <div 
@@ -132,8 +132,7 @@ export default class ApplicationRoute extends Route {
   ></div>
 
   {{outlet}}
-</template>
-```
+</template>```
 
 ```css
 /* app/styles/app.css */
@@ -156,7 +155,7 @@ export default class ApplicationRoute extends Route {
 ember install ember-page-title
 ```
 
-```javascript
+```glimmer-js
 // app/routes/dashboard.gjs
 import { pageTitle } from 'ember-page-title';
 
@@ -166,8 +165,7 @@ import { pageTitle } from 'ember-page-title';
   <div class="dashboard">
     {{outlet}}
   </div>
-</template>
-```
+</template>```
 
 Route announcements ensure screen reader users know when navigation occurs, improving the overall accessibility experience.
 

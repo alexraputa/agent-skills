@@ -11,7 +11,7 @@ Ensure all interactive elements are keyboard accessible and focus management is 
 
 **Incorrect (no keyboard support):**
 
-```javascript
+```glimmer-js
 // app/components/dropdown.gjs
 <template>
   <div class="dropdown" {{on "click" this.toggleMenu}}>
@@ -23,8 +23,7 @@ Ensure all interactive elements are keyboard accessible and focus management is 
       </div>
     {{/if}}
   </div>
-</template>
-```
+</template>```
 
 **Correct (full keyboard support with custom modifier):**
 
@@ -38,7 +37,7 @@ export default modifier((element, [selector = 'button']) => {
 });
 ```
 
-```javascript
+```glimmer-js
 // app/components/dropdown.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -124,8 +123,7 @@ class Dropdown extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 **For focus trapping in modals, use ember-focus-trap:**
 
@@ -133,7 +131,7 @@ class Dropdown extends Component {
 ember install ember-focus-trap
 ```
 
-```javascript
+```glimmer-js
 // app/components/modal.gjs
 import FocusTrap from 'ember-focus-trap/components/focus-trap';
 
@@ -150,8 +148,7 @@ import FocusTrap from 'ember-focus-trap/components/focus-trap';
       </div>
     </FocusTrap>
   {{/if}}
-</template>
-```
+</template>```
 
 **Alternative: Use libraries for keyboard support:**
 

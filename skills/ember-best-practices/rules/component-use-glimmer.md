@@ -33,7 +33,7 @@ export default Component.extend({
 
 **Correct (Glimmer component):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -48,8 +48,7 @@ class UserCard extends Component {
       <p>{{@user.email}}</p>
     </div>
   </template>
-}
-```
+}```
 
 Glimmer components are 30-50% faster, have cleaner APIs, and integrate better with tracked properties.
 

@@ -11,7 +11,7 @@ Integrate ember-a11y-testing into your test suite to automatically catch common 
 
 **Incorrect (no accessibility testing):**
 
-```javascript
+```glimmer-js
 // tests/integration/components/user-form-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -27,12 +27,11 @@ module('Integration | Component | user-form', function(hooks) {
     await click('button');
     assert.ok(true);
   });
-});
-```
+});```
 
 **Correct (with a11y testing):**
 
-```javascript
+```glimmer-js
 // tests/integration/components/user-form-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -53,8 +52,7 @@ module('Integration | Component | user-form', function(hooks) {
     await click('button');
     assert.ok(true);
   });
-});
-```
+});```
 
 **Setup (install and configure):**
 

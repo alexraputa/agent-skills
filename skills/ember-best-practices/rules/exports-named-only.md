@@ -11,7 +11,7 @@ Use named exports instead of default exports for better tree-shaking, explicit i
 
 **Incorrect (default exports):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -19,12 +19,11 @@ export default class UserCard extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}
-```
+}```
 
 **Correct (named exports):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -32,8 +31,7 @@ export class UserCard extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}
-```
+}```
 
 **Why Named Exports:**
 
@@ -103,7 +101,7 @@ export const autoFocus = modifier((element) => {
 
 Route templates are the ONLY place where default exports are used in modern Ember:
 
-```javascript
+```glimmer-js
 // ✅ Correct - default export for route template
 // app/routes/dashboard.gjs
 import Route from '@ember/routing/route';
@@ -120,8 +118,7 @@ export default class DashboardRoute extends Route {
       <DashboardCard @item={{item}} />
     {{/each}}
   </template>
-</template>
-```
+</template>```
 
 This is because Ember's router expects a default export from route files.
 

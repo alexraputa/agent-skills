@@ -7,11 +7,11 @@ tags: components, class-fields, composition, initialization
 
 ## Use Class Fields for Component Composition
 
-Use class fields for clean component composition, initialization, and dependency injection patterns.
+Use class fields for clean component composition, initialization, and dependency injection patterns. Tracked class fields should be **roots of state** - representing the minimal independent state that your component owns. In most apps, you should have very few tracked fields.
 
 **Incorrect (imperative initialization, scattered state):**
 
-```javascript
+```glimmer-js
 // app/components/data-manager.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -40,53 +40,58 @@ class DataManager extends Component {
   <template>
     <div>{{this.currentUser.name}}</div>
   </template>
-}
-```
+}```
 
 **Correct (class fields with proper patterns):**
 
-```javascript
+```glimmer-js
 // app/components/data-manager.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import { resource } from 'ember-resources';
+import { cached } from '@glimmer/tracking';
+import { getPromiseState } from '@warp-drive/reactiveweb';
 
 class DataManager extends Component {
   // Service injection as class fields
   @service store;
   @service router;
   
-  // Tracked state as class fields
-  @tracked error = null;
+  // Tracked state as class fields - this is a "root of state"
+  // Most components should have very few of these
+  @tracked selectedFilter = 'all';
   
-  // Resource for data loading
-  currentUser = resource(({ on }) => {
-    const controller = new AbortController();
-    on.cleanup(() => controller.abort());
-    
-    return this.store.request({ 
-      url: '/users/me',
-      signal: controller.signal 
-    }).catch(e => {
-      this.error = e;
-      return null;
+  // Data loading with getPromiseState
+  @cached
+  get currentUser() {
+    const promise = this.store.request({ 
+      url: '/users/me'
     });
-  });
+    return getPromiseState(promise);
+  }
 
   <template>
-    {{#if this.currentUser.value}}
+    {{#if this.currentUser.isFulfilled}}
       <div>{{this.currentUser.value.name}}</div>
-    {{else if this.error}}
-      <div class="error">{{this.error.message}}</div>
+    {{else if this.currentUser.isRejected}}
+      <div>Error: {{this.currentUser.error.message}}</div>
     {{/if}}
   </template>
 }
 ```
 
+**Understanding "roots of state":**
+
+Tracked fields should represent **independent state** that your component owns - not derived data or loaded data. Examples of good tracked fields:
+- User selections (selected tab, filter option)
+- UI state (is modal open, is expanded)
+- Form input values (not yet persisted)
+
+In most apps, you'll have very few tracked fields because most data comes from arguments, services, or computed getters.
+
 **Composition through class field assignment:**
 
-```javascript
+```glimmer-js
 // app/components/form-container.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -151,8 +156,7 @@ class FormContainer extends Component {
       </button>
     </form>
   </template>
-}
-```
+}```
 
 **Mixin-like composition with class fields:**
 
@@ -182,7 +186,7 @@ export class PaginationState {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/paginated-list.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -228,8 +232,7 @@ class PaginatedList extends Component {
       </div>
     </div>
   </template>
-}
-```
+}```
 
 **Shareable state objects:**
 
@@ -271,7 +274,7 @@ export class SelectionState {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/selectable-list.gjs
 import Component from '@glimmer/component';
 import { SelectionState } from '../utils/selection-state';
@@ -316,8 +319,7 @@ class SelectableList extends Component {
       </div>
     {{/if}}
   </template>
-}
-```
+}```
 
 Class fields provide clean composition patterns, better initialization, and shareable state objects that can be tested independently.
 

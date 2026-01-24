@@ -11,7 +11,7 @@ Implement intelligent model caching strategies to reduce redundant API calls and
 
 **Incorrect (always fetches fresh data):**
 
-```javascript
+```glimmer-js
 // app/routes/post.gjs
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
@@ -31,12 +31,11 @@ export default class PostRoute extends Route {
     </article>
     {{outlet}}
   </template>
-}
-```
+}```
 
 **Correct (with smart caching):**
 
-```javascript
+```glimmer-js
 // app/routes/post.gjs
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
@@ -76,8 +75,7 @@ export default class PostRoute extends Route {
     </article>
     {{outlet}}
   </template>
-}
-```
+}```
 
 **Service-based caching layer:**
 
@@ -123,7 +121,7 @@ export default class PostCacheService extends Service {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/routes/post.gjs
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
@@ -149,12 +147,11 @@ export default class PostRoute extends Route {
     </article>
     {{outlet}}
   </template>
-}
-```
+}```
 
 **Using query params for cache control:**
 
-```javascript
+```glimmer-js
 // app/routes/posts.gjs
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
@@ -191,12 +188,11 @@ export default class PostsRoute extends Route {
     </div>
     {{outlet}}
   </template>
-}
-```
+}```
 
 **Background refresh pattern:**
 
-```javascript
+```glimmer-js
 // app/routes/dashboard.gjs
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
@@ -224,8 +220,7 @@ export default class DashboardRoute extends Route {
     </div>
     {{outlet}}
   </template>
-}
-```
+}```
 
 Smart caching reduces server load, improves perceived performance, and provides better offline support while keeping data fresh.
 

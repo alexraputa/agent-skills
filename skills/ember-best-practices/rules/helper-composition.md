@@ -11,7 +11,7 @@ Compose helpers to create reusable, testable logic that can be combined in templ
 
 **Incorrect (logic duplicated in templates):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 <template>
   <div class="profile">
@@ -27,8 +27,7 @@ Compose helpers to create reusable, testable logic that can be combined in templ
       <span>Posts: {{@user.posts.length}}</span>
     {{/if}}
   </div>
-</template>
-```
+</template>```
 
 **Correct (composed helpers):**
 
@@ -59,7 +58,7 @@ export function formatEmail(email) {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import { displayName } from '../helpers/display-name';
 import { isVisibleUser } from '../helpers/is-visible-user';
@@ -79,8 +78,7 @@ import { formatEmail } from '../helpers/format-email';
       <span>Posts: {{@user.posts.length}}</span>
     {{/if}}
   </div>
-</template>
-```
+</template>```
 
 **Functional composition with pipe helper:**
 
@@ -102,7 +100,7 @@ export function compose(...helperFns) {
 
 **Usage:**
 
-```javascript
+```glimmer-js
 // app/components/text-processor.gjs
 import { fn } from '@ember/helper';
 
@@ -116,8 +114,7 @@ const truncate = (str, length = 20) => str?.slice(0, length) || '';
   <div>
     {{pipe @text (fn trim) (fn uppercase) (fn truncate 50)}}
   </div>
-</template>
-```
+</template>```
 
 **Higher-order helpers:**
 
@@ -135,7 +132,7 @@ export function mapBy(array, property) {
 }
 ```
 
-```javascript
+```glimmer-js
 // Usage in template
 import { mapBy } from '../helpers/map-by';
 import { partialApply } from '../helpers/partial-apply';
@@ -152,8 +149,7 @@ import { partialApply } from '../helpers/partial-apply';
   {{#let (partialApply @formatNumber 2) as |formatTwoDecimals|}}
     <span>Price: {{formatTwoDecimals @price}}</span>
   {{/let}}
-</template>
-```
+</template>```
 
 **Chainable transformation helpers:**
 
@@ -194,7 +190,7 @@ export function transform(value) {
 }
 ```
 
-```javascript
+```glimmer-js
 // Usage
 import { transform } from '../helpers/transform';
 
@@ -204,8 +200,7 @@ import { transform } from '../helpers/transform';
       <div>{{item.name}}</div>
     {{/each}}
   {{/let}}
-</template>
-```
+</template>```
 
 **Conditional composition:**
 

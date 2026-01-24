@@ -33,7 +33,7 @@ export function formatDate(date) {
 
 **Usage in templates:**
 
-```javascript
+```glimmer-js
 // app/components/post-card.gjs
 import { formatDate } from '../utils/format-date';
 
@@ -42,8 +42,7 @@ import { formatDate } from '../utils/format-date';
     <h2>{{@post.title}}</h2>
     <time>{{formatDate @post.publishedAt}}</time>
   </article>
-</template>
-```
+</template>```
 
 **With Multiple Arguments:**
 
@@ -57,7 +56,7 @@ export function formatCurrency(amount, currency = 'USD') {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/price.gjs
 import { formatCurrency } from '../utils/format-currency';
 
@@ -65,8 +64,7 @@ import { formatCurrency } from '../utils/format-currency';
   <span class="price">
     {{formatCurrency @amount @currency}}
   </span>
-</template>
-```
+</template>```
 
 **For Helpers that Need Services (use class-based):**
 
@@ -129,7 +127,7 @@ export function pluralize(count, singular, plural) {
 }
 ```
 
-```javascript
+```glimmer-js
 // Usage
 import { capitalize, truncate, pluralize } from '../utils/string-helpers';
 
@@ -137,8 +135,7 @@ import { capitalize, truncate, pluralize } from '../utils/string-helpers';
   <h1>{{capitalize @title}}</h1>
   <p>{{truncate @description 100}}</p>
   <span>{{@count}} {{pluralize @count "item" "items"}}</span>
-</template>
-```
+</template>```
 
 Plain functions are the modern way to create helpers in Ember. Only use classes when you need dependency injection.
 

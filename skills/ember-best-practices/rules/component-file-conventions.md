@@ -6,7 +6,7 @@ Follow modern Ember component file conventions: use kebab-case filenames, match 
 
 ## Incorrect
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs - WRONG: Component suffix
 import Component from '@glimmer/component';
 
@@ -16,10 +16,9 @@ export default class UserCardComponent extends Component {
       {{@name}}
     </div>
   </template>
-}
-```
+}```
 
-```javascript
+```glimmer-js
 // app/components/UserProfile.gjs - WRONG: PascalCase filename
 import Component from '@glimmer/component';
 
@@ -29,16 +28,15 @@ export default class UserProfile extends Component {
       {{@name}}
     </div>
   </template>
-}
-```
+}```
 
 ## Correct
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs - CORRECT: kebab-case filename, no Component suffix, no default export
 import Component from '@glimmer/component';
 
-class UserCard extends Component {
+export class UserCard extends Component {
   <template>
     <div class="user-card">
       {{@name}}
@@ -47,12 +45,12 @@ class UserCard extends Component {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs - CORRECT: All conventions followed
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 
-class UserProfile extends Component {
+export class UserProfile extends Component {
   @service session;
   
   <template>
@@ -103,22 +101,21 @@ class UserProfile extends Component {
 
 **Template-only components:**
 
-```javascript
+```glimmer-js
 // app/components/simple-card.gjs - Template-only, no class needed
 <template>
   <div class="card">
     {{yield}}
   </div>
-</template>
-```
+</template>```
 
 **Components in subdirectories:**
 
-```javascript
+```glimmer-js
 // app/components/ui/button.gjs
 import Component from '@glimmer/component';
 
-class Button extends Component {
+export class Button extends Component {
   <template>
     <button type="button">
       {{yield}}
@@ -131,11 +128,11 @@ class Button extends Component {
 
 **Nested namespaces:**
 
-```javascript
+```glimmer-js
 // app/components/admin/user/profile-card.gjs
 import Component from '@glimmer/component';
 
-class ProfileCard extends Component {
+export class ProfileCard extends Component {
   <template>
     <div class="admin-profile">
       {{@user.name}}

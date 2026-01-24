@@ -13,7 +13,7 @@ Leverage Ember's built-in helpers to write cleaner templates and avoid creating 
 Reinventing common functionality with custom helpers adds maintenance burden and bundle size when built-in helpers already provide the needed functionality.
 
 **Incorrect:**
-```javascript
+```glimmer-js
 // app/helpers/is-equal.js - Unnecessary custom helper
 import { helper } from '@ember/component/helper';
 
@@ -30,15 +30,14 @@ class UserBadge extends Component {
       <span class="badge">Admin</span>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Solution
 
 Use built-in helpers that ship with Ember:
 
 **Correct:**
-```javascript
+```glimmer-js
 // app/components/user-badge.gjs
 import Component from '@glimmer/component';
 import { eq } from '@ember/helper';
@@ -50,12 +49,11 @@ class UserBadge extends Component {
       <span class="badge">Admin</span>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Comparison Helpers
 
-```javascript
+```glimmer-js
 // app/components/comparison-examples.gjs
 import Component from '@glimmer/component';
 import { eq, not, and, or, lt, lte, gt, gte } from '@ember/helper';
@@ -78,12 +76,11 @@ class ComparisonExamples extends Component {
     {{#if (gt @score 100)}}High Score!{{/if}}
     {{#if (lte @attempts 3)}}Try again{{/if}}
   </template>
-}
-```
+}```
 
 ## Array and Object Helpers
 
-```javascript
+```glimmer-js
 // app/components/collection-helpers.gjs
 import Component from '@glimmer/component';
 import { array, hash } from '@ember/helper';
@@ -104,12 +101,11 @@ class CollectionHelpers extends Component {
     {{! Dynamic property access }}
     <p>{{get @user @propertyName}}</p>
   </template>
-}
-```
+}```
 
 ## String Helpers
 
-```javascript
+```glimmer-js
 // app/components/string-helpers.gjs
 import Component from '@glimmer/component';
 import { concat } from '@ember/helper';
@@ -127,12 +123,11 @@ class StringHelpers extends Component {
       alt={{concat "Image of " @title}}
     />
   </template>
-}
-```
+}```
 
 ## Action Helpers (fn)
 
-```javascript
+```glimmer-js
 // app/components/action-helpers.gjs
 import Component from '@glimmer/component';
 import { fn } from '@ember/helper';
@@ -162,12 +157,11 @@ class ActionHelpers extends Component {
       </li>
     {{/each}}
   </template>
-}
-```
+}```
 
 ## Conditional Helpers (if/unless)
 
-```javascript
+```glimmer-js
 // app/components/conditional-inline.gjs
 import Component from '@glimmer/component';
 import { if as ifHelper } from '@ember/helper';
@@ -187,13 +181,12 @@ class ConditionalInline extends Component {
     {{! With default value }}
     <p>{{ifHelper @description @description "No description provided"}}</p>
   </template>
-}
-```
+}```
 
 ## Practical Combinations
 
 **Dynamic Classes:**
-```javascript
+```glimmer-js
 // app/components/dynamic-classes.gjs
 import Component from '@glimmer/component';
 import { concat, if as ifHelper, and } from '@ember/helper';
@@ -209,11 +202,10 @@ class DynamicClasses extends Component {
       <h3>{{@title}}</h3>
     </div>
   </template>
-}
-```
+}```
 
 **List Filtering:**
-```javascript
+```glimmer-js
 // app/components/filtered-list.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -246,12 +238,11 @@ class FilteredList extends Component {
       </div>
     {{/each}}
   </template>
-}
-```
+}```
 
 ## Complex Example
 
-```javascript
+```glimmer-js
 // app/components/user-profile-card.gjs
 import Component from '@glimmer/component';
 import { 
@@ -297,8 +288,7 @@ class UserProfileCard extends Component {
       </p>
     </div>
   </template>
-}
-```
+}```
 
 ## Performance Impact
 

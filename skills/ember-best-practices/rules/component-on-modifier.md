@@ -11,7 +11,7 @@ Use the `{{on}}` modifier for event handling instead of traditional action handl
 
 **Incorrect (traditional action attribute):**
 
-```javascript
+```glimmer-js
 // app/components/button.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -27,12 +27,11 @@ class Button extends Component {
       {{@label}}
     </button>
   </template>
-}
-```
+}```
 
 **Correct (using {{on}} modifier):**
 
-```javascript
+```glimmer-js
 // app/components/button.gjs
 import Component from '@glimmer/component';
 import { on } from '@ember/modifier';
@@ -47,12 +46,11 @@ class Button extends Component {
       {{@label}}
     </button>
   </template>
-}
-```
+}```
 
 **With event options:**
 
-```javascript
+```glimmer-js
 // app/components/scroll-tracker.gjs
 import Component from '@glimmer/component';
 import { on } from '@ember/modifier';
@@ -70,12 +68,11 @@ class ScrollTracker extends Component {
       {{yield}}
     </div>
   </template>
-}
-```
+}```
 
 **Multiple event handlers:**
 
-```javascript
+```glimmer-js
 // app/components/input-field.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -106,12 +103,11 @@ class InputField extends Component {
       value={{@value}}
     />
   </template>
-}
-```
+}```
 
 **Using fn helper for arguments:**
 
-```javascript
+```glimmer-js
 // app/components/item-list.gjs
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
@@ -127,8 +123,7 @@ import { on } from '@ember/modifier';
       </li>
     {{/each}}
   </ul>
-</template>
-```
+</template>```
 
 The `{{on}}` modifier properly cleans up event listeners, supports event options (passive, capture, once), and makes event handling more explicit.
 

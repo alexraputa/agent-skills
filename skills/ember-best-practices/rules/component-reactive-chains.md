@@ -11,7 +11,7 @@ Create reactive chains where getters depend on other getters or tracked properti
 
 **Incorrect (imperative updates):**
 
-```javascript
+```glimmer-js
 // app/components/shopping-cart.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -51,12 +51,11 @@ class ShoppingCart extends Component {
       <div>Total: ${{this.total}}</div>
     </div>
   </template>
-}
-```
+}```
 
 **Correct (reactive getter chains):**
 
-```javascript
+```glimmer-js
 // app/components/shopping-cart.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -127,12 +126,11 @@ class ShoppingCart extends Component {
       <div class="total">Total: {{this.formattedTotal}}</div>
     </div>
   </template>
-}
-```
+}```
 
 **Complex reactive chains with @cached:**
 
-```javascript
+```glimmer-js
 // app/components/data-analysis.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -200,12 +198,11 @@ class DataAnalysis extends Component {
       <div>Outliers: {{this.outliers.length}}</div>
     </div>
   </template>
-}
-```
+}```
 
 **Combining multiple tracked sources:**
 
-```javascript
+```glimmer-js
 // app/components/filtered-list.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -288,8 +285,7 @@ class FilteredList extends Component {
       {{/each}}
     </div>
   </template>
-}
-```
+}```
 
 Reactive getter chains provide automatic updates, clear data dependencies, and better performance through intelligent caching with @cached.
 

@@ -11,7 +11,7 @@ Properly clean up event listeners, timers, and subscriptions to prevent memory l
 
 **Incorrect (no cleanup):**
 
-```javascript
+```glimmer-js
 // app/components/live-clock.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -31,12 +31,11 @@ class LiveClock extends Component {
   <template>
     <div>{{this.time}}</div>
   </template>
-}
-```
+}```
 
 **Correct (proper cleanup with registerDestructor):**
 
-```javascript
+```glimmer-js
 // app/components/live-clock.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -61,12 +60,11 @@ class LiveClock extends Component {
   <template>
     <div>{{this.time}}</div>
   </template>
-}
-```
+}```
 
 **Event listener cleanup:**
 
-```javascript
+```glimmer-js
 // app/components/window-size.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -94,8 +92,7 @@ class WindowSize extends Component {
   <template>
     <div>Window: {{this.width}} x {{this.height}}</div>
   </template>
-}
-```
+}```
 
 **Using modifiers for automatic cleanup:**
 
@@ -113,7 +110,7 @@ export default modifier((element, [eventName, handler]) => {
 });
 ```
 
-```javascript
+```glimmer-js
 // app/components/resize-aware.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -134,12 +131,11 @@ class ResizeAware extends Component {
       {{this.size.width}} x {{this.size.height}}
     </div>
   </template>
-}
-```
+}```
 
 **Abort controller for fetch requests:**
 
-```javascript
+```glimmer-js
 // app/components/data-loader.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -177,12 +173,11 @@ class DataLoader extends Component {
       <div>{{this.data.content}}</div>
     {{/if}}
   </template>
-}
-```
+}```
 
 **Using ember-resources for automatic cleanup:**
 
-```javascript
+```glimmer-js
 // app/components/websocket-data.gjs
 import Component from '@glimmer/component';
 import { resource } from 'ember-resources';
@@ -209,8 +204,7 @@ class WebsocketData extends Component {
       <div>{{message}}</div>
     {{/each}}
   </template>
-}
-```
+}```
 
 Always clean up timers, event listeners, subscriptions, and pending requests to prevent memory leaks and performance degradation.
 

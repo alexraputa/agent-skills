@@ -33,7 +33,7 @@ module('Integration | Component | loading-spinner', function(hooks) {
 
 **Pattern 2: Template tag render (with args/blocks/attributes):**
 
-```javascript
+```glimmer-js
 // tests/integration/components/user-card-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -76,12 +76,11 @@ module('Integration | Component | user-card', function(hooks) {
     assert.dom('[data-test-featured]').exists();
     assert.dom('[data-test-featured]').hasClass('featured');
   });
-});
-```
+});```
 
 **Complete example showing both patterns:**
 
-```javascript
+```glimmer-js
 // tests/integration/components/button-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -131,12 +130,11 @@ module('Integration | Component | button', function(hooks) {
     
     assert.dom('button').hasClass('btn-primary');
   });
-});
-```
+});```
 
 **Testing template-only components:**
 
-```javascript
+```glimmer-js
 // tests/integration/components/icon-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -162,8 +160,7 @@ module('Integration | Component | icon', function(hooks) {
     assert.dom('[data-test-icon]').hasAttribute('data-icon', 'check');
     assert.dom('[data-test-icon]').hasClass('icon-large');
   });
-});
-```
+});```
 
 **Decision guide:**
 
@@ -184,7 +181,7 @@ module('Integration | Component | icon', function(hooks) {
 
 **Common patterns:**
 
-```javascript
+```glimmer-js
 // ✅ Simple component, no setup needed
 await render(LoadingSpinner);
 await render(Divider);
@@ -209,8 +206,7 @@ await render(<template>
   <Card class="highlighted" data-test-card role="article">
     Card content
   </Card>
-</template>);
-```
+</template>);```
 
 Using the appropriate render pattern keeps tests clean and expressive.
 

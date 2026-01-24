@@ -1,17 +1,17 @@
 ---
-title: Use Ember Concurrency for Task Management
+title: Use Ember Concurrency for User Input Concurrency
 impact: HIGH
-impactDescription: Better async control and cancelation
-tags: ember-concurrency, tasks, async, cancelation
+impactDescription: Better control of user-initiated async operations
+tags: ember-concurrency, tasks, user-input, concurrency-patterns
 ---
 
-## Use Ember Concurrency for Task Management
+## Use Ember Concurrency for User Input Concurrency
 
-Use ember-concurrency for managing async operations with automatic cancelation, derived state, and better control flow.
+Use ember-concurrency for managing **user-initiated** async operations like search, form submission, and autocomplete. It provides automatic cancelation, debouncing, and prevents race conditions from user actions.
 
-**Incorrect (manual async handling):**
+**Incorrect (manual async handling with race conditions):**
 
-```javascript
+```glimmer-js
 // app/components/search.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -24,8 +24,10 @@ class Search extends Component {
   currentRequest = null;
   
   @action
-  async search(query) {
-    // Cancel previous request
+  async search(event) {
+    const query = event.target.value;
+    
+    // Manual cancelation - easy to get wrong
     if (this.currentRequest) {
       this.currentRequest.abort();
     }
@@ -58,21 +60,23 @@ class Search extends Component {
 }
 ```
 
-**Correct (using ember-concurrency):**
+**Correct (using ember-concurrency with task return values):**
 
-```javascript
+```glimmer-js
 // app/components/search.gjs
 import Component from '@glimmer/component';
-import { task, restartableTask } from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency';
 
 class Search extends Component {
+  // restartableTask automatically cancels previous searches
+  // IMPORTANT: Return the value, don't set tracked state inside tasks
   searchTask = restartableTask(async (query) => {
     const response = await fetch(`/api/search?q=${query}`);
-    return response.json();
+    return response.json(); // Return, don't set @tracked
   });
 
   <template>
-    <input {{on "input" this.searchTask.perform}} />
+    <input {{on "input" (fn this.searchTask.perform (pick "target.value"))}} />
     
     {{#if this.searchTask.isRunning}}
       <div class="loading">Loading...</div>
@@ -93,26 +97,26 @@ class Search extends Component {
 }
 ```
 
-**With debouncing and timeout:**
+**With debouncing for user typing:**
 
-```javascript
+```glimmer-js
 // app/components/autocomplete.gjs
 import Component from '@glimmer/component';
 import { restartableTask, timeout } from 'ember-concurrency';
 
 class Autocomplete extends Component {
   searchTask = restartableTask(async (query) => {
-    // Debounce
+    // Debounce user typing - wait 300ms
     await timeout(300);
     
     const response = await fetch(`/api/autocomplete?q=${query}`);
-    return response.json();
+    return response.json(); // Return value, don't set tracked state
   });
 
   <template>
     <input 
       type="search"
-      {{on "input" this.searchTask.perform}}
+      {{on "input" (fn this.searchTask.perform (pick "target.value"))}}
       placeholder="Search..."
     />
     
@@ -131,24 +135,67 @@ class Autocomplete extends Component {
 }
 ```
 
-**Task modifiers for different concurrency patterns:**
+**Task modifiers for different user concurrency patterns:**
 
-```javascript
-import { task, dropTask, enqueueTask } from 'ember-concurrency';
+```glimmer-js
+import Component from '@glimmer/component';
+import { dropTask, enqueueTask, restartableTask } from 'ember-concurrency';
 
-// restartableTask: cancels previous, starts new
-// dropTask: ignores new if one is running
-// enqueueTask: queues tasks sequentially
-
-saveTask = dropTask(async (data) => {
-  // Prevents double-submit
-  await fetch('/api/save', {
-    method: 'POST',
-    body: JSON.stringify(data)
+class FormActions extends Component {
+  // dropTask: Prevents double-click - ignores new while running
+  saveTask = dropTask(async (data) => {
+    const response = await fetch('/api/save', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    return response.json();
   });
-});
+  
+  // enqueueTask: Queues user actions sequentially
+  processTask = enqueueTask(async (item) => {
+    const response = await fetch('/api/process', {
+      method: 'POST',
+      body: JSON.stringify(item)
+    });
+    return response.json();
+  });
+  
+  // restartableTask: Cancels previous, starts new (for search)
+  searchTask = restartableTask(async (query) => {
+    const response = await fetch(`/api/search?q=${query}`);
+    return response.json();
+  });
+  
+  <template>
+    <button 
+      {{on "click" (fn this.saveTask.perform @data)}}
+      disabled={{this.saveTask.isRunning}}
+    >
+      Save
+    </button>
+  </template>
+}
 ```
 
-ember-concurrency provides automatic cancelation, derived state (isRunning, isIdle), and better async patterns without manual tracking.
+**Key Principles for ember-concurrency:**
+
+1. **User-initiated only** - Use for handling user actions, not component initialization
+2. **Return values** - Use `task.last.value`, never set `@tracked` state inside tasks
+3. **Avoid side effects** - Don't modify component state that's read during render inside tasks
+4. **Choose right modifier**:
+   - `restartableTask` - User typing/search (cancel previous)
+   - `dropTask` - Form submit/save (prevent double-click)
+   - `enqueueTask` - Sequential processing (queue user actions)
+
+**When NOT to use ember-concurrency:**
+
+- ❌ Component initialization data loading (use `getPromiseState` instead)
+- ❌ Setting tracked state inside tasks (causes infinite render loops)
+- ❌ Route model hooks (return promises directly)
+- ❌ Simple async without user concurrency concerns (use async/await)
+
+See **advanced-data-loading-with-ember-concurrency.md** for correct data loading patterns.
+
+ember-concurrency provides automatic cancelation, derived state (isRunning, isIdle), and better patterns for **user-initiated** async operations.
 
 Reference: [ember-concurrency](https://ember-concurrency.com/)

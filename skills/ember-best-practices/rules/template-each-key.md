@@ -11,7 +11,7 @@ Always use the `@key` parameter with `{{#each}}` for lists of objects to help Em
 
 **Incorrect (no key):**
 
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import UserCard from './user-card';
 
@@ -23,12 +23,11 @@ import UserCard from './user-card';
       </li>
     {{/each}}
   </ul>
-</template>
-```
+</template>```
 
 **Correct (with key):**
 
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import UserCard from './user-card';
 
@@ -40,23 +39,21 @@ import UserCard from './user-card';
       </li>
     {{/each}}
   </ul>
-</template>
-```
+</template>```
 
 **For arrays without stable IDs, use @identity:**
 
-```javascript
+```glimmer-js
 // app/components/tag-list.gjs
 <template>
   {{#each this.tags key="@identity" as |tag|}}
     <span class="tag">{{tag}}</span>
   {{/each}}
-</template>
-```
+</template>```
 
 **For complex scenarios with @index:**
 
-```javascript
+```glimmer-js
 // app/components/item-list.gjs
 <template>
   {{#each this.items key="@index" as |item index|}}
@@ -64,8 +61,7 @@ import UserCard from './user-card';
       {{item.name}}
     </div>
   {{/each}}
-</template>
-```
+</template>```
 
 Using proper keys allows Ember's rendering engine to efficiently update, reorder, and remove items without re-rendering the entire list.
 

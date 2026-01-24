@@ -23,7 +23,7 @@ For computed values or reactive transformations, use getters and `@cached`:
 
 **❌ Incorrect (did-update):**
 
-```javascript
+```glimmer-js
 // app/components/user-greeting.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -43,12 +43,11 @@ class UserGreeting extends Component {
       Hello, {{this.displayName}}
     </div>
   </template>
-}
-```
+}```
 
 **✅ Correct (derived data with getter):**
 
-```javascript
+```glimmer-js
 // app/components/user-greeting.gjs
 import Component from '@glimmer/component';
 
@@ -63,12 +62,11 @@ class UserGreeting extends Component {
       Hello, {{this.displayName}}
     </div>
   </template>
-}
-```
+}```
 
 **✅ Even better (use @cached for expensive computations):**
 
-```javascript
+```glimmer-js
 // app/components/user-stats.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -104,8 +102,7 @@ class UserStats extends Component {
       </ul>
     </div>
   </template>
-}
-```
+}```
 
 ### Alternative 2: Use Custom Modifiers
 
@@ -113,7 +110,7 @@ For DOM side effects, element setup, or cleanup, use custom modifiers:
 
 **❌ Incorrect (did-insert + will-destroy):**
 
-```javascript
+```glimmer-js
 // app/components/chart.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -135,8 +132,7 @@ class Chart extends Component {
   <template>
     <canvas {{did-insert this.setupChart}}></canvas>
   </template>
-}
-```
+}```
 
 **✅ Correct (custom modifier with automatic cleanup):**
 
@@ -156,14 +152,13 @@ export default modifier((element, [config]) => {
 });
 ```
 
-```javascript
+```glimmer-js
 // app/components/chart.gjs
 import chart from '../modifiers/chart';
 
 <template>
   <canvas {{chart @config}}></canvas>
-</template>
-```
+</template>```
 
 ### Alternative 3: Use Resources for Lifecycle Management
 
@@ -171,7 +166,7 @@ For complex state management with automatic cleanup, use `ember-resources`:
 
 **❌ Incorrect (did-insert for data fetching):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -209,8 +204,7 @@ class UserProfile extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 **✅ Correct (Resource with automatic cleanup):**
 
@@ -248,7 +242,7 @@ export default class UserDataResource extends Resource {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
 import UserDataResource from '../resources/user-data';
@@ -263,8 +257,7 @@ class UserProfile extends Component {
       {{this.userData.data.name}}
     {{/if}}
   </template>
-}
-```
+}```
 
 ### When to Use Each Alternative
 
@@ -272,7 +265,7 @@ class UserProfile extends Component {
 |----------|----------|-----|
 | Computed values | Getters + `@cached` | Reactive, efficient, no lifecycle needed |
 | DOM manipulation | Custom modifiers | Encapsulated, reusable, automatic cleanup |
-| Data fetching | Resources or ember-concurrency | Declarative, cancelable, automatic cleanup |
+| Data fetching | getPromiseState from warp-drive | Declarative, automatic cleanup |
 | Event listeners | `{{on}}` modifier | Built-in, automatic cleanup |
 | Focus management | Custom modifier or ember-focus-trap | Proper lifecycle, accessibility |
 
@@ -284,7 +277,7 @@ If you have existing code using these hooks:
 2. **Choose the right alternative**:
    - Deriving data? → Use getters/`@cached`
    - DOM setup/teardown? → Use a custom modifier
-   - Complex async lifecycle? → Use a Resource
+   - Async data loading? → Use getPromiseState from warp-drive
 3. **Test thoroughly**: Ensure cleanup happens correctly
 4. **Remove the legacy hook**: Delete `{{did-insert}}`, `{{will-destroy}}`, or `{{did-update}}`
 
@@ -295,7 +288,7 @@ Modern alternatives provide better performance:
 - **Getters**: Only compute when dependencies change
 - **@cached**: Memoizes expensive computations
 - **Modifiers**: Scoped to specific elements, composable
-- **Resources**: Declarative lifecycle, easier to optimize
+- **getPromiseState**: Declarative data loading, automatic cleanup
 
 ### Common Pitfalls to Avoid
 
@@ -310,12 +303,12 @@ Modern Ember provides superior alternatives to legacy lifecycle hooks:
 
 - **Derived Data**: Use getters and `@cached` for reactive computations
 - **DOM Side Effects**: Use custom modifiers with `registerDestructor`
-- **Complex Lifecycle**: Use Resources from ember-resources
+- **Async Data Loading**: Use getPromiseState from warp-drive/reactiveweb
 - **Better Code**: More testable, composable, and maintainable
 
 **Never use `{{did-insert}}`, `{{will-destroy}}`, or `{{did-update}}` in new code.**
 
 Reference: 
 - [Ember Modifiers](https://github.com/ember-modifier/ember-modifier)
-- [ember-resources](https://github.com/NullVoxPopuli/ember-resources)
+- [warp-drive/reactiveweb](https://github.com/emberjs/data/tree/main/packages/reactiveweb)
 - [Glimmer Tracking](https://guides.emberjs.com/release/in-depth-topics/autotracking-in-depth/)

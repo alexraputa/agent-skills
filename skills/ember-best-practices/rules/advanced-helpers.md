@@ -35,12 +35,43 @@ class PostCard extends Component {
 }
 ```
 
-**Correct (reusable helper - co-located with component):**
+**Correct (reusable helper):**
+
+For single-use helpers, keep them in the same file as the component:
+
+```glimmer-js
+// app/components/post-list.gjs
+import Component from '@glimmer/component';
+
+// Helper co-located in same file
+function formatRelativeDate(date) {
+  const dateObj = new Date(date);
+  const now = new Date();
+  const diffMs = now - dateObj;
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  
+  if (diffDays === 0) return 'Today';
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays < 7) return `${diffDays} days ago`;
+  return dateObj.toLocaleDateString();
+}
+
+class PostList extends Component {
+  <template>
+    {{#each @posts as |post|}}
+      <article>
+        <h2>{{post.title}}</h2>
+        <time>{{formatRelativeDate post.createdAt}}</time>
+      </article>
+    {{/each}}
+  </template>
+}
+```
+
+For helpers shared across multiple components in a feature, use a subdirectory:
 
 ```javascript
-// app/components/post-list/format-relative-date.js
-// Co-locate with the component that uses it for better organization
-
+// app/components/blog/format-relative-date.js
 export function formatRelativeDate(date) {
   const dateObj = new Date(date);
   const now = new Date();
@@ -56,10 +87,11 @@ export function formatRelativeDate(date) {
 
 **Alternative (shared helper in utils):**
 
-```javascript
-// app/utils/helpers/format-relative-date.js
-// Use utils/ directory for helpers shared across many components
+For truly shared helpers used across the whole app, use `app/utils/`:
 
+```javascript
+// app/utils/format-relative-date.js
+// Flat structure - use subpath-imports in package.json for nicer imports if needed
 export function formatRelativeDate(date) {
   const dateObj = new Date(date);
   const now = new Date();
@@ -73,20 +105,20 @@ export function formatRelativeDate(date) {
 }
 ```
 
-**Note**: The `app/helpers/` directory has a smaller role in modern Ember. Prefer co-locating helpers with components for better modularity, or use `app/utils/` for truly shared helpers.
+**Note**: Keep utils flat (`app/utils/format-relative-date.js`), not nested (`app/utils/date/format-relative-date.js`). If you need cleaner top-level imports, configure subpath-imports in package.json instead of nesting files.
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
-import { formatRelativeDate } from '../helpers/format-relative-date';
+import { formatRelativeDate } from '../utils/format-relative-date';
 
 <template>
   <p>Joined: {{formatRelativeDate @user.createdAt}}</p>
 </template>
 ```
 
-```javascript
+```glimmer-js
 // app/components/post-card.gjs
-import { formatRelativeDate } from '../helpers/format-relative-date';
+import { formatRelativeDate } from '../utils/format-relative-date';
 
 <template>
   <p>Posted: {{formatRelativeDate @post.createdAt}}</p>

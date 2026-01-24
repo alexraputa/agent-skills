@@ -11,7 +11,7 @@ Import helpers directly in gjs/gts files for better tree-shaking, clearer depend
 
 **Incorrect (global helper resolution):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 <template>
   <div class="profile">
@@ -19,12 +19,11 @@ Import helpers directly in gjs/gts files for better tree-shaking, clearer depend
     <p>Joined: {{format-date @user.createdAt}}</p>
     <p>Posts: {{pluralize @user.postCount "post"}}</p>
   </div>
-</template>
-```
+</template>```
 
 **Correct (explicit helper imports):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import { capitalize } from 'ember-string-helpers';
 import { formatDate } from 'ember-intl';
@@ -36,12 +35,11 @@ import { pluralize } from 'ember-inflector';
     <p>Joined: {{formatDate @user.createdAt}}</p>
     <p>Posts: {{pluralize @user.postCount "post"}}</p>
   </div>
-</template>
-```
+</template>```
 
 **Built-in helpers from Ember:**
 
-```javascript
+```glimmer-js
 // app/components/conditional-content.gjs
 import { array } from '@ember/helper';
 import { fn, hash } from '@ember/helper';
@@ -59,8 +57,7 @@ import { eq, not } from 'ember-truth-helpers';
       </button>
     {{/if}}
   </div>
-</template>
-```
+</template>```
 
 **Custom helper with imports:**
 
@@ -78,7 +75,7 @@ export function formatCurrency([amount], { currency = 'USD' }) {
 export default helper(formatCurrency);
 ```
 
-```javascript
+```glimmer-js
 // app/components/price-display.gjs
 import { formatCurrency } from '../helpers/format-currency';
 
@@ -86,12 +83,11 @@ import { formatCurrency } from '../helpers/format-currency';
   <div class="price">
     {{formatCurrency @amount currency="EUR"}}
   </div>
-</template>
-```
+</template>```
 
 **Type-safe helpers with TypeScript:**
 
-```typescript
+```glimmer-ts
 // app/components/typed-component.gts
 import { fn } from '@ember/helper';
 import type { TOC } from '@ember/component/template-only';

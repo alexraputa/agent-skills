@@ -11,7 +11,7 @@ Use services to manage shared state across components and routes instead of pass
 
 **Incorrect (prop drilling):**
 
-```javascript
+```glimmer-js
 // app/routes/dashboard.gjs
 export default class DashboardRoute extends Route {
   model() {
@@ -23,8 +23,7 @@ export default class DashboardRoute extends Route {
     <Sidebar @theme={{@model.currentTheme}} />
     <MainContent @theme={{@model.currentTheme}} />
   </template>
-}
-```
+}```
 
 **Correct (using service):**
 

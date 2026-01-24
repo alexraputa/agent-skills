@@ -22,7 +22,7 @@ export default class PostsRoute extends Route {
 
 **Correct (with loading substate):**
 
-```javascript
+```glimmer-js
 // app/routes/posts-loading.gjs
 import { LoadingSpinner } from './loading-spinner';
 
@@ -31,8 +31,7 @@ import { LoadingSpinner } from './loading-spinner';
     <span class="sr-only">Loading posts...</span>
     <LoadingSpinner />
   </div>
-</template>
-```
+</template>```
 
 ```javascript
 // app/routes/posts.js

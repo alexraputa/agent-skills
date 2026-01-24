@@ -13,7 +13,7 @@ Rely on native `<form>` elements and the browser's Constraint Validation API ins
 Over-engineering forms with JavaScript when native browser features provide validation, accessibility, and UX patterns for free.
 
 **Incorrect (Too much JavaScript):**
-```javascript
+```glimmer-js
 // app/components/signup-form.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -49,15 +49,14 @@ class SignupForm extends Component {
       <button type="button" {{on "click" this.handleSubmit}}>Submit</button>
     </div>
   </template>
-}
-```
+}```
 
 ## Solution: Let the Platform Do the Work
 
 Use native `<form>` with proper input types and browser validation:
 
 **Correct (Native form with platform validation):**
-```javascript
+```glimmer-js
 // app/components/signup-form.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -105,8 +104,7 @@ class SignupForm extends Component {
       <button type="submit">Sign Up</button>
     </form>
   </template>
-}
-```
+}```
 
 **Performance: -15KB** (no validation libraries needed)
 **Accessibility: +100%** (native form semantics and error announcements)
@@ -116,7 +114,7 @@ class SignupForm extends Component {
 
 Access and display native validation state in your component:
 
-```javascript
+```glimmer-js
 // app/components/validated-form.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -189,8 +187,7 @@ class ValidatedForm extends Component {
       <button type="submit">Submit</button>
     </form>
   </template>
-}
-```
+}```
 
 ## Constraint Validation API Properties
 
@@ -229,7 +226,7 @@ handleInput = (event) => {
 
 For business logic validation beyond HTML5 constraints:
 
-```javascript
+```glimmer-js
 // app/components/password-match-form.gjs
 import Component from '@glimmer/component';
 import { on } from '@ember/modifier';
@@ -282,14 +279,13 @@ class PasswordMatchForm extends Component {
       <button type="submit">Create Account</button>
     </form>
   </template>
-}
-```
+}```
 
 ## When You Need Controlled State
 
 Use controlled patterns when you need real-time interactivity that isn't form submission:
 
-```javascript
+```glimmer-js
 // app/components/live-search.gjs - Controlled state needed for instant search
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -316,8 +312,7 @@ class LiveSearch extends Component {
       <p>Searching for: {{this.query}}</p>
     {{/if}}
   </template>
-}
-```
+}```
 
 **Use controlled state when you need:**
 - Real-time validation display as user types

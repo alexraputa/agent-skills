@@ -11,7 +11,7 @@ Use modern Ember testing patterns with `@ember/test-helpers` and `qunit-dom` for
 
 **Incorrect (old testing patterns):**
 
-```javascript
+```glimmer-js
 // tests/integration/components/user-card-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -27,12 +27,11 @@ module('Integration | Component | user-card', function(hooks) {
     // Using find() instead of qunit-dom
     assert.ok(find('.user-card'));
   });
-});
-```
+});```
 
 **Correct (modern testing patterns):**
 
-```javascript
+```glimmer-js
 // tests/integration/components/user-card-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -77,12 +76,11 @@ module('Integration | Component | user-card', function(hooks) {
     
     await click('[data-test-edit-button]');
   });
-});
-```
+});```
 
 **Component testing with TypeScript:**
 
-```typescript
+```glimmer-ts
 // tests/integration/components/search-box-test.ts
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -125,7 +123,7 @@ module('Integration | Component | search-box', function(hooks) {
 
 **Testing with ember-concurrency tasks:**
 
-```javascript
+```glimmer-js
 // tests/integration/components/async-button-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -158,8 +156,7 @@ module('Integration | Component | async-button', function(hooks) {
     
     assert.dom('[data-test-loading-spinner]').doesNotExist();
   });
-});
-```
+});```
 
 **Route testing:**
 
@@ -200,7 +197,7 @@ module('Acceptance | posts', function(hooks) {
 
 **Accessibility testing:**
 
-```javascript
+```glimmer-js
 // tests/integration/components/modal-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -236,12 +233,11 @@ module('Integration | Component | modal', function(hooks) {
     await click('[data-test-last]');
     assert.dom('[data-test-last]').isFocused();
   });
-});
-```
+});```
 
 **Testing with data-test attributes:**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
 
@@ -266,8 +262,7 @@ class UserProfile extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 Modern testing patterns with `@ember/test-helpers`, `qunit-dom`, and data-test attributes provide better test reliability, readability, and maintainability.
 

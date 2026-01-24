@@ -9,9 +9,11 @@ tags: components, composition, yield, blocks, contextual-components
 
 Use component composition with yield blocks, named blocks, and contextual components for flexible, reusable UI patterns.
 
+**Named blocks** are for invocation consistency in design systems where you **don't want the caller to have full markup control**. They provide structured extension points while maintaining design system constraints - the same concept as named slots in other frameworks.
+
 **Incorrect (monolithic component):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -39,12 +41,11 @@ class UserCard extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 **Correct (composable with named blocks):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -75,12 +76,11 @@ class UserCard extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 **Usage with flexible composition:**
 
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import UserCard from './user-card';
 
@@ -111,12 +111,11 @@ import UserCard from './user-card';
       </:footer>
     </UserCard>
   {{/each}}
-</template>
-```
+</template>```
 
 **Contextual components pattern:**
 
-```javascript
+```glimmer-js
 // app/components/data-table.gjs
 import Component from '@glimmer/component';
 import { hash } from '@ember/helper';
@@ -156,12 +155,11 @@ class DataTable extends Component {
       )}}
     </table>
   </template>
-}
-```
+}```
 
 **Using contextual components:**
 
-```javascript
+```glimmer-js
 // app/components/users-table.gjs
 import DataTable from './data-table';
 
@@ -184,12 +182,11 @@ import DataTable from './data-table';
       {{/each}}
     </tbody>
   </DataTable>
-</template>
-```
+</template>```
 
 **Renderless component pattern:**
 
-```javascript
+```glimmer-js
 // app/components/dropdown.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -216,10 +213,9 @@ class Dropdown extends Component {
       close=this.close
     )}}
   </template>
-}
-```
+}```
 
-```javascript
+```glimmer-js
 // Usage
 import Dropdown from './dropdown';
 
@@ -237,8 +233,7 @@ import Dropdown from './dropdown';
       </ul>
     {{/if}}
   </Dropdown>
-</template>
-```
+</template>```
 
 Component composition provides flexibility, reusability, and clean separation of concerns while maintaining type safety and clarity.
 

@@ -11,7 +11,7 @@ The `{{fn}}` helper is used for partial application (binding arguments), similar
 
 **Incorrect (unnecessary use of {{fn}}):**
 
-```javascript
+```glimmer-js
 // app/components/search.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -26,12 +26,11 @@ class Search extends Component {
     {{! Wrong - no arguments being bound}}
     <input {{on "input" (fn this.handleSearch)}} />
   </template>
-}
-```
+}```
 
 **Correct (direct function reference):**
 
-```javascript
+```glimmer-js
 // app/components/search.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -46,14 +45,13 @@ class Search extends Component {
     {{! Correct - pass function directly}}
     <input {{on "input" this.handleSearch}} />
   </template>
-}
-```
+}```
 
 **When to Use {{fn}} - Partial Application:**
 
 Use `{{fn}}` when you need to pre-bind arguments to a function, similar to JavaScript's `.bind()`:
 
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -78,12 +76,11 @@ class UserList extends Component {
       {{/each}}
     </ul>
   </template>
-}
-```
+}```
 
 **Multiple Arguments:**
 
-```javascript
+```glimmer-js
 // app/components/data-grid.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -106,8 +103,7 @@ class DataGrid extends Component {
       {{/each}}
     {{/each}}
   </template>
-}
-```
+}```
 
 **Think of {{fn}} like .bind():**
 

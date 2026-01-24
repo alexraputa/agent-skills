@@ -13,7 +13,7 @@ Use efficient conditional rendering patterns to minimize unnecessary DOM updates
 Inefficient conditional logic causes excessive re-renders, creates complex template code, and can lead to poor performance in lists and dynamic UIs.
 
 **Incorrect:**
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import Component from '@glimmer/component';
 
@@ -34,15 +34,14 @@ class UserList extends Component {
       </div>
     {{/each}}
   </template>
-}
-```
+}```
 
 ## Solution
 
 Use `{{#if}}` / `{{#else if}}` / `{{#else}}` chains and extract computed logic to getters for better performance and readability.
 
 **Correct:**
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import Component from '@glimmer/component';
 
@@ -60,14 +59,13 @@ class UserList extends Component {
       </div>
     {{/each}}
   </template>
-}
-```
+}```
 
 ## Extracted Logic Pattern
 
 For complex conditions, use getters:
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -104,14 +102,13 @@ class UserCard extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 ## Conditional Lists
 
 Use `{{#if}}` to guard `{{#each}}` and avoid rendering empty states:
 
-```javascript
+```glimmer-js
 // app/components/task-list.gjs
 import Component from '@glimmer/component';
 
@@ -136,8 +133,7 @@ class TaskList extends Component {
       <p class="empty-state">No tasks yet</p>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Avoid Nested Conditionals
 
@@ -153,7 +149,7 @@ class TaskList extends Component {
 ```
 
 **Good:**
-```javascript
+```glimmer-js
 // app/components/content-gate.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -171,14 +167,13 @@ class ContentGate extends Component {
       <UpgradeCTA />
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Component Switching Pattern
 
 Use conditional rendering for component selection:
 
-```javascript
+```glimmer-js
 // app/components/media-viewer.gjs
 import Component from '@glimmer/component';
 import ImageViewer from './image-viewer';
@@ -203,14 +198,13 @@ class MediaViewer extends Component {
       <p>Unsupported media type</p>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Loading States
 
 Pattern for async data with loading/error states:
 
-```javascript
+```glimmer-js
 // app/components/data-display.gjs
 import Component from '@glimmer/component';
 import { Resource } from 'ember-resources';
@@ -255,8 +249,7 @@ class DataDisplay extends Component {
       </div>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Performance Impact
 

@@ -11,13 +11,13 @@ Validate component arguments for better error messages, documentation, and type 
 
 **Incorrect (no argument validation):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
 class UserCard extends Component {
   <template>
-    <div class="user-card">
+    <div>
       <h3>{{@user.name}}</h3>
       <p>{{@user.email}}</p>
     </div>
@@ -27,7 +27,7 @@ class UserCard extends Component {
 
 **Correct (with TypeScript signature):**
 
-```typescript
+```glimmer-ts
 // app/components/user-card.gts
 import Component from '@glimmer/component';
 
@@ -48,7 +48,7 @@ interface UserCardSignature {
 
 class UserCard extends Component<UserCardSignature> {
   <template>
-    <div class="user-card" ...attributes>
+    <div ...attributes>
       <h3>{{@user.name}}</h3>
       <p>{{@user.email}}</p>
       
@@ -68,7 +68,7 @@ class UserCard extends Component<UserCardSignature> {
 
 **Runtime validation with assertions (using getters):**
 
-```javascript
+```glimmer-js
 // app/components/data-table.gjs
 import Component from '@glimmer/component';
 import { assert } from '@ember/debug';
@@ -99,7 +99,7 @@ class DataTable extends Component {
   }
 
   <template>
-    <table class="data-table">
+    <table>
       <thead>
         <tr>
           {{#each this.columns as |column|}}
@@ -123,7 +123,7 @@ class DataTable extends Component {
 
 **Template-only component with TypeScript:**
 
-```typescript
+```glimmer-ts
 // app/components/icon.gts
 import type { TOC } from '@ember/component/template-only';
 
@@ -136,10 +136,7 @@ interface IconSignature {
 }
 
 const Icon: TOC<IconSignature> = <template>
-  <span 
-    class="icon icon-{{@name}} icon-{{if @size @size "medium"}}"
-    ...attributes
-  ></span>
+  <span ...attributes></span>
 </template>;
 
 export default Icon;
@@ -147,7 +144,7 @@ export default Icon;
 
 **Documentation with JSDoc:**
 
-```javascript
+```glimmer-js
 // app/components/modal.gjs
 import Component from '@glimmer/component';
 
@@ -163,7 +160,7 @@ import Component from '@glimmer/component';
 class Modal extends Component {
   <template>
     {{#if @isOpen}}
-      <div class="modal modal-{{if @size @size "medium"}}">
+      <div>
         {{#if @title}}
           <h2>{{@title}}</h2>
         {{/if}}

@@ -11,7 +11,7 @@ Move expensive computations from templates to cached getters in the component cl
 
 **Incorrect (computation in template):**
 
-```javascript
+```glimmer-js
 // app/components/stats.gjs
 <template>
   <div class="stats">
@@ -23,12 +23,11 @@ Move expensive computations from templates to cached getters in the component cl
       <div>{{item.name}}: {{multiply item.price item.quantity}}</div>
     {{/each}}
   </div>
-</template>
-```
+</template>```
 
 **Correct (computation in component):**
 
-```javascript
+```glimmer-js
 // app/components/stats.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -77,7 +76,6 @@ class Stats extends Component {
       {{/each}}
     </div>
   </template>
-}
-```
+}```
 
 Moving computations to cached getters ensures they run only when dependencies change, not on every render.

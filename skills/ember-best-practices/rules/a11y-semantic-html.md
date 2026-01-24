@@ -13,7 +13,7 @@ Use semantic HTML elements and proper ARIA attributes to make your application a
 
 **Incorrect (divs with insufficient semantics):**
 
-```javascript
+```glimmer-js
 // app/components/example.gjs
 <template>
   <div class="button" {{on "click" this.submit}}>
@@ -28,12 +28,11 @@ Use semantic HTML elements and proper ARIA attributes to make your application a
   <div class="alert">
     {{this.message}}
   </div>
-</template>
-```
+</template>```
 
 **Correct (semantic HTML with proper ARIA):**
 
-```javascript
+```glimmer-js
 // app/components/example.gjs
 import { LinkTo } from '@ember/routing';
 
@@ -52,12 +51,11 @@ import { LinkTo } from '@ember/routing';
   <div role="alert" aria-live="polite" aria-atomic="true">
     {{this.message}}
   </div>
-</template>
-```
+</template>```
 
 **For interactive custom elements:**
 
-```javascript
+```glimmer-js
 // app/components/custom-button.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -89,8 +87,7 @@ class CustomButton extends Component {
       <XIcon />
     </div>
   </template>
-}
-```
+}```
 
 Always use native semantic elements when possible. When creating custom interactive elements, ensure they're keyboard accessible and have proper ARIA attributes.
 

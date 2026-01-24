@@ -93,7 +93,7 @@ export default class ApiService extends Service {
 
 Prevent race conditions by canceling stale requests:
 
-```javascript
+```glimmer-js
 // app/components/search-results.gjs
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
@@ -138,8 +138,7 @@ class SearchResults extends Component {
       </ul>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Manual AbortController Pattern
 

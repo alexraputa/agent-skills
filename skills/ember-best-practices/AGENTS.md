@@ -63,14 +63,14 @@ Brief explanation of the rule and why it matters. This should be clear and conci
 
 **Incorrect (description of what's wrong):**
 
-```typescript
+```glimmer-ts
 // Bad code example here
 const bad = example()
 ```
 
 **Correct (description of what's right):**
 
-```typescript
+```glimmer-ts
 // Good code example here
 const good = example()
 ```
@@ -92,7 +92,7 @@ Integrate ember-a11y-testing into your test suite to automatically catch common 
 
 **Incorrect (no accessibility testing):**
 
-```javascript
+```glimmer-js
 // tests/integration/components/user-form-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -108,12 +108,11 @@ module('Integration | Component | user-form', function(hooks) {
     await click('button');
     assert.ok(true);
   });
-});
-```
+});```
 
 **Correct (with a11y testing):**
 
-```javascript
+```glimmer-js
 // tests/integration/components/user-form-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -134,8 +133,7 @@ module('Integration | Component | user-form', function(hooks) {
     await click('button');
     assert.ok(true);
   });
-});
-```
+});```
 
 **Setup (install and configure):**
 
@@ -169,7 +167,7 @@ All form inputs must have associated labels, and validation errors should be ann
 
 **Incorrect (missing labels and announcements):**
 
-```javascript
+```glimmer-js
 // app/components/form.gjs
 <template>
   <form {{on "submit" this.handleSubmit}}>
@@ -186,12 +184,11 @@ All form inputs must have associated labels, and validation errors should be ann
     
     <button type="submit">Submit</button>
   </form>
-</template>
-```
+</template>```
 
 **Correct (with labels and announcements):**
 
-```javascript
+```glimmer-js
 // app/components/form.gjs
 <template>
   <form {{on "submit" this.handleSubmit}}>
@@ -232,12 +229,11 @@ All form inputs must have associated labels, and validation errors should be ann
       {{/if}}
     </button>
   </form>
-</template>
-```
+</template>```
 
 **For complex forms, use platform-native validation with custom logic:**
 
-```javascript
+```glimmer-js
 // app/components/user-form.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -306,8 +302,7 @@ class UserForm extends Component {
       <button type="submit">Save</button>
     </form>
   </template>
-}
-```
+}```
 
 Always associate labels with inputs and announce dynamic changes to screen readers using aria-live regions.
 
@@ -328,7 +323,7 @@ Ensure all interactive elements are keyboard accessible and focus management is 
 
 **Incorrect (no keyboard support):**
 
-```javascript
+```glimmer-js
 // app/components/dropdown.gjs
 <template>
   <div class="dropdown" {{on "click" this.toggleMenu}}>
@@ -340,8 +335,7 @@ Ensure all interactive elements are keyboard accessible and focus management is 
       </div>
     {{/if}}
   </div>
-</template>
-```
+</template>```
 
 **Correct (full keyboard support with custom modifier):**
 
@@ -355,7 +349,7 @@ export default modifier((element, [selector = 'button']) => {
 });
 ```
 
-```javascript
+```glimmer-js
 // app/components/dropdown.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -441,8 +435,7 @@ class Dropdown extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 **For focus trapping in modals, use ember-focus-trap:**
 
@@ -450,7 +443,7 @@ class Dropdown extends Component {
 ember install ember-focus-trap
 ```
 
-```javascript
+```glimmer-js
 // app/components/modal.gjs
 import FocusTrap from 'ember-focus-trap/components/focus-trap';
 
@@ -467,8 +460,7 @@ import FocusTrap from 'ember-focus-trap/components/focus-trap';
       </div>
     </FocusTrap>
   {{/if}}
-</template>
-```
+</template>```
 
 **Alternative: Use libraries for keyboard support:**
 
@@ -608,7 +600,7 @@ export default class ApplicationRoute extends Route {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/routes/application.gjs
 <template>
   <div 
@@ -620,8 +612,7 @@ export default class ApplicationRoute extends Route {
   ></div>
 
   {{outlet}}
-</template>
-```
+</template>```
 
 ```css
 /* app/styles/app.css */
@@ -644,7 +635,7 @@ export default class ApplicationRoute extends Route {
 ember install ember-page-title
 ```
 
-```javascript
+```glimmer-js
 // app/routes/dashboard.gjs
 import { pageTitle } from 'ember-page-title';
 
@@ -654,8 +645,7 @@ import { pageTitle } from 'ember-page-title';
   <div class="dashboard">
     {{outlet}}
   </div>
-</template>
-```
+</template>```
 
 Route announcements ensure screen reader users know when navigation occurs, improving the overall accessibility experience.
 
@@ -678,7 +668,7 @@ Use semantic HTML elements and proper ARIA attributes to make your application a
 
 **Incorrect (divs with insufficient semantics):**
 
-```javascript
+```glimmer-js
 // app/components/example.gjs
 <template>
   <div class="button" {{on "click" this.submit}}>
@@ -693,12 +683,11 @@ Use semantic HTML elements and proper ARIA attributes to make your application a
   <div class="alert">
     {{this.message}}
   </div>
-</template>
-```
+</template>```
 
 **Correct (semantic HTML with proper ARIA):**
 
-```javascript
+```glimmer-js
 // app/components/example.gjs
 import { LinkTo } from '@ember/routing';
 
@@ -717,12 +706,11 @@ import { LinkTo } from '@ember/routing';
   <div role="alert" aria-live="polite" aria-atomic="true">
     {{this.message}}
   </div>
-</template>
-```
+</template>```
 
 **For interactive custom elements:**
 
-```javascript
+```glimmer-js
 // app/components/custom-button.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -754,8 +742,7 @@ class CustomButton extends Component {
       <XIcon />
     </div>
   </template>
-}
-```
+}```
 
 Always use native semantic elements when possible. When creating custom interactive elements, ensure they're keyboard accessible and have proper ARIA attributes.
 
@@ -768,19 +755,19 @@ Always use native semantic elements when possible. When creating custom interact
 ---
 
 ---
-title: Use Ember Concurrency for Task Management
+title: Use Ember Concurrency for User Input Concurrency
 impact: HIGH
-impactDescription: Better async control and cancelation
-tags: ember-concurrency, tasks, async, cancelation
+impactDescription: Better control of user-initiated async operations
+tags: ember-concurrency, tasks, user-input, concurrency-patterns
 ---
 
-## Use Ember Concurrency for Task Management
+## Use Ember Concurrency for User Input Concurrency
 
-Use ember-concurrency for managing async operations with automatic cancelation, derived state, and better control flow.
+Use ember-concurrency for managing **user-initiated** async operations like search, form submission, and autocomplete. It provides automatic cancelation, debouncing, and prevents race conditions from user actions.
 
-**Incorrect (manual async handling):**
+**Incorrect (manual async handling with race conditions):**
 
-```javascript
+```glimmer-js
 // app/components/search.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -793,8 +780,10 @@ class Search extends Component {
   currentRequest = null;
   
   @action
-  async search(query) {
-    // Cancel previous request
+  async search(event) {
+    const query = event.target.value;
+    
+    // Manual cancelation - easy to get wrong
     if (this.currentRequest) {
       this.currentRequest.abort();
     }
@@ -827,21 +816,23 @@ class Search extends Component {
 }
 ```
 
-**Correct (using ember-concurrency):**
+**Correct (using ember-concurrency with task return values):**
 
-```javascript
+```glimmer-js
 // app/components/search.gjs
 import Component from '@glimmer/component';
-import { task, restartableTask } from 'ember-concurrency';
+import { restartableTask } from 'ember-concurrency';
 
 class Search extends Component {
+  // restartableTask automatically cancels previous searches
+  // IMPORTANT: Return the value, don't set tracked state inside tasks
   searchTask = restartableTask(async (query) => {
     const response = await fetch(`/api/search?q=${query}`);
-    return response.json();
+    return response.json(); // Return, don't set @tracked
   });
 
   <template>
-    <input {{on "input" this.searchTask.perform}} />
+    <input {{on "input" (fn this.searchTask.perform (pick "target.value"))}} />
     
     {{#if this.searchTask.isRunning}}
       <div class="loading">Loading...</div>
@@ -862,26 +853,26 @@ class Search extends Component {
 }
 ```
 
-**With debouncing and timeout:**
+**With debouncing for user typing:**
 
-```javascript
+```glimmer-js
 // app/components/autocomplete.gjs
 import Component from '@glimmer/component';
 import { restartableTask, timeout } from 'ember-concurrency';
 
 class Autocomplete extends Component {
   searchTask = restartableTask(async (query) => {
-    // Debounce
+    // Debounce user typing - wait 300ms
     await timeout(300);
     
     const response = await fetch(`/api/autocomplete?q=${query}`);
-    return response.json();
+    return response.json(); // Return value, don't set tracked state
   });
 
   <template>
     <input 
       type="search"
-      {{on "input" this.searchTask.perform}}
+      {{on "input" (fn this.searchTask.perform (pick "target.value"))}}
       placeholder="Search..."
     />
     
@@ -900,27 +891,274 @@ class Autocomplete extends Component {
 }
 ```
 
-**Task modifiers for different concurrency patterns:**
+**Task modifiers for different user concurrency patterns:**
 
-```javascript
-import { task, dropTask, enqueueTask } from 'ember-concurrency';
+```glimmer-js
+import Component from '@glimmer/component';
+import { dropTask, enqueueTask, restartableTask } from 'ember-concurrency';
 
-// restartableTask: cancels previous, starts new
-// dropTask: ignores new if one is running
-// enqueueTask: queues tasks sequentially
-
-saveTask = dropTask(async (data) => {
-  // Prevents double-submit
-  await fetch('/api/save', {
-    method: 'POST',
-    body: JSON.stringify(data)
+class FormActions extends Component {
+  // dropTask: Prevents double-click - ignores new while running
+  saveTask = dropTask(async (data) => {
+    const response = await fetch('/api/save', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    return response.json();
   });
-});
+  
+  // enqueueTask: Queues user actions sequentially
+  processTask = enqueueTask(async (item) => {
+    const response = await fetch('/api/process', {
+      method: 'POST',
+      body: JSON.stringify(item)
+    });
+    return response.json();
+  });
+  
+  // restartableTask: Cancels previous, starts new (for search)
+  searchTask = restartableTask(async (query) => {
+    const response = await fetch(`/api/search?q=${query}`);
+    return response.json();
+  });
+  
+  <template>
+    <button 
+      {{on "click" (fn this.saveTask.perform @data)}}
+      disabled={{this.saveTask.isRunning}}
+    >
+      Save
+    </button>
+  </template>
+}
 ```
 
-ember-concurrency provides automatic cancelation, derived state (isRunning, isIdle), and better async patterns without manual tracking.
+**Key Principles for ember-concurrency:**
+
+1. **User-initiated only** - Use for handling user actions, not component initialization
+2. **Return values** - Use `task.last.value`, never set `@tracked` state inside tasks
+3. **Avoid side effects** - Don't modify component state that's read during render inside tasks
+4. **Choose right modifier**:
+   - `restartableTask` - User typing/search (cancel previous)
+   - `dropTask` - Form submit/save (prevent double-click)
+   - `enqueueTask` - Sequential processing (queue user actions)
+
+**When NOT to use ember-concurrency:**
+
+- ❌ Component initialization data loading (use `getPromiseState` instead)
+- ❌ Setting tracked state inside tasks (causes infinite render loops)
+- ❌ Route model hooks (return promises directly)
+- ❌ Simple async without user concurrency concerns (use async/await)
+
+See **advanced-data-loading-with-ember-concurrency.md** for correct data loading patterns.
+
+ember-concurrency provides automatic cancelation, derived state (isRunning, isIdle), and better patterns for **user-initiated** async operations.
 
 Reference: [ember-concurrency](https://ember-concurrency.com/)
+
+---
+
+---
+title: Use Ember Concurrency Correctly - User Concurrency Not Data Loading
+impact: HIGH
+impactDescription: Prevents infinite render loops and improves performance
+tags: ember-concurrency, tasks, data-loading, anti-pattern
+---
+
+## Use Ember Concurrency Correctly - User Concurrency Not Data Loading
+
+ember-concurrency is designed for **user-initiated concurrency patterns** (debouncing, throttling, preventing double-clicks), not data loading. Use task return values, don't set tracked state inside tasks.
+
+**Incorrect (using ember-concurrency for data loading with tracked state):**
+
+```glimmer-js
+// app/components/user-profile.gjs
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { task } from 'ember-concurrency';
+
+class UserProfile extends Component {
+  @tracked userData = null;
+  @tracked error = null;
+  
+  // WRONG: Setting tracked state inside task
+  loadUserTask = task(async () => {
+    try {
+      const response = await fetch(`/api/users/${this.args.userId}`);
+      this.userData = await response.json(); // Anti-pattern!
+    } catch (e) {
+      this.error = e; // Anti-pattern!
+    }
+  });
+
+  <template>
+    {{#if this.loadUserTask.isRunning}}
+      Loading...
+    {{else if this.userData}}
+      <h1>{{this.userData.name}}</h1>
+    {{/if}}
+  </template>
+}
+```
+
+**Why This Is Wrong:**
+- Setting tracked state during render can cause infinite render loops
+- ember-concurrency adds overhead unnecessary for simple data loading
+- Makes component state harder to reason about
+- Can trigger multiple re-renders
+
+**Correct (use getPromiseState from warp-drive/reactiveweb for data loading):**
+
+```glimmer-js
+// app/components/user-profile.gjs
+import Component from '@glimmer/component';
+import { cached } from '@glimmer/tracking';
+import { getPromiseState } from '@warp-drive/reactiveweb';
+
+class UserProfile extends Component {
+  @cached
+  get userData() {
+    const promise = fetch(`/api/users/${this.args.userId}`)
+      .then(r => r.json());
+    return getPromiseState(promise);
+  }
+
+  <template>
+    {{#if this.userData.isPending}}
+      <div>Loading...</div>
+    {{else if this.userData.isRejected}}
+      <div>Error: {{this.userData.error.message}}</div>
+    {{else if this.userData.isFulfilled}}
+      <h1>{{this.userData.value.name}}</h1>
+    {{/if}}
+  </template>
+}
+```
+
+**Correct (use ember-concurrency for USER input, return values not tracked state):**
+
+```glimmer-js
+// app/components/search.gjs
+import Component from '@glimmer/component';
+import { restartableTask, timeout } from 'ember-concurrency';
+
+class Search extends Component {
+  // CORRECT: For user-initiated search with debouncing
+  // Return the value, don't set tracked state
+  searchTask = restartableTask(async (query) => {
+    await timeout(300); // Debounce user typing
+    const response = await fetch(`/api/search?q=${query}`);
+    return response.json(); // Return, don't set tracked state
+  });
+
+  <template>
+    <input 
+      type="search"
+      {{on "input" (fn this.searchTask.perform (pick "target.value"))}}
+    />
+    
+    {{#if this.searchTask.isRunning}}
+      <div class="loading">Searching...</div>
+    {{/if}}
+    
+    {{#if this.searchTask.last.isSuccessful}}
+      <ul>
+        {{#each this.searchTask.last.value as |result|}}
+          <li>{{result.name}}</li>
+        {{/each}}
+      </ul>
+    {{/if}}
+    
+    {{#if this.searchTask.last.isError}}
+      <div class="error">{{this.searchTask.last.error.message}}</div>
+    {{/if}}
+  </template>
+}
+```
+
+**Good Use Cases for ember-concurrency:**
+
+1. **User input debouncing** - prevent API spam from typing
+2. **Form submission** - prevent double-click submits with `dropTask`
+3. **Autocomplete** - restart previous searches as user types
+4. **Polling** - user-controlled refresh intervals
+5. **Multi-step wizards** - sequential async operations
+
+```glimmer-js
+// app/components/form-submit.gjs
+import Component from '@glimmer/component';
+import { dropTask } from 'ember-concurrency';
+
+class FormSubmit extends Component {
+  // dropTask prevents double-submit - perfect for user actions
+  submitTask = dropTask(async (formData) => {
+    const response = await fetch('/api/save', {
+      method: 'POST',
+      body: JSON.stringify(formData)
+    });
+    return response.json();
+  });
+
+  <template>
+    <button 
+      {{on "click" (fn this.submitTask.perform @formData)}}
+      disabled={{this.submitTask.isRunning}}
+    >
+      {{#if this.submitTask.isRunning}}
+        Saving...
+      {{else}}
+        Save
+      {{/if}}
+    </button>
+  </template>
+}
+```
+
+**Bad Use Cases for ember-concurrency:**
+
+1. ❌ **Loading data on component init** - use `getPromiseState` instead
+2. ❌ **Route model hooks** - just return promises directly
+3. ❌ **Simple API calls** - async/await is sufficient
+4. ❌ **Setting tracked state inside tasks** - causes render loops
+
+**Key Principles:**
+
+- **Use task return values** - read from `task.last.value`, don't set tracked state
+- **User-initiated only** - ember-concurrency is for handling user concurrency
+- **Data loading** - use `getPromiseState` from warp-drive/reactiveweb
+- **Avoid side effects** - don't modify component state inside tasks read during render
+
+**Migration from tracked state pattern:**
+
+```glimmer-js
+// BEFORE (anti-pattern)
+class Bad extends Component {
+  @tracked data = null;
+  
+  fetchTask = task(async () => {
+    this.data = await fetch('/api/data').then(r => r.json());
+  });
+}
+
+// AFTER (correct)
+class Good extends Component {
+  fetchTask = restartableTask(async () => {
+    return fetch('/api/data').then(r => r.json());
+  });
+  
+  // Or better yet, for non-user-initiated loading:
+  @cached
+  get data() {
+    return getPromiseState(fetch('/api/data').then(r => r.json()));
+  }
+}
+```
+
+ember-concurrency is a powerful tool for **user concurrency patterns**. For data loading, use `getPromiseState` instead.
+
+Reference: 
+- [ember-concurrency](https://ember-concurrency.com/)
+- [warp-drive/reactiveweb](https://github.com/emberjs/data/tree/main/packages/reactiveweb)
 
 ---
 
@@ -961,12 +1199,43 @@ class PostCard extends Component {
 }
 ```
 
-**Correct (reusable helper - co-located with component):**
+**Correct (reusable helper):**
+
+For single-use helpers, keep them in the same file as the component:
+
+```glimmer-js
+// app/components/post-list.gjs
+import Component from '@glimmer/component';
+
+// Helper co-located in same file
+function formatRelativeDate(date) {
+  const dateObj = new Date(date);
+  const now = new Date();
+  const diffMs = now - dateObj;
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  
+  if (diffDays === 0) return 'Today';
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays < 7) return `${diffDays} days ago`;
+  return dateObj.toLocaleDateString();
+}
+
+class PostList extends Component {
+  <template>
+    {{#each @posts as |post|}}
+      <article>
+        <h2>{{post.title}}</h2>
+        <time>{{formatRelativeDate post.createdAt}}</time>
+      </article>
+    {{/each}}
+  </template>
+}
+```
+
+For helpers shared across multiple components in a feature, use a subdirectory:
 
 ```javascript
-// app/components/post-list/format-relative-date.js
-// Co-locate with the component that uses it for better organization
-
+// app/components/blog/format-relative-date.js
 export function formatRelativeDate(date) {
   const dateObj = new Date(date);
   const now = new Date();
@@ -982,10 +1251,11 @@ export function formatRelativeDate(date) {
 
 **Alternative (shared helper in utils):**
 
-```javascript
-// app/utils/helpers/format-relative-date.js
-// Use utils/ directory for helpers shared across many components
+For truly shared helpers used across the whole app, use `app/utils/`:
 
+```javascript
+// app/utils/format-relative-date.js
+// Flat structure - use subpath-imports in package.json for nicer imports if needed
 export function formatRelativeDate(date) {
   const dateObj = new Date(date);
   const now = new Date();
@@ -999,20 +1269,20 @@ export function formatRelativeDate(date) {
 }
 ```
 
-**Note**: The `app/helpers/` directory has a smaller role in modern Ember. Prefer co-locating helpers with components for better modularity, or use `app/utils/` for truly shared helpers.
+**Note**: Keep utils flat (`app/utils/format-relative-date.js`), not nested (`app/utils/date/format-relative-date.js`). If you need cleaner top-level imports, configure subpath-imports in package.json instead of nesting files.
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
-import { formatRelativeDate } from '../helpers/format-relative-date';
+import { formatRelativeDate } from '../utils/format-relative-date';
 
 <template>
   <p>Joined: {{formatRelativeDate @user.createdAt}}</p>
 </template>
 ```
 
-```javascript
+```glimmer-js
 // app/components/post-card.gjs
-import { formatRelativeDate } from '../helpers/format-relative-date';
+import { formatRelativeDate } from '../utils/format-relative-date';
 
 <template>
   <p>Posted: {{formatRelativeDate @post.createdAt}}</p>
@@ -1063,7 +1333,7 @@ Use modifiers (element modifiers) to handle DOM side effects and lifecycle event
 
 **Incorrect (manual DOM manipulation in component):**
 
-```javascript
+```glimmer-js
 // app/components/chart.gjs
 import Component from '@glimmer/component';
 
@@ -1084,8 +1354,7 @@ class Chart extends Component {
     <canvas id="chart-canvas"></canvas>
     {{! Manual setup is error-prone and not reusable }}
   </template>
-}
-```
+}```
 
 **Correct (function modifier - preferred for simple side effects):**
 
@@ -1130,14 +1399,13 @@ export default class ChartModifier extends Modifier {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/chart.gjs
 import chart from '../modifiers/chart';
 
 <template>
   <canvas {{chart @config}}></canvas>
-</template>
-```
+</template>```
 
 **Use function modifiers** for simple side effects. Use class-based modifiers only when you need complex state management.
 
@@ -1152,14 +1420,13 @@ export default modifier((element) => {
 });
 ```
 
-```javascript
+```glimmer-js
 // app/components/input-field.gjs
 import autofocus from '../modifiers/autofocus';
 
 <template>
   <input {{autofocus}} type="text" />
-</template>
-```
+</template>```
 
 **Use ember-resize-observer-modifier for resize handling:**
 
@@ -1167,7 +1434,7 @@ import autofocus from '../modifiers/autofocus';
 ember install ember-resize-observer-modifier
 ```
 
-```javascript
+```glimmer-js
 // app/components/resizable.gjs
 import onResize from 'ember-resize-observer-modifier';
 
@@ -1175,147 +1442,11 @@ import onResize from 'ember-resize-observer-modifier';
   <div {{on-resize this.handleResize}}>
     Content that responds to size changes
   </div>
-</template>
-```
+</template>```
 
 Modifiers provide a clean, reusable way to manage DOM side effects without coupling to specific components.
 
 Reference: [Ember Modifiers](https://guides.emberjs.com/release/components/template-lifecycle-dom-and-modifiers/)
-
----
-
----
-title: Use Resources for Declarative Data Management
-impact: HIGH
-impactDescription: Better lifecycle management and reactivity
-tags: resources, lifecycle, data-management, declarative
----
-
-## Use Resources for Declarative Data Management
-
-Use the Resources pattern for declarative data management with automatic cleanup and lifecycle management instead of manual imperative code.
-
-**Incorrect (manual lifecycle management):**
-
-```javascript
-// app/components/live-data.gjs
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
-
-class LiveData extends Component {
-  @tracked data = null;
-  intervalId = null;
-  
-  constructor() {
-    super(...arguments);
-    this.fetchData();
-    this.intervalId = setInterval(() => this.fetchData(), 5000);
-  }
-  
-  async fetchData() {
-    const response = await fetch('/api/data');
-    this.data = await response.json();
-  }
-  
-  willDestroy() {
-    super.willDestroy(...arguments);
-    if (this.intervalId) {
-      clearInterval(this.intervalId);
-    }
-  }
-
-  <template>
-    <div>{{this.data}}</div>
-  </template>
-}
-```
-
-**Correct (using Modifiers with registerDestructor - preferred pattern):**
-
-```javascript
-// app/modifiers/poll-data.js
-import { modifier } from 'ember-modifier';
-import { registerDestructor } from '@ember/destroyable';
-
-export default modifier((element, [callback, interval = 5000]) => {
-  const pollInterval = setInterval(callback, interval);
-  
-  // Automatic cleanup
-  registerDestructor(element, () => clearInterval(pollInterval));
-});
-```
-
-```javascript
-// app/components/live-data.gjs
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import pollData from '../modifiers/poll-data';
-
-class LiveData extends Component {
-  @tracked data = null;
-  
-  @action
-  async fetchData() {
-    const response = await fetch('/api/data');
-    this.data = await response.json();
-  }
-
-  <template>
-    <div {{pollData this.fetchData 5000}}>
-      {{this.data}}
-    </div>
-  </template>
-}
-```
-
-**Alternative: Using Tracked Properties with Effects**
-
-```javascript
-// app/components/user-profile.gjs
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
-import { registerDestructor } from '@ember/destroyable';
-
-class UserProfile extends Component {
-  @tracked userData = null;
-  @tracked error = null;
-  
-  constructor(owner, args) {
-    super(owner, args);
-    
-    const controller = new AbortController();
-    
-    // Register cleanup
-    registerDestructor(this, () => controller.abort());
-    
-    this.loadUser(controller.signal);
-  }
-  
-  async loadUser(signal) {
-    try {
-      const response = await fetch(`/api/users/${this.args.userId}`, { signal });
-      this.userData = await response.json();
-    } catch (e) {
-      if (e.name !== 'AbortError') {
-        this.error = e;
-      }
-    }
-  }
-
-  <template>
-    {{#if this.error}}
-      <div>Error: {{this.error.message}}</div>
-    {{else if this.userData}}
-      <h1>{{this.userData.name}}</h1>
-    {{/if}}
-  </template>
-}
-```
-
-Resources and modifiers with `registerDestructor` provide automatic cleanup, prevent memory leaks, and offer better composition patterns.
-
-Reference: [Ember Destroyables](https://api.emberjs.com/ember/release/modules/@ember%2Fdestroyable)
 
 ---
 
@@ -1483,7 +1614,7 @@ class Dashboard extends Component {
 
 **Correct (lazy loaded with error/loading state handling):**
 
-```javascript
+```glimmer-js
 import Component from '@glimmer/component';
 import { getPromiseState } from 'reactiveweb/promise';
 
@@ -1521,8 +1652,7 @@ class Dashboard extends Component {
       <canvas {{on "click" this.loadChart}}></canvas>
     {{/if}}
   </template>
-}
-```
+}```
 
 **Note**: Always model promise state (loading/error/resolved) using `getPromiseState` from `reactiveweb/promise` to handle slow networks and errors properly.
 
@@ -1555,13 +1685,13 @@ Validate component arguments for better error messages, documentation, and type 
 
 **Incorrect (no argument validation):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
 class UserCard extends Component {
   <template>
-    <div class="user-card">
+    <div>
       <h3>{{@user.name}}</h3>
       <p>{{@user.email}}</p>
     </div>
@@ -1571,7 +1701,7 @@ class UserCard extends Component {
 
 **Correct (with TypeScript signature):**
 
-```typescript
+```glimmer-ts
 // app/components/user-card.gts
 import Component from '@glimmer/component';
 
@@ -1592,7 +1722,7 @@ interface UserCardSignature {
 
 class UserCard extends Component<UserCardSignature> {
   <template>
-    <div class="user-card" ...attributes>
+    <div ...attributes>
       <h3>{{@user.name}}</h3>
       <p>{{@user.email}}</p>
       
@@ -1612,7 +1742,7 @@ class UserCard extends Component<UserCardSignature> {
 
 **Runtime validation with assertions (using getters):**
 
-```javascript
+```glimmer-js
 // app/components/data-table.gjs
 import Component from '@glimmer/component';
 import { assert } from '@ember/debug';
@@ -1643,7 +1773,7 @@ class DataTable extends Component {
   }
 
   <template>
-    <table class="data-table">
+    <table>
       <thead>
         <tr>
           {{#each this.columns as |column|}}
@@ -1667,7 +1797,7 @@ class DataTable extends Component {
 
 **Template-only component with TypeScript:**
 
-```typescript
+```glimmer-ts
 // app/components/icon.gts
 import type { TOC } from '@ember/component/template-only';
 
@@ -1680,10 +1810,7 @@ interface IconSignature {
 }
 
 const Icon: TOC<IconSignature> = <template>
-  <span 
-    class="icon icon-{{@name}} icon-{{if @size @size "medium"}}"
-    ...attributes
-  ></span>
+  <span ...attributes></span>
 </template>;
 
 export default Icon;
@@ -1691,7 +1818,7 @@ export default Icon;
 
 **Documentation with JSDoc:**
 
-```javascript
+```glimmer-js
 // app/components/modal.gjs
 import Component from '@glimmer/component';
 
@@ -1707,7 +1834,7 @@ import Component from '@glimmer/component';
 class Modal extends Component {
   <template>
     {{#if @isOpen}}
-      <div class="modal modal-{{if @size @size "medium"}}">
+      <div>
         {{#if @title}}
           <h2>{{@title}}</h2>
         {{/if}}
@@ -1726,19 +1853,196 @@ Reference: [TypeScript in Ember](https://guides.emberjs.com/release/typescript/)
 ---
 
 ---
+title: Avoid CSS Classes in Learning Examples
+impact: LOW-MEDIUM
+impactDescription: Cleaner, more focused learning materials
+tags: documentation, examples, learning, css, classes
+---
+
+## Avoid CSS Classes in Learning Examples
+
+Don't add CSS classes to learning content and examples unless they provide actual value above the surrounding context. Classes add visual noise and distract from the concepts being taught.
+
+**Incorrect (unnecessary classes in learning example):**
+
+```glimmer-js
+// app/components/user-card.gjs
+import Component from '@glimmer/component';
+
+export class UserCard extends Component {
+  <template>
+    <div class="user-card">
+      <div class="user-card__header">
+        <h3 class="user-card__name">{{@user.name}}</h3>
+        <p class="user-card__email">{{@user.email}}</p>
+      </div>
+      
+      {{#if @user.avatarUrl}}
+        <img class="user-card__avatar" src={{@user.avatarUrl}} alt={{@user.name}} />
+      {{/if}}
+      
+      {{#if @onEdit}}
+        <button class="user-card__edit-button" {{on "click" (fn @onEdit @user)}}>
+          Edit
+        </button>
+      {{/if}}
+      
+      <div class="user-card__content">
+        {{yield}}
+      </div>
+    </div>
+  </template>
+}
+```
+
+**Why This Is Wrong:**
+- Classes add visual clutter that obscures the actual concepts
+- Learners focus on naming conventions instead of the pattern being taught
+- Makes copy-paste more work (need to remove or change class names)
+- Implies these specific class names are required or best practice
+- Distracts from structural HTML and component logic
+
+**Correct (focused on concepts):**
+
+```glimmer-js
+// app/components/user-card.gjs
+import Component from '@glimmer/component';
+
+export class UserCard extends Component {
+  <template>
+    <div ...attributes>
+      <h3>{{@user.name}}</h3>
+      <p>{{@user.email}}</p>
+      
+      {{#if @user.avatarUrl}}
+        <img src={{@user.avatarUrl}} alt={{@user.name}} />
+      {{/if}}
+      
+      {{#if @onEdit}}
+        <button {{on "click" (fn @onEdit @user)}}>Edit</button>
+      {{/if}}
+      
+      {{yield}}
+    </div>
+  </template>
+}
+```
+
+**Benefits:**
+- **Clarity**: Easier to understand the component structure
+- **Focus**: Reader attention stays on the concepts being taught
+- **Simplicity**: Less code to process mentally
+- **Flexibility**: Reader can add their own classes without conflict
+- **Reusability**: Examples are easier to adapt to real code
+
+**When Classes ARE Appropriate in Examples:**
+
+```glimmer-js
+// Example: Teaching about conditional classes
+export class StatusBadge extends Component {
+  get statusClass() {
+    return this.args.status === 'active' ? 'badge-success' : 'badge-error';
+  }
+
+  <template>
+    <span class={{this.statusClass}}>
+      {{@status}}
+    </span>
+  </template>
+}
+```
+
+```glimmer-js
+// Example: Teaching about ...attributes for styling flexibility
+export class Card extends Component {
+  <template>
+    {{! Caller can add their own classes via ...attributes }}
+    <div ...attributes>
+      {{yield}}
+    </div>
+  </template>
+}
+
+{{! Usage: <Card class="user-card">...</Card> }}
+```
+
+**When to Include Classes:**
+
+1. **Teaching class binding** - Example explicitly about conditional classes or class composition
+2. **Demonstrating ...attributes** - Showing how callers add classes
+3. **Accessibility** - Using classes for semantic meaning (e.g., `aria-*` helpers)
+4. **Critical to example** - Class name is essential to understanding (e.g., `selected`, `active`)
+
+**Examples Where Classes Add Value:**
+
+```glimmer-js
+// Good: Teaching about dynamic classes
+export class TabButton extends Component {
+  <template>
+    <button 
+      class={{if @isActive "active"}}
+      {{on "click" @onClick}}
+    >
+      {{yield}}
+    </button>
+  </template>
+}
+```
+
+```glimmer-js
+// Good: Teaching about class composition
+import { cn } from 'ember-cn';
+
+export class Button extends Component {
+  <template>
+    <button class={{cn "btn" (if @primary "btn-primary" "btn-secondary")}}>
+      {{yield}}
+    </button>
+  </template>
+}
+```
+
+**Default Stance:**
+
+When writing learning examples or documentation:
+1. **Start without classes** - Add them only if needed
+2. **Ask**: Does this class help explain the concept?
+3. **Remove** any decorative or structural classes that aren't essential
+4. **Use** `...attributes` to show styling flexibility
+
+**Real-World Context:**
+
+In production code, you'll have classes for styling. But in learning materials, strip them away unless they're teaching something specific about classes themselves.
+
+**Common Violations:**
+
+❌ BEM classes in examples (`user-card__header`)  
+❌ Utility classes unless teaching utilities (`flex`, `mt-4`)  
+❌ Semantic classes that don't teach anything (`container`, `wrapper`)  
+❌ Design system classes unless teaching design system integration
+
+**Summary:**
+
+Keep learning examples focused on the concept being taught. CSS classes should appear only when they're essential to understanding the pattern or when demonstrating styling flexibility with `...attributes`.
+
+Reference: [Ember Components Guide](https://guides.emberjs.com/release/components/)
+
+---
+
+---
 title: Avoid Constructors in Components
 impact: HIGH
-impactDescription: Simpler initialization and better testability
+impactDescription: Prevents infinite render loops and simplifies code
 tags: components, constructors, initialization, anti-pattern
 ---
 
 ## Avoid Constructors in Components
 
-Modern Ember components rarely need constructors. Use class fields, @service decorators, and resources for initialization instead.
+**Strongly discourage constructor usage.** Modern Ember components rarely need constructors. Use class fields, @service decorators, and getPromiseState for initialization instead. Constructors with function calls that set tracked state can cause infinite render loops.
 
 **Incorrect (using constructor):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -1783,57 +2087,14 @@ class UserProfile extends Component {
       <h1>{{this.data.name}}</h1>
     {{/if}}
   </template>
-}
-```
+}```
 
-**Correct (declarative with class fields and resources):**
 
-```javascript
-// app/components/user-profile.gjs
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
-import { service } from '@ember/service';
-import { resource, use } from 'ember-resources';
-
-class UserProfile extends Component {
-  // Declarative service injection - no constructor needed
-  @service store;
-  @service router;
-  
-  // Tracked state as class fields
-  @tracked error = null;
-  
-  // Declarative data loading with automatic cleanup
-  @use userData = resource(({ on }) => {
-    const controller = new AbortController();
-    on.cleanup(() => controller.abort());
-    
-    return this.store.request({ 
-      url: `/users/${this.args.userId}`,
-      signal: controller.signal
-    }).catch(e => {
-      this.error = e;
-      return null;
-    });
-  });
-
-  <template>
-    {{#if this.userData.isLoading}}
-      <div>Loading...</div>
-    {{else if this.error}}
-      <div>Error: {{this.error.message}}</div>
-    {{else if this.userData.value}}
-      <h1>{{this.userData.value.name}}</h1>
-    {{/if}}
-  </template>
-}
-```
-
-**When You Might Need a Constructor:**
+**When You Might Need a Constructor (Very Rare):**
 
 Very rarely, you might need a constructor for truly exceptional cases. Even then, use modern patterns:
 
-```javascript
+```glimmer-js
 // app/components/complex-setup.gjs
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
@@ -1861,19 +2122,19 @@ class ComplexSetup extends Component {
   <template>
     <!-- template -->
   </template>
-}
-```
+}```
 
-**Why Avoid Constructors:**
+**Why Strongly Avoid Constructors:**
 
-1. **Service Injection**: Use `@service` decorator instead of `owner.lookup()`
-2. **Testability**: Class fields are easier to mock and test
-3. **Clarity**: Declarative class fields show state at a glance
-4. **Side Effects**: Resources and modifiers handle side effects better
-5. **Memory Leaks**: Resources auto-cleanup; constructor code doesn't
-6. **Reactivity**: Class fields integrate better with tracking
-7. **Initialization Order**: No need to worry about super() call timing
-8. **Argument Validation**: Constructor validation runs only once; use getters to catch arg changes
+1. **Infinite Render Loops**: Setting tracked state in constructor that's read during render causes infinite loops
+2. **Service Injection**: Use `@service` decorator instead of `owner.lookup()`
+3. **Testability**: Class fields are easier to mock and test
+4. **Clarity**: Declarative class fields show state at a glance
+5. **Side Effects**: getPromiseState and modifiers handle side effects better
+6. **Memory Leaks**: getPromiseState auto-cleanup; constructor code doesn't
+7. **Reactivity**: Class fields integrate better with tracking
+8. **Initialization Order**: No need to worry about super() call timing
+9. **Argument Validation**: Constructor validation runs only once; use getters to catch arg changes
 
 **Modern Alternatives:**
 
@@ -1881,17 +2142,19 @@ class ComplexSetup extends Component {
 |-------------|-------------------|
 | `constructor() { this.store = owner.lookup('service:store') }` | `@service store;` |
 | `constructor() { this.data = null; }` | `@tracked data = null;` |
-| `constructor() { this.loadData(); }` | Use resource or modifier |
+| `constructor() { this.loadData(); }` | Use `@cached get` with getPromiseState |
 | `constructor() { this.interval = setInterval(...) }` | Use modifier with registerDestructor |
-| `constructor() { this.subscription = ... }` | Use resource with cleanup |
+| `constructor() { this.subscription = ... }` | Use modifier or constructor with registerDestructor ONLY |
 
 **Performance Impact:**
-- **Before**: Constructor runs on every instantiation, manual cleanup risk
-- **After**: Class fields initialize efficiently, resources auto-cleanup
+- **Before**: Constructor runs on every instantiation, manual cleanup risk, infinite loop danger
+- **After**: Class fields initialize efficiently, getPromiseState auto-cleanup, no render loops
 
-Constructors add complexity without benefit in modern Ember. Use declarative class fields and resources instead.
+**Strongly discourage constructors** - they add complexity and infinite render loop risks. Use declarative class fields and getPromiseState instead.
 
-Reference: [Ember Octane Guide](https://guides.emberjs.com/release/upgrading/current-edition/), [ember-resources](https://github.com/NullVoxPopuli/ember-resources)
+Reference: 
+- [Ember Octane Guide](https://guides.emberjs.com/release/upgrading/current-edition/)
+- [warp-drive/reactiveweb](https://github.com/emberjs/data/tree/main/packages/reactiveweb)
 
 ---
 
@@ -1920,7 +2183,7 @@ For computed values or reactive transformations, use getters and `@cached`:
 
 **❌ Incorrect (did-update):**
 
-```javascript
+```glimmer-js
 // app/components/user-greeting.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -1940,12 +2203,11 @@ class UserGreeting extends Component {
       Hello, {{this.displayName}}
     </div>
   </template>
-}
-```
+}```
 
 **✅ Correct (derived data with getter):**
 
-```javascript
+```glimmer-js
 // app/components/user-greeting.gjs
 import Component from '@glimmer/component';
 
@@ -1960,12 +2222,11 @@ class UserGreeting extends Component {
       Hello, {{this.displayName}}
     </div>
   </template>
-}
-```
+}```
 
 **✅ Even better (use @cached for expensive computations):**
 
-```javascript
+```glimmer-js
 // app/components/user-stats.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -2001,8 +2262,7 @@ class UserStats extends Component {
       </ul>
     </div>
   </template>
-}
-```
+}```
 
 ### Alternative 2: Use Custom Modifiers
 
@@ -2010,7 +2270,7 @@ For DOM side effects, element setup, or cleanup, use custom modifiers:
 
 **❌ Incorrect (did-insert + will-destroy):**
 
-```javascript
+```glimmer-js
 // app/components/chart.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -2032,8 +2292,7 @@ class Chart extends Component {
   <template>
     <canvas {{did-insert this.setupChart}}></canvas>
   </template>
-}
-```
+}```
 
 **✅ Correct (custom modifier with automatic cleanup):**
 
@@ -2053,14 +2312,13 @@ export default modifier((element, [config]) => {
 });
 ```
 
-```javascript
+```glimmer-js
 // app/components/chart.gjs
 import chart from '../modifiers/chart';
 
 <template>
   <canvas {{chart @config}}></canvas>
-</template>
-```
+</template>```
 
 ### Alternative 3: Use Resources for Lifecycle Management
 
@@ -2068,7 +2326,7 @@ For complex state management with automatic cleanup, use `ember-resources`:
 
 **❌ Incorrect (did-insert for data fetching):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -2106,8 +2364,7 @@ class UserProfile extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 **✅ Correct (Resource with automatic cleanup):**
 
@@ -2145,7 +2402,7 @@ export default class UserDataResource extends Resource {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
 import UserDataResource from '../resources/user-data';
@@ -2160,8 +2417,7 @@ class UserProfile extends Component {
       {{this.userData.data.name}}
     {{/if}}
   </template>
-}
-```
+}```
 
 ### When to Use Each Alternative
 
@@ -2169,7 +2425,7 @@ class UserProfile extends Component {
 |----------|----------|-----|
 | Computed values | Getters + `@cached` | Reactive, efficient, no lifecycle needed |
 | DOM manipulation | Custom modifiers | Encapsulated, reusable, automatic cleanup |
-| Data fetching | Resources or ember-concurrency | Declarative, cancelable, automatic cleanup |
+| Data fetching | getPromiseState from warp-drive | Declarative, automatic cleanup |
 | Event listeners | `{{on}}` modifier | Built-in, automatic cleanup |
 | Focus management | Custom modifier or ember-focus-trap | Proper lifecycle, accessibility |
 
@@ -2181,7 +2437,7 @@ If you have existing code using these hooks:
 2. **Choose the right alternative**:
    - Deriving data? → Use getters/`@cached`
    - DOM setup/teardown? → Use a custom modifier
-   - Complex async lifecycle? → Use a Resource
+   - Async data loading? → Use getPromiseState from warp-drive
 3. **Test thoroughly**: Ensure cleanup happens correctly
 4. **Remove the legacy hook**: Delete `{{did-insert}}`, `{{will-destroy}}`, or `{{did-update}}`
 
@@ -2192,7 +2448,7 @@ Modern alternatives provide better performance:
 - **Getters**: Only compute when dependencies change
 - **@cached**: Memoizes expensive computations
 - **Modifiers**: Scoped to specific elements, composable
-- **Resources**: Declarative lifecycle, easier to optimize
+- **getPromiseState**: Declarative data loading, automatic cleanup
 
 ### Common Pitfalls to Avoid
 
@@ -2207,14 +2463,14 @@ Modern Ember provides superior alternatives to legacy lifecycle hooks:
 
 - **Derived Data**: Use getters and `@cached` for reactive computations
 - **DOM Side Effects**: Use custom modifiers with `registerDestructor`
-- **Complex Lifecycle**: Use Resources from ember-resources
+- **Async Data Loading**: Use getPromiseState from warp-drive/reactiveweb
 - **Better Code**: More testable, composable, and maintainable
 
 **Never use `{{did-insert}}`, `{{will-destroy}}`, or `{{did-update}}` in new code.**
 
 Reference: 
 - [Ember Modifiers](https://github.com/ember-modifier/ember-modifier)
-- [ember-resources](https://github.com/NullVoxPopuli/ember-resources)
+- [warp-drive/reactiveweb](https://github.com/emberjs/data/tree/main/packages/reactiveweb)
 - [Glimmer Tracking](https://guides.emberjs.com/release/in-depth-topics/autotracking-in-depth/)
 
 ---
@@ -2284,11 +2540,11 @@ tags: components, class-fields, composition, initialization
 
 ## Use Class Fields for Component Composition
 
-Use class fields for clean component composition, initialization, and dependency injection patterns.
+Use class fields for clean component composition, initialization, and dependency injection patterns. Tracked class fields should be **roots of state** - representing the minimal independent state that your component owns. In most apps, you should have very few tracked fields.
 
 **Incorrect (imperative initialization, scattered state):**
 
-```javascript
+```glimmer-js
 // app/components/data-manager.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -2317,53 +2573,58 @@ class DataManager extends Component {
   <template>
     <div>{{this.currentUser.name}}</div>
   </template>
-}
-```
+}```
 
 **Correct (class fields with proper patterns):**
 
-```javascript
+```glimmer-js
 // app/components/data-manager.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import { resource } from 'ember-resources';
+import { cached } from '@glimmer/tracking';
+import { getPromiseState } from '@warp-drive/reactiveweb';
 
 class DataManager extends Component {
   // Service injection as class fields
   @service store;
   @service router;
   
-  // Tracked state as class fields
-  @tracked error = null;
+  // Tracked state as class fields - this is a "root of state"
+  // Most components should have very few of these
+  @tracked selectedFilter = 'all';
   
-  // Resource for data loading
-  currentUser = resource(({ on }) => {
-    const controller = new AbortController();
-    on.cleanup(() => controller.abort());
-    
-    return this.store.request({ 
-      url: '/users/me',
-      signal: controller.signal 
-    }).catch(e => {
-      this.error = e;
-      return null;
+  // Data loading with getPromiseState
+  @cached
+  get currentUser() {
+    const promise = this.store.request({ 
+      url: '/users/me'
     });
-  });
+    return getPromiseState(promise);
+  }
 
   <template>
-    {{#if this.currentUser.value}}
+    {{#if this.currentUser.isFulfilled}}
       <div>{{this.currentUser.value.name}}</div>
-    {{else if this.error}}
-      <div class="error">{{this.error.message}}</div>
+    {{else if this.currentUser.isRejected}}
+      <div>Error: {{this.currentUser.error.message}}</div>
     {{/if}}
   </template>
 }
 ```
 
+**Understanding "roots of state":**
+
+Tracked fields should represent **independent state** that your component owns - not derived data or loaded data. Examples of good tracked fields:
+- User selections (selected tab, filter option)
+- UI state (is modal open, is expanded)
+- Form input values (not yet persisted)
+
+In most apps, you'll have very few tracked fields because most data comes from arguments, services, or computed getters.
+
 **Composition through class field assignment:**
 
-```javascript
+```glimmer-js
 // app/components/form-container.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -2428,8 +2689,7 @@ class FormContainer extends Component {
       </button>
     </form>
   </template>
-}
-```
+}```
 
 **Mixin-like composition with class fields:**
 
@@ -2459,7 +2719,7 @@ export class PaginationState {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/paginated-list.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -2505,8 +2765,7 @@ class PaginatedList extends Component {
       </div>
     </div>
   </template>
-}
-```
+}```
 
 **Shareable state objects:**
 
@@ -2548,7 +2807,7 @@ export class SelectionState {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/selectable-list.gjs
 import Component from '@glimmer/component';
 import { SelectionState } from '../utils/selection-state';
@@ -2593,8 +2852,7 @@ class SelectableList extends Component {
       </div>
     {{/if}}
   </template>
-}
-```
+}```
 
 Class fields provide clean composition patterns, better initialization, and shareable state objects that can be tested independently.
 
@@ -2613,9 +2871,11 @@ tags: components, composition, yield, blocks, contextual-components
 
 Use component composition with yield blocks, named blocks, and contextual components for flexible, reusable UI patterns.
 
+**Named blocks** are for invocation consistency in design systems where you **don't want the caller to have full markup control**. They provide structured extension points while maintaining design system constraints - the same concept as named slots in other frameworks.
+
 **Incorrect (monolithic component):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -2643,12 +2903,11 @@ class UserCard extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 **Correct (composable with named blocks):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -2679,12 +2938,11 @@ class UserCard extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 **Usage with flexible composition:**
 
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import UserCard from './user-card';
 
@@ -2715,12 +2973,11 @@ import UserCard from './user-card';
       </:footer>
     </UserCard>
   {{/each}}
-</template>
-```
+</template>```
 
 **Contextual components pattern:**
 
-```javascript
+```glimmer-js
 // app/components/data-table.gjs
 import Component from '@glimmer/component';
 import { hash } from '@ember/helper';
@@ -2760,12 +3017,11 @@ class DataTable extends Component {
       )}}
     </table>
   </template>
-}
-```
+}```
 
 **Using contextual components:**
 
-```javascript
+```glimmer-js
 // app/components/users-table.gjs
 import DataTable from './data-table';
 
@@ -2788,12 +3044,11 @@ import DataTable from './data-table';
       {{/each}}
     </tbody>
   </DataTable>
-</template>
-```
+</template>```
 
 **Renderless component pattern:**
 
-```javascript
+```glimmer-js
 // app/components/dropdown.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -2820,10 +3075,9 @@ class Dropdown extends Component {
       close=this.close
     )}}
   </template>
-}
-```
+}```
 
-```javascript
+```glimmer-js
 // Usage
 import Dropdown from './dropdown';
 
@@ -2841,8 +3095,7 @@ import Dropdown from './dropdown';
       </ul>
     {{/if}}
   </Dropdown>
-</template>
-```
+</template>```
 
 Component composition provides flexibility, reusability, and clean separation of concerns while maintaining type safety and clarity.
 
@@ -2865,7 +3118,7 @@ Rely on native `<form>` elements and the browser's Constraint Validation API ins
 Over-engineering forms with JavaScript when native browser features provide validation, accessibility, and UX patterns for free.
 
 **Incorrect (Too much JavaScript):**
-```javascript
+```glimmer-js
 // app/components/signup-form.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -2901,15 +3154,14 @@ class SignupForm extends Component {
       <button type="button" {{on "click" this.handleSubmit}}>Submit</button>
     </div>
   </template>
-}
-```
+}```
 
 ## Solution: Let the Platform Do the Work
 
 Use native `<form>` with proper input types and browser validation:
 
 **Correct (Native form with platform validation):**
-```javascript
+```glimmer-js
 // app/components/signup-form.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -2957,8 +3209,7 @@ class SignupForm extends Component {
       <button type="submit">Sign Up</button>
     </form>
   </template>
-}
-```
+}```
 
 **Performance: -15KB** (no validation libraries needed)
 **Accessibility: +100%** (native form semantics and error announcements)
@@ -2968,7 +3219,7 @@ class SignupForm extends Component {
 
 Access and display native validation state in your component:
 
-```javascript
+```glimmer-js
 // app/components/validated-form.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -3041,8 +3292,7 @@ class ValidatedForm extends Component {
       <button type="submit">Submit</button>
     </form>
   </template>
-}
-```
+}```
 
 ## Constraint Validation API Properties
 
@@ -3081,7 +3331,7 @@ handleInput = (event) => {
 
 For business logic validation beyond HTML5 constraints:
 
-```javascript
+```glimmer-js
 // app/components/password-match-form.gjs
 import Component from '@glimmer/component';
 import { on } from '@ember/modifier';
@@ -3134,14 +3384,13 @@ class PasswordMatchForm extends Component {
       <button type="submit">Create Account</button>
     </form>
   </template>
-}
-```
+}```
 
 ## When You Need Controlled State
 
 Use controlled patterns when you need real-time interactivity that isn't form submission:
 
-```javascript
+```glimmer-js
 // app/components/live-search.gjs - Controlled state needed for instant search
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -3168,8 +3417,7 @@ class LiveSearch extends Component {
       <p>Searching for: {{this.query}}</p>
     {{/if}}
   </template>
-}
-```
+}```
 
 **Use controlled state when you need:**
 - Real-time validation display as user types
@@ -3201,7 +3449,7 @@ Follow modern Ember component file conventions: use kebab-case filenames, match 
 
 ## Incorrect
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs - WRONG: Component suffix
 import Component from '@glimmer/component';
 
@@ -3211,10 +3459,9 @@ export default class UserCardComponent extends Component {
       {{@name}}
     </div>
   </template>
-}
-```
+}```
 
-```javascript
+```glimmer-js
 // app/components/UserProfile.gjs - WRONG: PascalCase filename
 import Component from '@glimmer/component';
 
@@ -3224,16 +3471,15 @@ export default class UserProfile extends Component {
       {{@name}}
     </div>
   </template>
-}
-```
+}```
 
 ## Correct
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs - CORRECT: kebab-case filename, no Component suffix, no default export
 import Component from '@glimmer/component';
 
-class UserCard extends Component {
+export class UserCard extends Component {
   <template>
     <div class="user-card">
       {{@name}}
@@ -3242,12 +3488,12 @@ class UserCard extends Component {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs - CORRECT: All conventions followed
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
 
-class UserProfile extends Component {
+export class UserProfile extends Component {
   @service session;
   
   <template>
@@ -3298,22 +3544,21 @@ class UserProfile extends Component {
 
 **Template-only components:**
 
-```javascript
+```glimmer-js
 // app/components/simple-card.gjs - Template-only, no class needed
 <template>
   <div class="card">
     {{yield}}
   </div>
-</template>
-```
+</template>```
 
 **Components in subdirectories:**
 
-```javascript
+```glimmer-js
 // app/components/ui/button.gjs
 import Component from '@glimmer/component';
 
-class Button extends Component {
+export class Button extends Component {
   <template>
     <button type="button">
       {{yield}}
@@ -3326,11 +3571,11 @@ class Button extends Component {
 
 **Nested namespaces:**
 
-```javascript
+```glimmer-js
 // app/components/admin/user/profile-card.gjs
 import Component from '@glimmer/component';
 
-class ProfileCard extends Component {
+export class ProfileCard extends Component {
   <template>
     <div class="admin-profile">
       {{@user.name}}
@@ -3387,7 +3632,7 @@ Properly clean up event listeners, timers, and subscriptions to prevent memory l
 
 **Incorrect (no cleanup):**
 
-```javascript
+```glimmer-js
 // app/components/live-clock.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -3407,12 +3652,11 @@ class LiveClock extends Component {
   <template>
     <div>{{this.time}}</div>
   </template>
-}
-```
+}```
 
 **Correct (proper cleanup with registerDestructor):**
 
-```javascript
+```glimmer-js
 // app/components/live-clock.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -3437,12 +3681,11 @@ class LiveClock extends Component {
   <template>
     <div>{{this.time}}</div>
   </template>
-}
-```
+}```
 
 **Event listener cleanup:**
 
-```javascript
+```glimmer-js
 // app/components/window-size.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -3470,8 +3713,7 @@ class WindowSize extends Component {
   <template>
     <div>Window: {{this.width}} x {{this.height}}</div>
   </template>
-}
-```
+}```
 
 **Using modifiers for automatic cleanup:**
 
@@ -3489,7 +3731,7 @@ export default modifier((element, [eventName, handler]) => {
 });
 ```
 
-```javascript
+```glimmer-js
 // app/components/resize-aware.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -3510,12 +3752,11 @@ class ResizeAware extends Component {
       {{this.size.width}} x {{this.size.height}}
     </div>
   </template>
-}
-```
+}```
 
 **Abort controller for fetch requests:**
 
-```javascript
+```glimmer-js
 // app/components/data-loader.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -3553,12 +3794,11 @@ class DataLoader extends Component {
       <div>{{this.data.content}}</div>
     {{/if}}
   </template>
-}
-```
+}```
 
 **Using ember-resources for automatic cleanup:**
 
-```javascript
+```glimmer-js
 // app/components/websocket-data.gjs
 import Component from '@glimmer/component';
 import { resource } from 'ember-resources';
@@ -3585,8 +3825,7 @@ class WebsocketData extends Component {
       <div>{{message}}</div>
     {{/each}}
   </template>
-}
-```
+}```
 
 Always clean up timers, event listeners, subscriptions, and pending requests to prevent memory leaks and performance degradation.
 
@@ -3667,7 +3906,7 @@ Use the `{{on}}` modifier for event handling instead of traditional action handl
 
 **Incorrect (traditional action attribute):**
 
-```javascript
+```glimmer-js
 // app/components/button.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -3683,12 +3922,11 @@ class Button extends Component {
       {{@label}}
     </button>
   </template>
-}
-```
+}```
 
 **Correct (using {{on}} modifier):**
 
-```javascript
+```glimmer-js
 // app/components/button.gjs
 import Component from '@glimmer/component';
 import { on } from '@ember/modifier';
@@ -3703,12 +3941,11 @@ class Button extends Component {
       {{@label}}
     </button>
   </template>
-}
-```
+}```
 
 **With event options:**
 
-```javascript
+```glimmer-js
 // app/components/scroll-tracker.gjs
 import Component from '@glimmer/component';
 import { on } from '@ember/modifier';
@@ -3726,12 +3963,11 @@ class ScrollTracker extends Component {
       {{yield}}
     </div>
   </template>
-}
-```
+}```
 
 **Multiple event handlers:**
 
-```javascript
+```glimmer-js
 // app/components/input-field.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -3762,12 +3998,11 @@ class InputField extends Component {
       value={{@value}}
     />
   </template>
-}
-```
+}```
 
 **Using fn helper for arguments:**
 
-```javascript
+```glimmer-js
 // app/components/item-list.gjs
 import { fn } from '@ember/helper';
 import { on } from '@ember/modifier';
@@ -3783,8 +4018,7 @@ import { on } from '@ember/modifier';
       </li>
     {{/each}}
   </ul>
-</template>
-```
+</template>```
 
 The `{{on}}` modifier properly cleans up event listeners, supports event options (passive, capture, once), and makes event handling more explicit.
 
@@ -3805,7 +4039,7 @@ Create reactive chains where getters depend on other getters or tracked properti
 
 **Incorrect (imperative updates):**
 
-```javascript
+```glimmer-js
 // app/components/shopping-cart.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -3845,12 +4079,11 @@ class ShoppingCart extends Component {
       <div>Total: ${{this.total}}</div>
     </div>
   </template>
-}
-```
+}```
 
 **Correct (reactive getter chains):**
 
-```javascript
+```glimmer-js
 // app/components/shopping-cart.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -3921,12 +4154,11 @@ class ShoppingCart extends Component {
       <div class="total">Total: {{this.formattedTotal}}</div>
     </div>
   </template>
-}
-```
+}```
 
 **Complex reactive chains with @cached:**
 
-```javascript
+```glimmer-js
 // app/components/data-analysis.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -3994,12 +4226,11 @@ class DataAnalysis extends Component {
       <div>Outliers: {{this.outliers.length}}</div>
     </div>
   </template>
-}
-```
+}```
 
 **Combining multiple tracked sources:**
 
-```javascript
+```glimmer-js
 // app/components/filtered-list.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -4082,8 +4313,7 @@ class FilteredList extends Component {
       {{/each}}
     </div>
   </template>
-}
-```
+}```
 
 Reactive getter chains provide automatic updates, clear data dependencies, and better performance through intelligent caching with @cached.
 
@@ -4104,7 +4334,7 @@ Use strict mode and template-only components for simpler, safer code with better
 
 **Incorrect (JavaScript component for simple templates):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -4115,24 +4345,22 @@ class UserCard extends Component {
       <p>{{@user.email}}</p>
     </div>
   </template>
-}
-```
+}```
 
 **Correct (template-only component):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 <template>
   <div class="user-card">
     <h3>{{@user.name}}</h3>
     <p>{{@user.email}}</p>
   </div>
-</template>
-```
+</template>```
 
 **With TypeScript for better type safety:**
 
-```typescript
+```glimmer-ts
 // app/components/user-card.gts
 import type { TOC } from '@ember/component/template-only';
 
@@ -4286,7 +4514,7 @@ export default Component.extend({
 
 **Correct (Glimmer component):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -4301,8 +4529,7 @@ class UserCard extends Component {
       <p>{{@user.email}}</p>
     </div>
   </template>
-}
-```
+}```
 
 Glimmer components are 30-50% faster, have cleaner APIs, and integrate better with tracked properties.
 
@@ -4323,7 +4550,7 @@ Use named exports instead of default exports for better tree-shaking, explicit i
 
 **Incorrect (default exports):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -4331,12 +4558,11 @@ export default class UserCard extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}
-```
+}```
 
 **Correct (named exports):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -4344,8 +4570,7 @@ export class UserCard extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}
-```
+}```
 
 **Why Named Exports:**
 
@@ -4415,7 +4640,7 @@ export const autoFocus = modifier((element) => {
 
 Route templates are the ONLY place where default exports are used in modern Ember:
 
-```javascript
+```glimmer-js
 // ✅ Correct - default export for route template
 // app/routes/dashboard.gjs
 import Route from '@ember/routing/route';
@@ -4432,8 +4657,7 @@ export default class DashboardRoute extends Route {
       <DashboardCard @item={{item}} />
     {{/each}}
   </template>
-</template>
-```
+</template>```
 
 This is because Ember's router expects a default export from route files.
 
@@ -4503,7 +4727,7 @@ Leverage Ember's built-in helpers to write cleaner templates and avoid creating 
 Reinventing common functionality with custom helpers adds maintenance burden and bundle size when built-in helpers already provide the needed functionality.
 
 **Incorrect:**
-```javascript
+```glimmer-js
 // app/helpers/is-equal.js - Unnecessary custom helper
 import { helper } from '@ember/component/helper';
 
@@ -4520,15 +4744,14 @@ class UserBadge extends Component {
       <span class="badge">Admin</span>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Solution
 
 Use built-in helpers that ship with Ember:
 
 **Correct:**
-```javascript
+```glimmer-js
 // app/components/user-badge.gjs
 import Component from '@glimmer/component';
 import { eq } from '@ember/helper';
@@ -4540,12 +4763,11 @@ class UserBadge extends Component {
       <span class="badge">Admin</span>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Comparison Helpers
 
-```javascript
+```glimmer-js
 // app/components/comparison-examples.gjs
 import Component from '@glimmer/component';
 import { eq, not, and, or, lt, lte, gt, gte } from '@ember/helper';
@@ -4568,12 +4790,11 @@ class ComparisonExamples extends Component {
     {{#if (gt @score 100)}}High Score!{{/if}}
     {{#if (lte @attempts 3)}}Try again{{/if}}
   </template>
-}
-```
+}```
 
 ## Array and Object Helpers
 
-```javascript
+```glimmer-js
 // app/components/collection-helpers.gjs
 import Component from '@glimmer/component';
 import { array, hash } from '@ember/helper';
@@ -4594,12 +4815,11 @@ class CollectionHelpers extends Component {
     {{! Dynamic property access }}
     <p>{{get @user @propertyName}}</p>
   </template>
-}
-```
+}```
 
 ## String Helpers
 
-```javascript
+```glimmer-js
 // app/components/string-helpers.gjs
 import Component from '@glimmer/component';
 import { concat } from '@ember/helper';
@@ -4617,12 +4837,11 @@ class StringHelpers extends Component {
       alt={{concat "Image of " @title}}
     />
   </template>
-}
-```
+}```
 
 ## Action Helpers (fn)
 
-```javascript
+```glimmer-js
 // app/components/action-helpers.gjs
 import Component from '@glimmer/component';
 import { fn } from '@ember/helper';
@@ -4652,12 +4871,11 @@ class ActionHelpers extends Component {
       </li>
     {{/each}}
   </template>
-}
-```
+}```
 
 ## Conditional Helpers (if/unless)
 
-```javascript
+```glimmer-js
 // app/components/conditional-inline.gjs
 import Component from '@glimmer/component';
 import { if as ifHelper } from '@ember/helper';
@@ -4677,13 +4895,12 @@ class ConditionalInline extends Component {
     {{! With default value }}
     <p>{{ifHelper @description @description "No description provided"}}</p>
   </template>
-}
-```
+}```
 
 ## Practical Combinations
 
 **Dynamic Classes:**
-```javascript
+```glimmer-js
 // app/components/dynamic-classes.gjs
 import Component from '@glimmer/component';
 import { concat, if as ifHelper, and } from '@ember/helper';
@@ -4699,11 +4916,10 @@ class DynamicClasses extends Component {
       <h3>{{@title}}</h3>
     </div>
   </template>
-}
-```
+}```
 
 **List Filtering:**
-```javascript
+```glimmer-js
 // app/components/filtered-list.gjs
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -4736,12 +4952,11 @@ class FilteredList extends Component {
       </div>
     {{/each}}
   </template>
-}
-```
+}```
 
 ## Complex Example
 
-```javascript
+```glimmer-js
 // app/components/user-profile-card.gjs
 import Component from '@glimmer/component';
 import { 
@@ -4787,8 +5002,7 @@ class UserProfileCard extends Component {
       </p>
     </div>
   </template>
-}
-```
+}```
 
 ## Performance Impact
 
@@ -4849,7 +5063,7 @@ Compose helpers to create reusable, testable logic that can be combined in templ
 
 **Incorrect (logic duplicated in templates):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 <template>
   <div class="profile">
@@ -4865,8 +5079,7 @@ Compose helpers to create reusable, testable logic that can be combined in templ
       <span>Posts: {{@user.posts.length}}</span>
     {{/if}}
   </div>
-</template>
-```
+</template>```
 
 **Correct (composed helpers):**
 
@@ -4897,7 +5110,7 @@ export function formatEmail(email) {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import { displayName } from '../helpers/display-name';
 import { isVisibleUser } from '../helpers/is-visible-user';
@@ -4917,8 +5130,7 @@ import { formatEmail } from '../helpers/format-email';
       <span>Posts: {{@user.posts.length}}</span>
     {{/if}}
   </div>
-</template>
-```
+</template>```
 
 **Functional composition with pipe helper:**
 
@@ -4940,7 +5152,7 @@ export function compose(...helperFns) {
 
 **Usage:**
 
-```javascript
+```glimmer-js
 // app/components/text-processor.gjs
 import { fn } from '@ember/helper';
 
@@ -4954,8 +5166,7 @@ const truncate = (str, length = 20) => str?.slice(0, length) || '';
   <div>
     {{pipe @text (fn trim) (fn uppercase) (fn truncate 50)}}
   </div>
-</template>
-```
+</template>```
 
 **Higher-order helpers:**
 
@@ -4973,7 +5184,7 @@ export function mapBy(array, property) {
 }
 ```
 
-```javascript
+```glimmer-js
 // Usage in template
 import { mapBy } from '../helpers/map-by';
 import { partialApply } from '../helpers/partial-apply';
@@ -4990,8 +5201,7 @@ import { partialApply } from '../helpers/partial-apply';
   {{#let (partialApply @formatNumber 2) as |formatTwoDecimals|}}
     <span>Price: {{formatTwoDecimals @price}}</span>
   {{/let}}
-</template>
-```
+</template>```
 
 **Chainable transformation helpers:**
 
@@ -5032,7 +5242,7 @@ export function transform(value) {
 }
 ```
 
-```javascript
+```glimmer-js
 // Usage
 import { transform } from '../helpers/transform';
 
@@ -5042,8 +5252,7 @@ import { transform } from '../helpers/transform';
       <div>{{item.name}}</div>
     {{/each}}
   {{/let}}
-</template>
-```
+</template>```
 
 **Conditional composition:**
 
@@ -5130,7 +5339,7 @@ export function formatDate(date) {
 
 **Usage in templates:**
 
-```javascript
+```glimmer-js
 // app/components/post-card.gjs
 import { formatDate } from '../utils/format-date';
 
@@ -5139,8 +5348,7 @@ import { formatDate } from '../utils/format-date';
     <h2>{{@post.title}}</h2>
     <time>{{formatDate @post.publishedAt}}</time>
   </article>
-</template>
-```
+</template>```
 
 **With Multiple Arguments:**
 
@@ -5154,7 +5362,7 @@ export function formatCurrency(amount, currency = 'USD') {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/price.gjs
 import { formatCurrency } from '../utils/format-currency';
 
@@ -5162,8 +5370,7 @@ import { formatCurrency } from '../utils/format-currency';
   <span class="price">
     {{formatCurrency @amount @currency}}
   </span>
-</template>
-```
+</template>```
 
 **For Helpers that Need Services (use class-based):**
 
@@ -5226,7 +5433,7 @@ export function pluralize(count, singular, plural) {
 }
 ```
 
-```javascript
+```glimmer-js
 // Usage
 import { capitalize, truncate, pluralize } from '../utils/string-helpers';
 
@@ -5234,8 +5441,7 @@ import { capitalize, truncate, pluralize } from '../utils/string-helpers';
   <h1>{{capitalize @title}}</h1>
   <p>{{truncate @description 100}}</p>
   <span>{{@count}} {{pluralize @count "item" "items"}}</span>
-</template>
-```
+</template>```
 
 Plain functions are the modern way to create helpers in Ember. Only use classes when you need dependency injection.
 
@@ -5315,7 +5521,7 @@ export default class PostsRoute extends Route {
 
 **Correct (with loading substate):**
 
-```javascript
+```glimmer-js
 // app/routes/posts-loading.gjs
 import { LoadingSpinner } from './loading-spinner';
 
@@ -5324,8 +5530,7 @@ import { LoadingSpinner } from './loading-spinner';
     <span class="sr-only">Loading posts...</span>
     <LoadingSpinner />
   </div>
-</template>
-```
+</template>```
 
 ```javascript
 // app/routes/posts.js
@@ -5354,7 +5559,7 @@ Implement intelligent model caching strategies to reduce redundant API calls and
 
 **Incorrect (always fetches fresh data):**
 
-```javascript
+```glimmer-js
 // app/routes/post.gjs
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
@@ -5374,12 +5579,11 @@ export default class PostRoute extends Route {
     </article>
     {{outlet}}
   </template>
-}
-```
+}```
 
 **Correct (with smart caching):**
 
-```javascript
+```glimmer-js
 // app/routes/post.gjs
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
@@ -5419,8 +5623,7 @@ export default class PostRoute extends Route {
     </article>
     {{outlet}}
   </template>
-}
-```
+}```
 
 **Service-based caching layer:**
 
@@ -5466,7 +5669,7 @@ export default class PostCacheService extends Service {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/routes/post.gjs
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
@@ -5492,12 +5695,11 @@ export default class PostRoute extends Route {
     </article>
     {{outlet}}
   </template>
-}
-```
+}```
 
 **Using query params for cache control:**
 
-```javascript
+```glimmer-js
 // app/routes/posts.gjs
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
@@ -5534,12 +5736,11 @@ export default class PostsRoute extends Route {
     </div>
     {{outlet}}
   </template>
-}
-```
+}```
 
 **Background refresh pattern:**
 
-```javascript
+```glimmer-js
 // app/routes/dashboard.gjs
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
@@ -5567,8 +5768,7 @@ export default class DashboardRoute extends Route {
     </div>
     {{outlet}}
   </template>
-}
-```
+}```
 
 Smart caching reduces server load, improves perceived performance, and provides better offline support while keeping data fresh.
 
@@ -5645,7 +5845,7 @@ Use co-located route templates with modern gjs syntax for better organization an
 
 **Incorrect (separate template file - old pattern):**
 
-```javascript
+```glimmer-js
 // app/routes/posts.js (separate file)
 import Route from '@ember/routing/route';
 
@@ -5663,12 +5863,11 @@ export default class PostsRoute extends Route {
       <li>{{post.title}}</li>
     {{/each}}
   </ul>
-</template>
-```
+</template>```
 
 **Correct (co-located route template):**
 
-```javascript
+```glimmer-js
 // app/routes/posts.gjs
 import Route from '@ember/routing/route';
 
@@ -5687,12 +5886,11 @@ export default class PostsRoute extends Route {
     
     {{outlet}}
   </template>
-}
-```
+}```
 
 **With loading and error states:**
 
-```javascript
+```glimmer-js
 // app/routes/posts.gjs
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
@@ -5719,20 +5917,18 @@ export default class PostsRoute extends Route {
       {{outlet}}
     </div>
   </template>
-}
-```
+}```
 
 **Template-only routes:**
 
-```javascript
+```glimmer-js
 // app/routes/about.gjs
 <template>
   <div class="about-page">
     <h1>About Us</h1>
     <p>Welcome to our application!</p>
   </div>
-</template>
-```
+</template>```
 
 Co-located route templates keep route logic and presentation together, making the codebase easier to navigate and maintain.
 
@@ -5937,7 +6133,7 @@ export default class ApiService extends Service {
 
 Prevent race conditions by canceling stale requests:
 
-```javascript
+```glimmer-js
 // app/components/search-results.gjs
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
@@ -5982,8 +6178,7 @@ class SearchResults extends Component {
       </ul>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Manual AbortController Pattern
 
@@ -6328,7 +6523,7 @@ Understand how to manage service linkage, owner passing, and alternative service
 
 **Incorrect (manual service instantiation):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
 import ApiService from '../services/api';
@@ -6345,12 +6540,11 @@ class UserProfile extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}
-```
+}```
 
 **Correct (proper service injection with owner):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
@@ -6367,14 +6561,13 @@ class UserProfile extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}
-```
+}```
 
 ### Manual Owner Passing (Without Libraries)
 
 **Creating instances with owner:**
 
-```javascript
+```glimmer-js
 // app/components/data-processor.gjs
 import Component from '@glimmer/component';
 import { getOwner, setOwner } from '@ember/application';
@@ -6408,8 +6601,7 @@ class DataProcessor extends Component {
   <template>
     <div>Processing...</div>
   </template>
-}
-```
+}```
 
 **Factory pattern with owner:**
 
@@ -6440,7 +6632,7 @@ export function createLogger(owner, context) {
 }
 ```
 
-```javascript
+```glimmer-js
 // Usage in component
 import Component from '@glimmer/component';
 import { getOwner } from '@ember/application';
@@ -6456,14 +6648,13 @@ class My extends Component {
   <template>
     <button {{on "click" this.performAction}}>Do Something</button>
   </template>
-}
-```
+}```
 
 ### Owner Passing with Libraries
 
 **Using ember-could-get-used-to-this for explicit dependency injection:**
 
-```javascript
+```glimmer-js
 // app/components/advanced-form.gjs
 import Component from '@glimmer/component';
 import { use } from 'ember-could-get-used-to-this';
@@ -6489,12 +6680,11 @@ class AdvancedForm extends Component {
       {{/if}}
     </form>
   </template>
-}
-```
+}```
 
 **Using ember-provide-consume-context for dependency injection:**
 
-```javascript
+```glimmer-js
 // app/components/dashboard-container.gjs
 import Component from '@glimmer/component';
 import { provide } from 'ember-provide-consume-context';
@@ -6514,10 +6704,9 @@ class DashboardContainer extends Component {
       {{yield}}
     </div>
   </template>
-}
-```
+}```
 
-```javascript
+```glimmer-js
 // app/components/dashboard-widget.gjs
 import Component from '@glimmer/component';
 import { consume } from 'ember-provide-consume-context';
@@ -6536,14 +6725,13 @@ class DashboardWidget extends Component {
       {{@title}}
     </div>
   </template>
-}
-```
+}```
 
 ### Services Outside app/services Directory
 
 **Inline service definitions:**
 
-```javascript
+```glimmer-js
 // app/components/analytics-tracker.gjs
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
@@ -6582,8 +6770,7 @@ class AnalyticsTracker extends Component {
   <template>
     <div>Tracking {{this.analytics.events.length}} events</div>
   </template>
-}
-```
+}```
 
 **Co-located services with components:**
 
@@ -6619,7 +6806,7 @@ export class CartService extends Service {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/shopping-cart/index.gjs
 import Component from '@glimmer/component';
 import { getOwner, setOwner } from '@ember/application';
@@ -6649,8 +6836,7 @@ class ShoppingCart extends Component {
       <button {{on "click" this.cart.clear}}>Clear Cart</button>
     </div>
   </template>
-}
-```
+}```
 
 **Service-like utilities in utils/ directory:**
 
@@ -6691,7 +6877,7 @@ export class NotificationManager {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/notification-container.gjs
 import Component from '@glimmer/component';
 import { getOwner } from '@ember/application';
@@ -6717,8 +6903,7 @@ class NotificationContainer extends Component {
       Show Notification
     </button>
   </template>
-}
-```
+}```
 
 ### Registering Custom Services Dynamically
 
@@ -6751,7 +6936,7 @@ export default {
 
 **Using registered services:**
 
-```javascript
+```glimmer-js
 // app/components/feature-gated.gjs
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
@@ -6770,8 +6955,7 @@ class FeatureGated extends Component {
       <div class="feature-disabled">This feature is not available</div>
     {{/if}}
   </template>
-}
-```
+}```
 
 ### Best Practices
 
@@ -6807,7 +6991,7 @@ Use services to manage shared state across components and routes instead of pass
 
 **Incorrect (prop drilling):**
 
-```javascript
+```glimmer-js
 // app/routes/dashboard.gjs
 export default class DashboardRoute extends Route {
   model() {
@@ -6819,8 +7003,7 @@ export default class DashboardRoute extends Route {
     <Sidebar @theme={{@model.currentTheme}} />
     <MainContent @theme={{@model.currentTheme}} />
   </template>
-}
-```
+}```
 
 **Correct (using service):**
 
@@ -6929,7 +7112,7 @@ Move expensive computations from templates to cached getters in the component cl
 
 **Incorrect (computation in template):**
 
-```javascript
+```glimmer-js
 // app/components/stats.gjs
 <template>
   <div class="stats">
@@ -6941,12 +7124,11 @@ Move expensive computations from templates to cached getters in the component cl
       <div>{{item.name}}: {{multiply item.price item.quantity}}</div>
     {{/each}}
   </div>
-</template>
-```
+</template>```
 
 **Correct (computation in component):**
 
-```javascript
+```glimmer-js
 // app/components/stats.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -6995,8 +7177,7 @@ class Stats extends Component {
       {{/each}}
     </div>
   </template>
-}
-```
+}```
 
 Moving computations to cached getters ensures they run only when dependencies change, not on every render.
 
@@ -7017,7 +7198,7 @@ Use efficient conditional rendering patterns to minimize unnecessary DOM updates
 Inefficient conditional logic causes excessive re-renders, creates complex template code, and can lead to poor performance in lists and dynamic UIs.
 
 **Incorrect:**
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import Component from '@glimmer/component';
 
@@ -7038,15 +7219,14 @@ class UserList extends Component {
       </div>
     {{/each}}
   </template>
-}
-```
+}```
 
 ## Solution
 
 Use `{{#if}}` / `{{#else if}}` / `{{#else}}` chains and extract computed logic to getters for better performance and readability.
 
 **Correct:**
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import Component from '@glimmer/component';
 
@@ -7064,14 +7244,13 @@ class UserList extends Component {
       </div>
     {{/each}}
   </template>
-}
-```
+}```
 
 ## Extracted Logic Pattern
 
 For complex conditions, use getters:
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -7108,14 +7287,13 @@ class UserCard extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 ## Conditional Lists
 
 Use `{{#if}}` to guard `{{#each}}` and avoid rendering empty states:
 
-```javascript
+```glimmer-js
 // app/components/task-list.gjs
 import Component from '@glimmer/component';
 
@@ -7140,8 +7318,7 @@ class TaskList extends Component {
       <p class="empty-state">No tasks yet</p>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Avoid Nested Conditionals
 
@@ -7157,7 +7334,7 @@ class TaskList extends Component {
 ```
 
 **Good:**
-```javascript
+```glimmer-js
 // app/components/content-gate.gjs
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
@@ -7175,14 +7352,13 @@ class ContentGate extends Component {
       <UpgradeCTA />
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Component Switching Pattern
 
 Use conditional rendering for component selection:
 
-```javascript
+```glimmer-js
 // app/components/media-viewer.gjs
 import Component from '@glimmer/component';
 import ImageViewer from './image-viewer';
@@ -7207,14 +7383,13 @@ class MediaViewer extends Component {
       <p>Unsupported media type</p>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Loading States
 
 Pattern for async data with loading/error states:
 
-```javascript
+```glimmer-js
 // app/components/data-display.gjs
 import Component from '@glimmer/component';
 import { Resource } from 'ember-resources';
@@ -7259,8 +7434,7 @@ class DataDisplay extends Component {
       </div>
     {{/if}}
   </template>
-}
-```
+}```
 
 ## Performance Impact
 
@@ -7296,7 +7470,7 @@ Always use the `@key` parameter with `{{#each}}` for lists of objects to help Em
 
 **Incorrect (no key):**
 
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import UserCard from './user-card';
 
@@ -7308,12 +7482,11 @@ import UserCard from './user-card';
       </li>
     {{/each}}
   </ul>
-</template>
-```
+</template>```
 
 **Correct (with key):**
 
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import UserCard from './user-card';
 
@@ -7325,23 +7498,21 @@ import UserCard from './user-card';
       </li>
     {{/each}}
   </ul>
-</template>
-```
+</template>```
 
 **For arrays without stable IDs, use @identity:**
 
-```javascript
+```glimmer-js
 // app/components/tag-list.gjs
 <template>
   {{#each this.tags key="@identity" as |tag|}}
     <span class="tag">{{tag}}</span>
   {{/each}}
-</template>
-```
+</template>```
 
 **For complex scenarios with @index:**
 
-```javascript
+```glimmer-js
 // app/components/item-list.gjs
 <template>
   {{#each this.items key="@index" as |item index|}}
@@ -7349,8 +7520,7 @@ import UserCard from './user-card';
       {{item.name}}
     </div>
   {{/each}}
-</template>
-```
+</template>```
 
 Using proper keys allows Ember's rendering engine to efficiently update, reorder, and remove items without re-rendering the entire list.
 
@@ -7377,7 +7547,7 @@ The `{{fn}}` helper is used for partial application (binding arguments), similar
 
 **Incorrect (unnecessary use of {{fn}}):**
 
-```javascript
+```glimmer-js
 // app/components/search.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -7392,12 +7562,11 @@ class Search extends Component {
     {{! Wrong - no arguments being bound}}
     <input {{on "input" (fn this.handleSearch)}} />
   </template>
-}
-```
+}```
 
 **Correct (direct function reference):**
 
-```javascript
+```glimmer-js
 // app/components/search.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -7412,14 +7581,13 @@ class Search extends Component {
     {{! Correct - pass function directly}}
     <input {{on "input" this.handleSearch}} />
   </template>
-}
-```
+}```
 
 **When to Use {{fn}} - Partial Application:**
 
 Use `{{fn}}` when you need to pre-bind arguments to a function, similar to JavaScript's `.bind()`:
 
-```javascript
+```glimmer-js
 // app/components/user-list.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -7444,12 +7612,11 @@ class UserList extends Component {
       {{/each}}
     </ul>
   </template>
-}
-```
+}```
 
 **Multiple Arguments:**
 
-```javascript
+```glimmer-js
 // app/components/data-grid.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
@@ -7472,8 +7639,7 @@ class DataGrid extends Component {
       {{/each}}
     {{/each}}
   </template>
-}
-```
+}```
 
 **Think of {{fn}} like .bind():**
 
@@ -7528,7 +7694,7 @@ Import helpers directly in gjs/gts files for better tree-shaking, clearer depend
 
 **Incorrect (global helper resolution):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 <template>
   <div class="profile">
@@ -7536,12 +7702,11 @@ Import helpers directly in gjs/gts files for better tree-shaking, clearer depend
     <p>Joined: {{format-date @user.createdAt}}</p>
     <p>Posts: {{pluralize @user.postCount "post"}}</p>
   </div>
-</template>
-```
+</template>```
 
 **Correct (explicit helper imports):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import { capitalize } from 'ember-string-helpers';
 import { formatDate } from 'ember-intl';
@@ -7553,12 +7718,11 @@ import { pluralize } from 'ember-inflector';
     <p>Joined: {{formatDate @user.createdAt}}</p>
     <p>Posts: {{pluralize @user.postCount "post"}}</p>
   </div>
-</template>
-```
+</template>```
 
 **Built-in helpers from Ember:**
 
-```javascript
+```glimmer-js
 // app/components/conditional-content.gjs
 import { array } from '@ember/helper';
 import { fn, hash } from '@ember/helper';
@@ -7576,8 +7740,7 @@ import { eq, not } from 'ember-truth-helpers';
       </button>
     {{/if}}
   </div>
-</template>
-```
+</template>```
 
 **Custom helper with imports:**
 
@@ -7595,7 +7758,7 @@ export function formatCurrency([amount], { currency = 'USD' }) {
 export default helper(formatCurrency);
 ```
 
-```javascript
+```glimmer-js
 // app/components/price-display.gjs
 import { formatCurrency } from '../helpers/format-currency';
 
@@ -7603,12 +7766,11 @@ import { formatCurrency } from '../helpers/format-currency';
   <div class="price">
     {{formatCurrency @amount currency="EUR"}}
   </div>
-</template>
-```
+</template>```
 
 **Type-safe helpers with TypeScript:**
 
-```typescript
+```glimmer-ts
 // app/components/typed-component.gts
 import { fn } from '@ember/helper';
 import type { TOC } from '@ember/component/template-only';
@@ -7652,7 +7814,7 @@ Use `{{#let}}` to compute expensive values once and reuse them in the template i
 
 **Incorrect (recomputes on every reference):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 <template>
   <div class="user-card">
@@ -7669,12 +7831,11 @@ Use `{{#let}}` to compute expensive values once and reuse them in the template i
       <button {{on "click" this.deleteUser}}>Delete</button>
     {{/if}}
   </div>
-</template>
-```
+</template>```
 
 **Correct (compute once, reuse):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 <template>
   {{#let (and this.user.isActive (not this.user.isDeleted)) as |isEditable|}}
@@ -7693,12 +7854,11 @@ Use `{{#let}}` to compute expensive values once and reuse them in the template i
       {{/if}}
     </div>
   {{/let}}
-</template>
-```
+</template>```
 
 **Multiple values:**
 
-```javascript
+```glimmer-js
 // app/components/checkout.gjs
 <template>
   {{#let 
@@ -7716,8 +7876,7 @@ Use `{{#let}}` to compute expensive values once and reuse them in the template i
       {{/if}}
     </div>
   {{/let}}
-</template>
-```
+</template>```
 
 `{{#let}}` computes values once and caches them for the block scope, reducing redundant calculations.
 
@@ -7736,7 +7895,7 @@ Use modern Ember testing patterns with `@ember/test-helpers` and `qunit-dom` for
 
 **Incorrect (old testing patterns):**
 
-```javascript
+```glimmer-js
 // tests/integration/components/user-card-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -7752,12 +7911,11 @@ module('Integration | Component | user-card', function(hooks) {
     // Using find() instead of qunit-dom
     assert.ok(find('.user-card'));
   });
-});
-```
+});```
 
 **Correct (modern testing patterns):**
 
-```javascript
+```glimmer-js
 // tests/integration/components/user-card-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -7802,12 +7960,11 @@ module('Integration | Component | user-card', function(hooks) {
     
     await click('[data-test-edit-button]');
   });
-});
-```
+});```
 
 **Component testing with TypeScript:**
 
-```typescript
+```glimmer-ts
 // tests/integration/components/search-box-test.ts
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -7850,7 +8007,7 @@ module('Integration | Component | search-box', function(hooks) {
 
 **Testing with ember-concurrency tasks:**
 
-```javascript
+```glimmer-js
 // tests/integration/components/async-button-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -7883,8 +8040,7 @@ module('Integration | Component | async-button', function(hooks) {
     
     assert.dom('[data-test-loading-spinner]').doesNotExist();
   });
-});
-```
+});```
 
 **Route testing:**
 
@@ -7925,7 +8081,7 @@ module('Acceptance | posts', function(hooks) {
 
 **Accessibility testing:**
 
-```javascript
+```glimmer-js
 // tests/integration/components/modal-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -7961,12 +8117,11 @@ module('Integration | Component | modal', function(hooks) {
     await click('[data-test-last]');
     assert.dom('[data-test-last]').isFocused();
   });
-});
-```
+});```
 
 **Testing with data-test attributes:**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
 
@@ -7991,8 +8146,7 @@ class UserProfile extends Component {
       {{/if}}
     </div>
   </template>
-}
-```
+}```
 
 Modern testing patterns with `@ember/test-helpers`, `qunit-dom`, and data-test attributes provide better test reliability, readability, and maintainability.
 
@@ -8035,7 +8189,7 @@ module('Integration | Component | loading-spinner', function(hooks) {
 
 **Pattern 2: Template tag render (with args/blocks/attributes):**
 
-```javascript
+```glimmer-js
 // tests/integration/components/user-card-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -8078,12 +8232,11 @@ module('Integration | Component | user-card', function(hooks) {
     assert.dom('[data-test-featured]').exists();
     assert.dom('[data-test-featured]').hasClass('featured');
   });
-});
-```
+});```
 
 **Complete example showing both patterns:**
 
-```javascript
+```glimmer-js
 // tests/integration/components/button-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -8133,12 +8286,11 @@ module('Integration | Component | button', function(hooks) {
     
     assert.dom('button').hasClass('btn-primary');
   });
-});
-```
+});```
 
 **Testing template-only components:**
 
-```javascript
+```glimmer-js
 // tests/integration/components/icon-test.js
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
@@ -8164,8 +8316,7 @@ module('Integration | Component | icon', function(hooks) {
     assert.dom('[data-test-icon]').hasAttribute('data-icon', 'check');
     assert.dom('[data-test-icon]').hasClass('icon-large');
   });
-});
-```
+});```
 
 **Decision guide:**
 
@@ -8186,7 +8337,7 @@ module('Integration | Component | icon', function(hooks) {
 
 **Common patterns:**
 
-```javascript
+```glimmer-js
 // ✅ Simple component, no setup needed
 await render(LoadingSpinner);
 await render(Divider);
@@ -8211,8 +8362,7 @@ await render(<template>
   <Card class="highlighted" data-test-card role="article">
     Card content
   </Card>
-</template>);
-```
+</template>);```
 
 Using the appropriate render pattern keeps tests clean and expressive.
 

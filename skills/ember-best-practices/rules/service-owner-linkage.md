@@ -13,7 +13,7 @@ Understand how to manage service linkage, owner passing, and alternative service
 
 **Incorrect (manual service instantiation):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
 import ApiService from '../services/api';
@@ -30,12 +30,11 @@ class UserProfile extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}
-```
+}```
 
 **Correct (proper service injection with owner):**
 
-```javascript
+```glimmer-js
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
@@ -52,14 +51,13 @@ class UserProfile extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}
-```
+}```
 
 ### Manual Owner Passing (Without Libraries)
 
 **Creating instances with owner:**
 
-```javascript
+```glimmer-js
 // app/components/data-processor.gjs
 import Component from '@glimmer/component';
 import { getOwner, setOwner } from '@ember/application';
@@ -93,8 +91,7 @@ class DataProcessor extends Component {
   <template>
     <div>Processing...</div>
   </template>
-}
-```
+}```
 
 **Factory pattern with owner:**
 
@@ -125,7 +122,7 @@ export function createLogger(owner, context) {
 }
 ```
 
-```javascript
+```glimmer-js
 // Usage in component
 import Component from '@glimmer/component';
 import { getOwner } from '@ember/application';
@@ -141,14 +138,13 @@ class My extends Component {
   <template>
     <button {{on "click" this.performAction}}>Do Something</button>
   </template>
-}
-```
+}```
 
 ### Owner Passing with Libraries
 
 **Using ember-could-get-used-to-this for explicit dependency injection:**
 
-```javascript
+```glimmer-js
 // app/components/advanced-form.gjs
 import Component from '@glimmer/component';
 import { use } from 'ember-could-get-used-to-this';
@@ -174,12 +170,11 @@ class AdvancedForm extends Component {
       {{/if}}
     </form>
   </template>
-}
-```
+}```
 
 **Using ember-provide-consume-context for dependency injection:**
 
-```javascript
+```glimmer-js
 // app/components/dashboard-container.gjs
 import Component from '@glimmer/component';
 import { provide } from 'ember-provide-consume-context';
@@ -199,10 +194,9 @@ class DashboardContainer extends Component {
       {{yield}}
     </div>
   </template>
-}
-```
+}```
 
-```javascript
+```glimmer-js
 // app/components/dashboard-widget.gjs
 import Component from '@glimmer/component';
 import { consume } from 'ember-provide-consume-context';
@@ -221,14 +215,13 @@ class DashboardWidget extends Component {
       {{@title}}
     </div>
   </template>
-}
-```
+}```
 
 ### Services Outside app/services Directory
 
 **Inline service definitions:**
 
-```javascript
+```glimmer-js
 // app/components/analytics-tracker.gjs
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
@@ -267,8 +260,7 @@ class AnalyticsTracker extends Component {
   <template>
     <div>Tracking {{this.analytics.events.length}} events</div>
   </template>
-}
-```
+}```
 
 **Co-located services with components:**
 
@@ -304,7 +296,7 @@ export class CartService extends Service {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/shopping-cart/index.gjs
 import Component from '@glimmer/component';
 import { getOwner, setOwner } from '@ember/application';
@@ -334,8 +326,7 @@ class ShoppingCart extends Component {
       <button {{on "click" this.cart.clear}}>Clear Cart</button>
     </div>
   </template>
-}
-```
+}```
 
 **Service-like utilities in utils/ directory:**
 
@@ -376,7 +367,7 @@ export class NotificationManager {
 }
 ```
 
-```javascript
+```glimmer-js
 // app/components/notification-container.gjs
 import Component from '@glimmer/component';
 import { getOwner } from '@ember/application';
@@ -402,8 +393,7 @@ class NotificationContainer extends Component {
       Show Notification
     </button>
   </template>
-}
-```
+}```
 
 ### Registering Custom Services Dynamically
 
@@ -436,7 +426,7 @@ export default {
 
 **Using registered services:**
 
-```javascript
+```glimmer-js
 // app/components/feature-gated.gjs
 import Component from '@glimmer/component';
 import { service } from '@ember/service';
@@ -455,8 +445,7 @@ class FeatureGated extends Component {
       <div class="feature-disabled">This feature is not available</div>
     {{/if}}
   </template>
-}
-```
+}```
 
 ### Best Practices
 

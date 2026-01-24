@@ -11,7 +11,7 @@ Use strict mode and template-only components for simpler, safer code with better
 
 **Incorrect (JavaScript component for simple templates):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 import Component from '@glimmer/component';
 
@@ -22,24 +22,22 @@ class UserCard extends Component {
       <p>{{@user.email}}</p>
     </div>
   </template>
-}
-```
+}```
 
 **Correct (template-only component):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 <template>
   <div class="user-card">
     <h3>{{@user.name}}</h3>
     <p>{{@user.email}}</p>
   </div>
-</template>
-```
+</template>```
 
 **With TypeScript for better type safety:**
 
-```typescript
+```glimmer-ts
 // app/components/user-card.gts
 import type { TOC } from '@ember/component/template-only';
 

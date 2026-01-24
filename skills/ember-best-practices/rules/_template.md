@@ -13,14 +13,14 @@ Brief explanation of the rule and why it matters. This should be clear and conci
 
 **Incorrect (description of what's wrong):**
 
-```typescript
+```glimmer-ts
 // Bad code example here
 const bad = example()
 ```
 
 **Correct (description of what's right):**
 
-```typescript
+```glimmer-ts
 // Good code example here
 const good = example()
 ```

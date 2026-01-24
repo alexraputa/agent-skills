@@ -11,7 +11,7 @@ Use `{{#let}}` to compute expensive values once and reuse them in the template i
 
 **Incorrect (recomputes on every reference):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 <template>
   <div class="user-card">
@@ -28,12 +28,11 @@ Use `{{#let}}` to compute expensive values once and reuse them in the template i
       <button {{on "click" this.deleteUser}}>Delete</button>
     {{/if}}
   </div>
-</template>
-```
+</template>```
 
 **Correct (compute once, reuse):**
 
-```javascript
+```glimmer-js
 // app/components/user-card.gjs
 <template>
   {{#let (and this.user.isActive (not this.user.isDeleted)) as |isEditable|}}
@@ -52,12 +51,11 @@ Use `{{#let}}` to compute expensive values once and reuse them in the template i
       {{/if}}
     </div>
   {{/let}}
-</template>
-```
+</template>```
 
 **Multiple values:**
 
-```javascript
+```glimmer-js
 // app/components/checkout.gjs
 <template>
   {{#let 
@@ -75,7 +73,6 @@ Use `{{#let}}` to compute expensive values once and reuse them in the template i
       {{/if}}
     </div>
   {{/let}}
-</template>
-```
+</template>```
 
 `{{#let}}` computes values once and caches them for the block scope, reducing redundant calculations.
