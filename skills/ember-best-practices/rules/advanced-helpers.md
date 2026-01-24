@@ -40,9 +40,8 @@ class PostCard extends Component {
 ```javascript
 // app/components/post-list/format-relative-date.js
 // Co-locate with the component that uses it for better organization
-import { helper } from '@ember/component/helper';
 
-function formatRelativeDate([date]) {
+export function formatRelativeDate(date) {
   const dateObj = new Date(date);
   const now = new Date();
   const diffMs = now - dateObj;
@@ -53,8 +52,6 @@ function formatRelativeDate([date]) {
   if (diffDays < 7) return `${diffDays} days ago`;
   return dateObj.toLocaleDateString();
 }
-
-export default helper(formatRelativeDate);
 ```
 
 **Alternative (shared helper in utils):**
@@ -62,9 +59,8 @@ export default helper(formatRelativeDate);
 ```javascript
 // app/utils/helpers/format-relative-date.js
 // Use utils/ directory for helpers shared across many components
-import { helper } from '@ember/component/helper';
 
-function formatRelativeDate([date]) {
+export function formatRelativeDate(date) {
   const dateObj = new Date(date);
   const now = new Date();
   const diffMs = now - dateObj;
@@ -75,8 +71,6 @@ function formatRelativeDate([date]) {
   if (diffDays < 7) return `${diffDays} days ago`;
   return dateObj.toLocaleDateString();
 }
-
-export default helper(formatRelativeDate);
 ```
 
 **Note**: The `app/helpers/` directory has a smaller role in modern Ember. Prefer co-locating helpers with components for better modularity, or use `app/utils/` for truly shared helpers.
@@ -102,14 +96,13 @@ import { formatRelativeDate } from '../helpers/format-relative-date';
 **For helpers with state, use class-based helpers:**
 
 ```javascript
-// app/helpers/format-currency.js
-import Helper from '@ember/component/helper';
-import { service } from '@ember/service';
-
-export default class FormatCurrencyHelper extends Helper {
-  @service intl;
+// app/utils/helpers/format-currency.js
+export class FormatCurrencyHelper {
+  constructor(owner) {
+    this.intl = owner.lookup('service:intl');
+  }
   
-  compute([amount], { currency = 'USD' }) {
+  compute(amount, { currency = 'USD' } = {}) {
     return this.intl.formatNumber(amount, {
       style: 'currency',
       currency

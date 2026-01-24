@@ -51,7 +51,7 @@ class Search extends Component {
   }
 
   <template>
-    <input {{on "input" (fn this.search)}} />
+    <input {{on "input" this.search}} />
     {{#if this.isSearching}}Loading...{{/if}}
     {{#if this.error}}Error: {{this.error}}{{/if}}
   </template>
@@ -72,7 +72,7 @@ class Search extends Component {
   });
 
   <template>
-    <input {{on "input" (fn this.searchTask.perform)}} />
+    <input {{on "input" this.searchTask.perform}} />
     
     {{#if this.searchTask.isRunning}}
       <div class="loading">Loading...</div>
@@ -112,7 +112,7 @@ class Autocomplete extends Component {
   <template>
     <input 
       type="search"
-      {{on "input" (fn this.searchTask.perform)}}
+      {{on "input" this.searchTask.perform}}
       placeholder="Search..."
     />
     

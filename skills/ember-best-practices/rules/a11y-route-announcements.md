@@ -19,11 +19,52 @@ export default class Router extends EmberRouter {
 }
 ```
 
-**Correct (with route announcements using ember-a11y):**
+**Correct (using a11y-announcer library - recommended):**
+
+Use the [a11y-announcer](https://github.com/ember-a11y/a11y-announcer) library for robust route announcements:
 
 ```bash
-ember install ember-a11y
+ember install @ember-a11y/a11y-announcer
 ```
+
+```javascript
+// app/router.js
+import EmberRouter from '@ember/routing/router';
+import config from './config/environment';
+
+export default class Router extends EmberRouter {
+  location = config.locationType;
+  rootURL = config.rootURL;
+}
+
+Router.map(function() {
+  this.route('about');
+  this.route('dashboard');
+  this.route('posts', function() {
+    this.route('post', { path: '/:post_id' });
+  });
+});
+```
+
+The a11y-announcer library automatically handles route announcements. For custom announcements in your routes:
+
+```javascript
+// app/routes/dashboard.js
+import Route from '@ember/routing/route';
+import { service } from '@ember/service';
+
+export default class DashboardRoute extends Route {
+  @service announcer;
+  
+  afterModel() {
+    this.announcer.announce('Loaded dashboard with latest data');
+  }
+}
+```
+
+**Alternative: DIY approach with ARIA live regions:**
+
+If you prefer not to use a library, you can implement route announcements yourself:
 
 ```javascript
 // app/router.js

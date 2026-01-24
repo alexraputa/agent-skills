@@ -7,7 +7,9 @@ tags: accessibility, a11y, semantic-html, aria
 
 ## Semantic HTML and ARIA Attributes
 
-Use semantic HTML elements and proper ARIA attributes to make your application accessible to screen reader users. Prefer semantic elements over divs with ARIA roles.
+Use semantic HTML elements and proper ARIA attributes to make your application accessible to screen reader users. **The first rule of ARIA is to not use ARIA** - prefer native semantic HTML elements whenever possible.
+
+**Key principle:** Native HTML elements have built-in keyboard support, roles, and behaviors. Only add ARIA when semantic HTML can't provide the needed functionality.
 
 **Incorrect (divs with insufficient semantics):**
 
@@ -92,4 +94,8 @@ class CustomButton extends Component {
 
 Always use native semantic elements when possible. When creating custom interactive elements, ensure they're keyboard accessible and have proper ARIA attributes.
 
-Reference: [Ember Accessibility Guide](https://guides.emberjs.com/release/accessibility/)
+**References:**
+- [ARIA Authoring Practices Guide (W3C)](https://www.w3.org/WAI/ARIA/apg/)
+- [Using ARIA (W3C)](https://www.w3.org/TR/using-aria/)
+- [ARIA in HTML (WHATWG)](https://html.spec.whatwg.org/multipage/aria.html#aria)
+- [Ember Accessibility Guide](https://guides.emberjs.com/release/accessibility/)

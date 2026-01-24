@@ -66,7 +66,7 @@ class UserCard extends Component<UserCardSignature> {
 }
 ```
 
-**Runtime validation with assertions:**
+**Runtime validation with assertions (using getters):**
 
 ```javascript
 // app/components/data-table.gjs
@@ -74,38 +74,43 @@ import Component from '@glimmer/component';
 import { assert } from '@ember/debug';
 
 class DataTable extends Component {
-  constructor(owner, args) {
-    super(owner, args);
-    
+  // Use getters so validation runs on each access and catches arg changes
+  get columns() {
     assert(
       'DataTable requires @columns argument',
       this.args.columns && Array.isArray(this.args.columns)
     );
     
     assert(
+      '@columns must be an array of objects with "key" and "label" properties',
+      this.args.columns.every(col => col.key && col.label)
+    );
+    
+    return this.args.columns;
+  }
+  
+  get rows() {
+    assert(
       'DataTable requires @rows argument',
       this.args.rows && Array.isArray(this.args.rows)
     );
     
-    assert(
-      '@columns must be an array of objects with "key" and "label" properties',
-      this.args.columns.every(col => col.key && col.label)
-    );
+    return this.args.rows;
   }
 
   <template>
     <table class="data-table">
       <thead>
         <tr>
-          {{#each @columns as |column|}}
+          {{#each this.columns as |column|}}
             <th>{{column.label}}</th>
           {{/each}}
         </tr>
       </thead>
       <tbody>
-        {{#each @rows as |row|}}
+        {{#each this.rows as |row|}}
           <tr>
-            {{#each @columns as |column|}}
+            {{#each this.columns as |column|}}
               <td>{{get row column.key}}</td>
             {{/each}}
           </tr>

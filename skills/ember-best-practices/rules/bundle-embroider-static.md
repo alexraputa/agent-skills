@@ -1,13 +1,13 @@
 ---
-title: Use Embroider Static Mode
+title: Use Embroider Build Pipeline
 impact: CRITICAL
-impactDescription: 40-60% build time reduction, better tree-shaking
-tags: bundle, embroider, build-performance, tree-shaking
+impactDescription: Modern build system with better performance
+tags: bundle, embroider, build-performance, vite
 ---
 
-## Use Embroider Static Mode
+## Use Embroider Build Pipeline
 
-Enable Embroider's static analysis features to get better tree-shaking, faster builds, and smaller bundles.
+Use Embroider, Ember's modern build pipeline, with Vite for faster builds, better tree-shaking, and smaller bundles.
 
 **Incorrect (classic build pipeline):**
 
@@ -21,36 +21,49 @@ module.exports = function (defaults) {
 };
 ```
 
-**Correct (Embroider with Vite and static optimizations):**
+**Correct (Embroider with Vite):**
 
 ```javascript
 // ember-cli-build.js
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const { compatBuild } = require('@embroider/compat');
 
 module.exports = async function (defaults) {
-  const app = new EmberApp(defaults, {
-    'ember-cli-babel': {
-      enableTypeScriptTransform: true,
-    },
+  const { buildOnce } = await import('@embroider/vite');
+  
+  let app = new EmberApp(defaults, {
+    // Add options here
   });
 
-  const { Vite } = require('@embroider/vite');
-  return require('@embroider/compat').compatBuild(app, Vite, {
+  return compatBuild(app, buildOnce);
+};
+```
+
+**For stricter static analysis (optimized mode):**
+
+```javascript
+// ember-cli-build.js
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const { compatBuild } = require('@embroider/compat');
+
+module.exports = async function (defaults) {
+  const { buildOnce } = await import('@embroider/vite');
+  
+  let app = new EmberApp(defaults, {
+    // Add options here
+  });
+
+  return compatBuild(app, buildOnce, {
+    // Enable static analysis for better tree-shaking
     staticAddonTestSupportTrees: true,
     staticAddonTrees: true,
     staticHelpers: true,
     staticModifiers: true,
     staticComponents: true,
-    staticEmberSource: true,
-    skipBabel: [
-      {
-        package: 'qunit',
-      },
-    ],
   });
 };
 ```
 
-Enabling static flags allows Embroider to analyze your app at build time, eliminating unused code and improving performance.
+Embroider provides a modern build pipeline with Vite that offers faster builds and better optimization compared to the classic Ember CLI build system.
 
-Reference: [Embroider Options](https://github.com/embroider-build/embroider#options)
+Reference: [Embroider Documentation](https://github.com/embroider-build/embroider)

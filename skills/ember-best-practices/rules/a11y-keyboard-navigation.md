@@ -153,6 +153,16 @@ import FocusTrap from 'ember-focus-trap/components/focus-trap';
 </template>
 ```
 
+**Alternative: Use libraries for keyboard support:**
+
+For complex keyboard interactions, consider using libraries that abstract keyboard support patterns:
+
+```bash
+npm install @fluentui/keyboard-keys
+```
+
+Or use [tabster](https://tabster.io/) for comprehensive keyboard navigation management including focus trapping, arrow key navigation, and modalizers.
+
 Proper keyboard navigation ensures all users can interact with your application effectively.
 
 Reference: [Ember Accessibility - Keyboard](https://guides.emberjs.com/release/accessibility/keyboard/)

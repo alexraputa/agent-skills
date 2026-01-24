@@ -7,7 +7,7 @@ tags: resources, lifecycle, data-management, declarative
 
 ## Use Resources for Declarative Data Management
 
-Use ember-resources for declarative data management with automatic cleanup and lifecycle management instead of manual imperative code.
+Use the Resources pattern for declarative data management with automatic cleanup and lifecycle management instead of manual imperative code.
 
 **Incorrect (manual lifecycle management):**
 
@@ -44,70 +44,89 @@ class LiveData extends Component {
 }
 ```
 
-**Correct (using Resources - preferred pattern):**
+**Correct (using Modifiers with registerDestructor - preferred pattern):**
+
+```javascript
+// app/modifiers/poll-data.js
+import { modifier } from 'ember-modifier';
+import { registerDestructor } from '@ember/destroyable';
+
+export default modifier((element, [callback, interval = 5000]) => {
+  const pollInterval = setInterval(callback, interval);
+  
+  // Automatic cleanup
+  registerDestructor(element, () => clearInterval(pollInterval));
+});
+```
 
 ```javascript
 // app/components/live-data.gjs
 import Component from '@glimmer/component';
-import { resource, use } from 'ember-resources';
-
-// Define resource outside component class for better composition
-const liveData = resource(({ on }) => {
-  const poll = async () => {
-    const response = await fetch('/api/data');
-    return response.json();
-  };
-  
-  const intervalId = setInterval(poll, 5000);
-  
-  // Automatic cleanup
-  on.cleanup(() => clearInterval(intervalId));
-  
-  return poll();
-});
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
+import pollData from '../modifiers/poll-data';
 
 class LiveData extends Component {
-  // Use the resource in component via @use decorator or directly
-  data = use(this, liveData);
+  @tracked data = null;
+  
+  @action
+  async fetchData() {
+    const response = await fetch('/api/data');
+    this.data = await response.json();
+  }
 
   <template>
-    <div>{{this.data.value}}</div>
+    <div {{pollData this.fetchData 5000}}>
+      {{this.data}}
+    </div>
   </template>
 }
 ```
 
-**For tracked resources with arguments:**
+**Alternative: Using Tracked Properties with Effects**
 
 ```javascript
 // app/components/user-profile.gjs
 import Component from '@glimmer/component';
-import { resource, resourceFactory } from 'ember-resources';
-
-const UserData = resourceFactory((userId) => 
-  resource(async ({ on }) => {
-    const controller = new AbortController();
-    
-    on.cleanup(() => controller.abort());
-    
-    const response = await fetch(`/api/users/${userId}`, {
-      signal: controller.signal
-    });
-    
-    return response.json();
-  })
-);
+import { tracked } from '@glimmer/tracking';
+import { registerDestructor } from '@ember/destroyable';
 
 class UserProfile extends Component {
-  userData = UserData(() => this.args.userId);
+  @tracked userData = null;
+  @tracked error = null;
+  
+  constructor(owner, args) {
+    super(owner, args);
+    
+    const controller = new AbortController();
+    
+    // Register cleanup
+    registerDestructor(this, () => controller.abort());
+    
+    this.loadUser(controller.signal);
+  }
+  
+  async loadUser(signal) {
+    try {
+      const response = await fetch(`/api/users/${this.args.userId}`, { signal });
+      this.userData = await response.json();
+    } catch (e) {
+      if (e.name !== 'AbortError') {
+        this.error = e;
+      }
+    }
+  }
 
   <template>
-    {{#if this.userData.value}}
-      <h1>{{this.userData.value.name}}</h1>
+    {{#if this.error}}
+      <div>Error: {{this.error.message}}</div>
+    {{else if this.userData}}
+      <h1>{{this.userData.name}}</h1>
     {{/if}}
   </template>
 }
 ```
 
-Resources provide automatic cleanup, prevent memory leaks, and offer better composition patterns.
+Resources and modifiers with `registerDestructor` provide automatic cleanup, prevent memory leaks, and offer better composition patterns.
 
-Reference: [ember-resources](https://github.com/NullVoxPopuli/ember-resources)
+Reference: [Ember Destroyables](https://api.emberjs.com/ember/release/modules/@ember%2Fdestroyable)

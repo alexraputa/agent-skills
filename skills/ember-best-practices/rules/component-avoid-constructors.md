@@ -146,6 +146,7 @@ class ComplexSetup extends Component {
 5. **Memory Leaks**: Resources auto-cleanup; constructor code doesn't
 6. **Reactivity**: Class fields integrate better with tracking
 7. **Initialization Order**: No need to worry about super() call timing
+8. **Argument Validation**: Constructor validation runs only once; use getters to catch arg changes
 
 **Modern Alternatives:**
 

@@ -23,7 +23,7 @@ All form inputs must have associated labels, and validation errors should be ann
     />
     
     {{#if this.emailError}}
-      <span class="error">{{this.emailError}}</span>
+      <span>{{this.emailError}}</span>
     {{/if}}
     
     <button type="submit">Submit</button>
@@ -37,7 +37,7 @@ All form inputs must have associated labels, and validation errors should be ann
 // app/components/form.gjs
 <template>
   <form {{on "submit" this.handleSubmit}}>
-    <div class="form-group">
+    <div>
       <label for="email-input">
         Email Address
         {{#if this.isEmailRequired}}
@@ -57,8 +57,7 @@ All form inputs must have associated labels, and validation errors should be ann
       
       {{#if this.emailError}}
         <span 
-          id="email-error" 
-          class="error"
+          id="email-error"
           role="alert"
           aria-live="polite"
         >
@@ -89,8 +88,9 @@ import { on } from '@ember/modifier';
 class UserForm extends Component {
   @tracked errorMessages = {};
   
-  validateEmail = (input) => {
+  validateEmail = (event) => {
     // Custom business logic validation
+    const input = event.target;
     const value = input.value;
     
     if (!value) {
@@ -119,7 +119,8 @@ class UserForm extends Component {
     
     // Run custom validations
     const emailInput = form.querySelector('[name="email"]');
-    this.validateEmail(emailInput);
+    const fakeEvent = { target: emailInput };
+    this.validateEmail(fakeEvent);
     
     // Use native validation check
     if (!form.checkValidity()) {
@@ -141,7 +142,7 @@ class UserForm extends Component {
           name="email" 
           required
           value={{@user.email}}
-          {{on "blur" (fn this.validateEmail)}}
+          {{on "blur" this.validateEmail}}
         />
       </label>
       <button type="submit">Save</button>
