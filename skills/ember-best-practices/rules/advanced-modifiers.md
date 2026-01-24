@@ -14,7 +14,6 @@ Use modifiers (element modifiers) to handle DOM side effects and lifecycle event
 ```javascript
 // app/components/chart.gjs
 import Component from '@glimmer/component';
-import { action } from '@ember/object';
 
 class Chart extends Component {
   chartInstance = null;
