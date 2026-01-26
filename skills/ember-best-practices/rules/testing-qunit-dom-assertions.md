@@ -14,7 +14,6 @@ Use `qunit-dom` for DOM assertions in tests. It provides expressive, chainable a
 - Better error messages when tests fail
 - Type-safe with TypeScript
 - Reduces boilerplate in DOM testing
-- Built-in to `ember-qunit`
 
 ### Basic DOM Assertions
 
@@ -25,13 +24,13 @@ Use `qunit-dom` for DOM assertions in tests. It provides expressive, chainable a
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
+
 
 module('Integration | Component | greeting', function (hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function (assert) {
-    await render(hbs`<Greeting @name="World" />`);
+    await render(<template><Greeting @name="World" /></template>);
     
     const element = this.element.querySelector('.greeting');
     assert.ok(element, 'greeting element exists');
@@ -48,13 +47,13 @@ module('Integration | Component | greeting', function (hooks) {
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import { hbs } from 'ember-cli-htmlbars';
+
 
 module('Integration | Component | greeting', function (hooks) {
   setupRenderingTest(hooks);
 
   test('it renders', async function (assert) {
-    await render(hbs`<Greeting @name="World" />`);
+    await render(<template><Greeting @name="World" /></template>);
     
     assert.dom('.greeting').exists('greeting element exists');
     assert.dom('.greeting').hasText('Hello, World!', 'shows greeting');
@@ -68,7 +67,7 @@ module('Integration | Component | greeting', function (hooks) {
 
 ```javascript
 test('element visibility', async function (assert) {
-  await render(hbs`<MyComponent />`);
+  await render(<template><MyComponent /></template>);
   
   // Element exists in DOM
   assert.dom('[data-test-output]').exists();
@@ -91,7 +90,7 @@ test('element visibility', async function (assert) {
 
 ```javascript
 test('text assertions', async function (assert) {
-  await render(hbs`<Article @title="Hello World" />`);
+  await render(<template><Article @title="Hello World" /></template>);
   
   // Exact text match
   assert.dom('h1').hasText('Hello World');
@@ -111,7 +110,7 @@ test('text assertions', async function (assert) {
 
 ```javascript
 test('attribute assertions', async function (assert) {
-  await render(hbs`<Button @disabled={{true}} />`);
+  await render(<template><Button @disabled={{true}} /></template>);
   
   // Has attribute (any value)
   assert.dom('button').hasAttribute('disabled');
@@ -134,7 +133,7 @@ test('attribute assertions', async function (assert) {
 
 ```javascript
 test('class assertions', async function (assert) {
-  await render(hbs`<Card @status="active" />`);
+  await render(<template><Card @status="active" /></template>);
   
   // Has single class
   assert.dom('.card').hasClass('active');
@@ -151,7 +150,7 @@ test('class assertions', async function (assert) {
 
 ```javascript
 test('form assertions', async function (assert) {
-  await render(hbs`
+  await render(<template>
     <form>
       <input type="text" value="hello" />
       <input type="checkbox" checked />
@@ -160,7 +159,7 @@ test('form assertions', async function (assert) {
         <option selected>Option 1</option>
       </select>
     </form>
-  `);
+  </template>);
   
   // Input value
   assert.dom('input[type="text"]').hasValue('hello');
@@ -189,7 +188,7 @@ You can chain multiple assertions on the same element:
 
 ```javascript
 test('chained assertions', async function (assert) {
-  await render(hbs`<Button @variant="primary" @disabled={{false}} />`);
+  await render(<template><Button @variant="primary" @disabled={{false}} /></template>);
   
   assert.dom('button')
     .exists()
@@ -207,7 +206,7 @@ Add custom messages to make failures clearer:
 
 ```javascript
 test('custom messages', async function (assert) {
-  await render(hbs`<UserProfile @user={{this.user}} />`);
+  await render(<template><UserProfile @user={{this.user}} /></template>);
   
   assert.dom('[data-test-username]')
     .hasText(this.user.name, 'username is displayed correctly');
@@ -221,9 +220,9 @@ test('custom messages', async function (assert) {
 
 ```javascript
 test('list items', async function (assert) {
-  await render(hbs`
+  await render(<template>
     <TodoList @todos={{this.todos}} />
-  `);
+  </template>);
   
   // Exact count
   assert.dom('[data-test-todo]').exists({ count: 5 });
@@ -242,7 +241,7 @@ Use qunit-dom for basic accessibility checks:
 
 ```javascript
 test('accessibility', async function (assert) {
-  await render(hbs`<Modal @onClose={{this.close}} />`);
+  await render(<template><Modal @onClose={{this.close}} /></template>);
   
   // ARIA roles
   assert.dom('[role="dialog"]').exists();

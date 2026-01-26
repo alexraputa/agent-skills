@@ -9,7 +9,7 @@ metadata:
 
 # Ember.js Best Practices
 
-Comprehensive performance optimization and accessibility guide for Ember.js applications. Contains 60 rules across 8 categories, prioritized by impact to guide automated refactoring and code generation.
+Comprehensive performance optimization and accessibility guide for Ember.js applications. Contains 58 rules across 9 categories, prioritized by impact to guide automated refactoring and code generation.
 
 ## When to Apply
 
@@ -116,15 +116,13 @@ Reference these guidelines when:
 
 ### 9. Tooling and Configuration (MEDIUM)
 
-- `tooling-template-lint-configuration` - Configure ember-template-lint for code quality
 - `vscode-setup-recommended` - VS Code extensions and MCP server setup
 
 ### 10. Advanced Patterns (MEDIUM-HIGH)
 
 - `advanced-modifiers` - Use modifiers for DOM side effects
 - `advanced-helpers` - Extract reusable logic into helpers
-- `advanced-resources-api` - Use Resources API for declarative data management
-- `advanced-tracked-built-ins` - Use tracked-built-ins for reactive collections
+- `advanced-tracked-built-ins` - Use reactive collections from @ember/reactive/collections
 - `advanced-concurrency` - Use ember-concurrency for task management
 - `advanced-data-loading-with-ember-concurrency` - Data loading patterns with ember-concurrency
 

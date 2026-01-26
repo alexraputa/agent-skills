@@ -2,9 +2,25 @@
 
 ## Rule
 
-Follow modern Ember component file conventions: use kebab-case filenames, match class names to file names (in PascalCase), and avoid `export default` in .gjs/.gts files.
+Follow modern Ember component file conventions: use `.gjs`/`.gts` files with `<template>` tags (never `.hbs` files), use kebab-case filenames, match class names to file names (in PascalCase), and avoid `export default` in .gjs/.gts files.
 
 ## Incorrect
+
+```glimmer-js
+// app/components/user-card.hbs - WRONG: Using .hbs file
+<div class="user-card">
+  {{@name}}
+</div>
+```
+
+```glimmer-js
+// app/components/user-card.js - WRONG: Separate .js and .hbs files
+import Component from '@glimmer/component';
+
+export default class UserCard extends Component {
+  // Logic here
+}
+```
 
 ```glimmer-js
 // app/components/user-card.gjs - WRONG: Component suffix
@@ -65,6 +81,13 @@ export class UserProfile extends Component {
 ```
 
 ## Why
+
+**Never use .hbs files:**
+- `.gjs`/`.gts` files with `<template>` tags are the modern standard
+- Co-located templates and logic in a single file improve maintainability
+- Better tooling support (type checking, imports, refactoring)
+- Enables strict mode and proper scope
+- Avoid split between `.js` and `.hbs` files which makes components harder to understand
 
 **Filename conventions:**
 - Kebab-case filenames (`user-card.gjs`, not `UserCard.gjs`) follow web component standards and Ember conventions

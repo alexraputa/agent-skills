@@ -1,25 +1,19 @@
 ---
-title: Use tracked-built-ins for Reactive Collections
+title: Use Reactive Collections from @ember/reactive/collections
 impact: HIGH
 impactDescription: Enables reactive arrays, maps, and sets
-tags: reactivity, tracked, collections, advanced, tracked-built-ins
+tags: reactivity, tracked, collections, advanced
 ---
 
-## Use tracked-built-ins for Reactive Collections
+## Use Reactive Collections from @ember/reactive/collections
 
-Use `tracked-built-ins` to make arrays, Maps, Sets, and other built-in JavaScript objects reactive in Ember. Standard JavaScript collections don't trigger Ember's reactivity system when mutated—tracked-built-ins solves this.
+Use reactive collections from `@ember/reactive/collections` to make arrays, Maps, and Sets reactive in Ember. Standard JavaScript collections don't trigger Ember's reactivity system when mutated—reactive collections solve this.
 
 **The Problem:**
 Standard arrays, Maps, and Sets are not reactive in Ember when you mutate them. Changes won't trigger template updates.
 
 **The Solution:**
-Use `tracked-built-ins` to create reactive versions of these data structures.
-
-### Installation
-
-```bash
-npm install tracked-built-ins
-```
+Use Ember's built-in reactive collections from `@ember/reactive/collections`.
 
 ### Reactive Arrays
 
@@ -61,16 +55,16 @@ export default class TodoList extends Component {
 }
 ```
 
-**Correct (reactive array with tracked-built-ins):**
+**Correct (reactive array with @ember/reactive/collections):**
 
 ```glimmer-js
 // app/components/todo-list.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { TrackedArray } from 'tracked-built-ins';
+import { trackedArray } from '@ember/reactive/collections';
 
 export default class TodoList extends Component {
-  todos = new TrackedArray([]); // ✅ Mutations are reactive
+  todos = trackedArray([]); // ✅ Mutations are reactive
 
   @action
   addTodo(text) {
@@ -107,10 +101,10 @@ Maps are useful for key-value stores with non-string keys:
 // app/components/user-cache.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { TrackedMap } from 'tracked-built-ins';
+import { trackedMap } from '@ember/reactive/collections';
 
 export default class UserCache extends Component {
-  userCache = new TrackedMap(); // key: userId, value: userData
+  userCache = trackedMap(); // key: userId, value: userData
   
   @action
   cacheUser(userId, userData) {
@@ -145,10 +139,10 @@ Sets are useful for unique collections:
 // app/components/tag-selector.gjs
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { TrackedSet } from 'tracked-built-ins';
+import { trackedSet } from '@ember/reactive/collections';
 
 export default class TagSelector extends Component {
-  selectedTags = new TrackedSet();
+  selectedTags = trackedSet();
   
   @action
   toggleTag(tag) {
@@ -181,103 +175,35 @@ export default class TagSelector extends Component {
 }
 ```
 
-### Reactive Objects
-
-For dynamic objects with unknown keys:
-
-```glimmer-js
-// app/components/form-data.gjs
-import Component from '@glimmer/component';
-import { action } from '@ember/object';
-import { TrackedObject } from 'tracked-built-ins';
-
-export default class FormData extends Component {
-  formData = new TrackedObject({});
-  
-  @action
-  updateField(fieldName, value) {
-    this.formData[fieldName] = value;
-  }
-  
-  @action
-  clearField(fieldName) {
-    delete this.formData[fieldName];
-  }
-  
-  get fieldCount() {
-    return Object.keys(this.formData).length;
-  }
-
-  <template>
-    <div>
-      <input
-        placeholder="Field name"
-        {{on "input" (fn this.updateField "dynamicField")}}
-      />
-      <p>Fields: {{this.fieldCount}}</p>
-    </div>
-  </template>
-}
-```
-
-### WeakMaps and WeakSets
-
-For memory-efficient caching with automatic cleanup:
-
-```javascript
-// app/components/component-cache.js
-import Component from '@glimmer/component';
-import { TrackedWeakMap } from 'tracked-built-ins';
-
-export default class ComponentCache extends Component {
-  // Automatically cleans up when objects are garbage collected
-  cache = new TrackedWeakMap();
-  
-  getData(key) {
-    if (!this.cache.has(key)) {
-      this.cache.set(key, this.computeExpensiveData(key));
-    }
-    return this.cache.get(key);
-  }
-  
-  computeExpensiveData(key) {
-    // Expensive computation
-    return { /* ... */ };
-  }
-}
-```
-
 ### When to Use Each Type
 
 | Type | Use Case |
 |------|----------|
-| `TrackedArray` | Ordered lists that need mutation methods (push, pop, splice, etc.) |
-| `TrackedMap` | Key-value pairs with non-string keys or when you need `size` |
-| `TrackedSet` | Unique values, membership testing |
-| `TrackedObject` | Dynamic objects with unknown keys at compile time |
-| `TrackedWeakMap` / `TrackedWeakSet` | Memory-sensitive caching that should auto-cleanup |
+| `trackedArray` | Ordered lists that need mutation methods (push, pop, splice, etc.) |
+| `trackedMap` | Key-value pairs with non-string keys or when you need `size` |
+| `trackedSet` | Unique values, membership testing |
 
 ### Common Patterns
 
 **Initialize with data:**
 
 ```javascript
-import { TrackedArray, TrackedMap, TrackedSet } from 'tracked-built-ins';
+import { trackedArray, trackedMap, trackedSet } from '@ember/reactive/collections';
 
 // Array
-const todos = new TrackedArray([
+const todos = trackedArray([
   { id: 1, text: 'First' },
   { id: 2, text: 'Second' }
 ]);
 
 // Map
-const userMap = new TrackedMap([
+const userMap = trackedMap([
   [1, { name: 'Alice' }],
   [2, { name: 'Bob' }]
 ]);
 
 // Set
-const tags = new TrackedSet(['javascript', 'ember', 'web']);
+const tags = trackedSet(['javascript', 'ember', 'web']);
 ```
 
 **Convert to plain JavaScript:**
@@ -297,7 +223,7 @@ const plainArray3 = [...trackedSet];
 **Functional array methods still work:**
 
 ```javascript
-const todos = new TrackedArray([...]);
+const todos = trackedArray([...]);
 
 // All of these work and are reactive
 const completed = todos.filter(t => t.done);
@@ -331,20 +257,19 @@ export default class TodoList extends Component {
 ```
 
 **When to use each approach:**
-- Use `tracked-built-ins` when you need mutable operations (better performance for large lists)
+- Use reactive collections when you need mutable operations (better performance for large lists)
 - Use immutable updates when you want simpler mental model or need history/undo
 
 ### Best Practices
 
-1. **Don't mix approaches** - choose either tracked-built-ins or immutable updates
+1. **Don't mix approaches** - choose either reactive collections or immutable updates
 2. **Initialize in class field** - no need for constructor
 3. **Use appropriate type** - Map for key-value, Set for unique values, Array for ordered lists
-4. **Consider memory** - Use WeakMap/WeakSet for automatic cleanup
-5. **Export from modules** if shared across components
+4. **Export from modules** if shared across components
 
-tracked-built-ins provides the best of both worlds: mutable operations with full reactivity. It's especially valuable for large lists or frequent updates where immutable updates would be expensive.
+Reactive collections from `@ember/reactive/collections` provide the best of both worlds: mutable operations with full reactivity. They're especially valuable for large lists or frequent updates where immutable updates would be expensive.
 
 **References:**
-- [tracked-built-ins Documentation](https://github.com/tracked-tools/tracked-built-ins)
 - [Ember Reactivity System](https://guides.emberjs.com/release/in-depth-topics/autotracking-in-depth/)
 - [JavaScript Built-in Objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)
+- [Reactive Collections RFC](https://github.com/emberjs/rfcs/blob/master/text/0869-reactive-collections.md)
