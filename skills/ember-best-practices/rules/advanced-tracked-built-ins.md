@@ -32,7 +32,7 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 export default class TodoList extends Component {
-  @tracked todos = []; // ❌ Mutations won't trigger updates
+  @tracked todos = []; // ❌ Array mutations (push, splice, etc.) won't trigger updates
 
   @action
   addTodo(text) {

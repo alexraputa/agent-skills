@@ -58,7 +58,6 @@ module('Integration | Component | greeting', function (hooks) {
     
     assert.dom('.greeting').exists('greeting element exists');
     assert.dom('.greeting').hasText('Hello, World!', 'shows greeting');
-    assert.dom('.greeting').hasClass('greeting', 'has greeting class');
   });
 });
 ```

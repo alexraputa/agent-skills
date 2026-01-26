@@ -138,16 +138,24 @@ export const UserData = resourceFactory((userId) => {
       @tracked error = null;
     })();
     
-    fetch(`/api/users/${userId}`)
+    let abortController = new AbortController();
+    
+    fetch(`/api/users/${userId}`, { signal: abortController.signal })
       .then(r => r.json())
       .then(user => {
         state.user = user;
         state.isLoading = false;
       })
       .catch(error => {
-        state.error = error;
-        state.isLoading = false;
+        // Ignore abort errors
+        if (error.name !== 'AbortError') {
+          state.error = error;
+          state.isLoading = false;
+        }
       });
+    
+    // Cancel fetch if resource is torn down
+    on.cleanup(() => abortController.abort());
     
     return state;
   });

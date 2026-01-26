@@ -13,7 +13,7 @@ Always use the `{{on}}` modifier for event handling instead of HTML event handle
 - Automatic cleanup when element is removed (prevents memory leaks)
 - Supports event options (`capture`, `passive`, `once`)
 - More explicit and searchable in templates
-- Avoids potential XSS issues with string-based handlers
+- **Prevents XSS vulnerabilities** - string-based handlers bypass Ember's security protections
 - Better performance with proper event delegation
 
 **Incorrect (HTML event properties):**

@@ -26,7 +26,7 @@ Create or update `.template-lintrc.js` in your project root:
 'use strict';
 
 module.exports = {
-  extends: ['recommended', 'ember-template-lint-plugin-prettier:recommended'],
+  extends: 'recommended',
   
   rules: {
     // Your custom rule overrides
@@ -47,11 +47,6 @@ module.exports = {
     // Require angle bracket component invocation
     'no-curly-component-invocation': {
       allow: ['liquid-if', 'liquid-outlet'] // Allow specific addons
-    },
-    
-    // Prevent implicit this in templates
-    'no-implicit-this': {
-      allow: []
     },
     
     // Require quotes around {{on}} and {{fn}} helpers
@@ -111,19 +106,17 @@ module.exports = {
   
   rules: {
     // WCAG 2.1 Level AA compliance
-    'require-input-label': 'error',
+    'require-input-label': {
+      severity: 'error',
+      labelComponents: ['FormLabel', 'CustomLabel'],
+      labelComponentProperty: 'for'
+    },
     'no-positive-tabindex': 'error',
     'require-valid-alt-text': 'error',
     'no-invalid-interactive': 'error',
     'no-nested-interactive': 'error',
     'no-invalid-role': 'error',
     'no-redundant-role': 'error',
-    
-    // Accessible forms
-    'require-input-label': {
-      labelComponents: ['FormLabel', 'CustomLabel'],
-      labelComponentProperty: 'for'
-    },
     
     // Link accessibility
     'link-href-attributes': 'error',
