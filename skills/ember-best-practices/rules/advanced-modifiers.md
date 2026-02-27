@@ -24,7 +24,7 @@ class Chart extends Component {
   }
 
   willDestroy() {
-    super.willDestroy(...arguments);
+    super.willDestroy();
     this.chartInstance?.destroy();
   }
 

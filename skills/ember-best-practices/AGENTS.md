@@ -740,7 +740,7 @@ class Chart extends Component {
 
   willDestroy() {
 
-    super.willDestroy(...arguments);
+    super.willDestroy();
 
     // Easy to forget cleanup!
 
@@ -816,7 +816,7 @@ class UserProfile extends Component {
 
   willDestroy() {
 
-    super.willDestroy(...arguments);
+    super.willDestroy();
 
     this.controller.abort(); // Easy to forget!
 
@@ -8746,7 +8746,7 @@ class Chart extends Component {
   }
 
   willDestroy() {
-    super.willDestroy(...arguments);
+    super.willDestroy();
     this.chartInstance?.destroy();
   }
 

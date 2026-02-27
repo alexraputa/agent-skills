@@ -139,7 +139,7 @@
     "ruleId": "",
     "ruleTitle": "Use Modifiers for DOM Side Effects",
     "type": "bad",
-    "code": "// app/components/chart.gjs\nimport Component from '@glimmer/component';\n\nclass Chart extends Component {\n  chartInstance = null;\n  \n  constructor() {\n    super(...arguments);\n    // Can't access element here - element doesn't exist yet!\n  }\n  \n  willDestroy() {\n    super.willDestroy(...arguments);\n    this.chartInstance?.destroy();\n  }\n\n  <template>\n    <canvas id=\"chart-canvas\"></canvas>\n    {{! Manual setup is error-prone and not reusable }}\n  </template>\n}",
+    "code": "// app/components/chart.gjs\nimport Component from '@glimmer/component';\n\nclass Chart extends Component {\n  chartInstance = null;\n  \n  constructor() {\n    super(...arguments);\n    // Can't access element here - element doesn't exist yet!\n  }\n  \n  willDestroy() {\n    super.willDestroy();\n    this.chartInstance?.destroy();\n  }\n\n  <template>\n    <canvas id=\"chart-canvas\"></canvas>\n    {{! Manual setup is error-prone and not reusable }}\n  </template>\n}",
     "language": "glimmer-js",
     "description": "manual DOM manipulation in component"
   },
