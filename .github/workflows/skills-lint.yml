@@ -3,22 +3,8 @@ name: Skills Command Lint
 on:
   push:
     branches: [main]
-    paths:
-      - 'skills/**'
-      - 'packages/skills-lint/**'
-      - '.github/workflows/skills-lint.yml'
-      - 'pnpm-lock.yaml'
-      - 'package.json'
-      - 'pnpm-workspace.yaml'
   pull_request:
     branches: [main]
-    paths:
-      - 'skills/**'
-      - 'packages/skills-lint/**'
-      - '.github/workflows/skills-lint.yml'
-      - 'pnpm-lock.yaml'
-      - 'package.json'
-      - 'pnpm-workspace.yaml'
 
 jobs:
   lint:

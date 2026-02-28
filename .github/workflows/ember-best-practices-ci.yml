@@ -3,22 +3,8 @@ name: Ember Best Practices CI
 on:
   push:
     branches: [main]
-    paths:
-      - 'skills/ember-best-practices/**'
-      - 'packages/ember-best-practices-build/**'
-      - '.github/workflows/ember-best-practices-ci.yml'
-      - 'pnpm-lock.yaml'
-      - 'package.json'
-      - 'pnpm-workspace.yaml'
   pull_request:
     branches: [main]
-    paths:
-      - 'skills/ember-best-practices/**'
-      - 'packages/ember-best-practices-build/**'
-      - '.github/workflows/ember-best-practices-ci.yml'
-      - 'pnpm-lock.yaml'
-      - 'package.json'
-      - 'pnpm-workspace.yaml'
 
 jobs:
   validate:
