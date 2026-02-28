@@ -2,9 +2,11 @@
 title: Use Native Forms with Platform Validation
 category: component
 impact: HIGH
+impactDescription: Reduces JavaScript form complexity and improves built-in a11y
+tags: components, forms, validation, accessibility, platform
 ---
 
-# Use Native Forms with Platform Validation
+## Use Native Forms with Platform Validation
 
 Rely on native `<form>` elements and the browser's Constraint Validation API instead of reinventing form handling with JavaScript. The platform is really good at forms.
 
