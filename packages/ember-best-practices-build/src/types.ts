@@ -25,7 +25,7 @@ export interface RuleSourceMetadata {
 export interface Rule {
   id: string // e.g., "1.1", "2.3"
   title: string
-  section: number // Main section number (1-8)
+  section: number // Main section number (1-10)
   subsection?: number // Subsection number within section
   impact: ImpactLevel
   impactDescription?: string // e.g., "2-10× improvement"
