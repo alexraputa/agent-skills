@@ -185,13 +185,13 @@ function formatCurrency(amount) {
 
 **Key differences from class-based components:**
 
-| Aspect | Template-Only | Class-Based |
-|--------|--------------|-------------|
-| `this` context | ❌ No `this` | ✅ Has `this` |
-| Function caching | ❌ Recreated each render | ✅ `@cached` available |
-| Services | ❌ Cannot inject | ✅ `@service` decorator |
-| Tracked state | ❌ No instance state | ✅ `@tracked` properties |
-| Best for | Simple, stateless | Complex, stateful |
+| Aspect           | Template-Only            | Class-Based              |
+| ---------------- | ------------------------ | ------------------------ |
+| `this` context   | ❌ No `this`             | ✅ Has `this`            |
+| Function caching | ❌ Recreated each render | ✅ `@cached` available   |
+| Services         | ❌ Cannot inject         | ✅ `@service` decorator  |
+| Tracked state    | ❌ No instance state     | ✅ `@tracked` properties |
+| Best for         | Simple, stateless        | Complex, stateful        |
 
 **Best practices:**
 

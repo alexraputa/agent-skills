@@ -56,8 +56,8 @@ class UserProfile extends Component {
       <h1>{{this.data.name}}</h1>
     {{/if}}
   </template>
-}```
-
+}
+```
 
 **When You Might Need a Constructor (Very Rare):**
 
@@ -91,7 +91,8 @@ class ComplexSetup extends Component {
   <template>
     <!-- template -->
   </template>
-}```
+}
+```
 
 **Why Strongly Avoid Constructors:**
 
@@ -107,20 +108,22 @@ class ComplexSetup extends Component {
 
 **Modern Alternatives:**
 
-| Old Pattern | Modern Alternative |
-|-------------|-------------------|
-| `constructor() { this.store = owner.lookup('service:store') }` | `@service store;` |
-| `constructor() { this.data = null; }` | `@tracked data = null;` |
-| `constructor() { this.loadData(); }` | Use `@cached get` with getPromiseState |
-| `constructor() { this.interval = setInterval(...) }` | Use modifier with registerDestructor |
-| `constructor() { this.subscription = ... }` | Use modifier or constructor with registerDestructor ONLY |
+| Old Pattern                                                    | Modern Alternative                                       |
+| -------------------------------------------------------------- | -------------------------------------------------------- |
+| `constructor() { this.store = owner.lookup('service:store') }` | `@service store;`                                        |
+| `constructor() { this.data = null; }`                          | `@tracked data = null;`                                  |
+| `constructor() { this.loadData(); }`                           | Use `@cached get` with getPromiseState                   |
+| `constructor() { this.interval = setInterval(...) }`           | Use modifier with registerDestructor                     |
+| `constructor() { this.subscription = ... }`                    | Use modifier or constructor with registerDestructor ONLY |
 
 **Performance Impact:**
+
 - **Before**: Constructor runs on every instantiation, manual cleanup risk, infinite loop danger
 - **After**: Class fields initialize efficiently, getPromiseState auto-cleanup, no render loops
 
 **Strongly discourage constructors** - they add complexity and infinite render loop risks. Use declarative class fields and getPromiseState instead.
 
 Reference:
+
 - [Ember Octane Guide](https://guides.emberjs.com/release/upgrading/current-edition/)
 - [warp-drive/reactiveweb](https://github.com/emberjs/data/tree/main/packages/reactiveweb)

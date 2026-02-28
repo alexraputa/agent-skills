@@ -19,7 +19,8 @@ Import helpers directly in gjs/gts files for better tree-shaking, clearer depend
     <p>Joined: {{format-date @user.createdAt}}</p>
     <p>Posts: {{pluralize @user.postCount "post"}}</p>
   </div>
-</template>```
+</template>
+```
 
 **Correct (explicit helper imports):**
 
@@ -35,7 +36,8 @@ import { pluralize } from 'ember-inflector';
     <p>Joined: {{formatDate @user.createdAt}}</p>
     <p>Posts: {{pluralize @user.postCount "post"}}</p>
   </div>
-</template>```
+</template>
+```
 
 **Built-in and library helpers:**
 
@@ -56,7 +58,8 @@ import { eq, not } from 'ember-truth-helpers'; // From ember-truth-helpers addon
       </button>
     {{/if}}
   </div>
-</template>```
+</template>
+```
 
 **Custom helper with imports:**
 
@@ -65,7 +68,7 @@ import { eq, not } from 'ember-truth-helpers'; // From ember-truth-helpers addon
 export function formatCurrency(amount, { currency = 'USD' } = {}) {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency
+    currency,
   }).format(amount);
 }
 ```
@@ -78,7 +81,8 @@ import { formatCurrency } from '../utils/format-currency';
   <div class="price">
     {{formatCurrency @amount currency="EUR"}}
   </div>
-</template>```
+</template>
+```
 
 **Type-safe helpers with TypeScript:**
 

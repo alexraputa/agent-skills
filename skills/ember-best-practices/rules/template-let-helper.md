@@ -28,7 +28,8 @@ Use `{{#let}}` to compute expensive values once and reuse them in the template i
       <button {{on "click" this.deleteUser}}>Delete</button>
     {{/if}}
   </div>
-</template>```
+</template>
+```
 
 **Correct (compute once, reuse):**
 
@@ -51,7 +52,8 @@ Use `{{#let}}` to compute expensive values once and reuse them in the template i
       {{/if}}
     </div>
   {{/let}}
-</template>```
+</template>
+```
 
 **Multiple values:**
 
@@ -73,6 +75,7 @@ Use `{{#let}}` to compute expensive values once and reuse them in the template i
       {{/if}}
     </div>
   {{/let}}
-</template>```
+</template>
+```
 
 `{{#let}}` computes values once and caches them for the block scope, reducing redundant calculations.

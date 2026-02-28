@@ -22,7 +22,8 @@ class UserCard extends Component {
       <p>{{@user.email}}</p>
     </div>
   </template>
-}```
+}
+```
 
 **Correct (template-only component):**
 
@@ -33,7 +34,8 @@ class UserCard extends Component {
     <h3>{{@user.name}}</h3>
     <p>{{@user.email}}</p>
   </div>
-</template>```
+</template>
+```
 
 **With TypeScript for better type safety:**
 

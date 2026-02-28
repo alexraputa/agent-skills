@@ -37,10 +37,10 @@ export default class Router extends EmberRouter {
   rootURL = config.rootURL;
 }
 
-Router.map(function() {
+Router.map(function () {
   this.route('about');
   this.route('dashboard');
-  this.route('posts', function() {
+  this.route('posts', function () {
     this.route('post', { path: '/:post_id' });
   });
 });
@@ -76,10 +76,10 @@ export default class Router extends EmberRouter {
   rootURL = config.rootURL;
 }
 
-Router.map(function() {
+Router.map(function () {
   this.route('about');
   this.route('dashboard');
-  this.route('posts', function() {
+  this.route('posts', function () {
     this.route('post', { path: '/:post_id' });
   });
 });
@@ -132,7 +132,8 @@ export default class ApplicationRoute extends Route {
   ></div>
 
   {{outlet}}
-</template>```
+</template>
+```
 
 ```css
 /* app/styles/app.css */
@@ -165,7 +166,8 @@ import { pageTitle } from 'ember-page-title';
   <div class="dashboard">
     {{outlet}}
   </div>
-</template>```
+</template>
+```
 
 Route announcements ensure screen reader users know when navigation occurs, improving the overall accessibility experience.
 

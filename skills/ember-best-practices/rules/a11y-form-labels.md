@@ -28,7 +28,8 @@ All form inputs must have associated labels, and validation errors should be ann
 
     <button type="submit">Submit</button>
   </form>
-</template>```
+</template>
+```
 
 **Correct (with labels and announcements):**
 
@@ -73,7 +74,8 @@ All form inputs must have associated labels, and validation errors should be ann
       {{/if}}
     </button>
   </form>
-</template>```
+</template>
+```
 
 **For complex forms, use platform-native validation with custom logic:**
 
@@ -146,7 +148,8 @@ class UserForm extends Component {
       <button type="submit">Save</button>
     </form>
   </template>
-}```
+}
+```
 
 Always associate labels with inputs and announce dynamic changes to screen readers using aria-live regions.
 

@@ -13,6 +13,7 @@ Leverage community helper libraries to write cleaner templates and avoid creatin
 Reinventing common functionality with custom helpers adds maintenance burden and bundle size when well-maintained helper libraries already provide the needed functionality.
 
 **Incorrect:**
+
 ```glimmer-js
 // app/utils/is-equal.js - Unnecessary custom helper
 export function isEqual(a, b) {
@@ -28,13 +29,15 @@ class UserBadge extends Component {
       <span class="badge">Admin</span>
     {{/if}}
   </template>
-}```
+}
+```
 
 ## Solution
 
 **Note:** These helpers will be built into Ember 7 core, but currently require installing the respective addon packages.
 
 **Installation:**
+
 ```bash
 npm install ember-truth-helpers ember-composable-helpers
 ```
@@ -42,6 +45,7 @@ npm install ember-truth-helpers ember-composable-helpers
 Use helper libraries like `ember-truth-helpers` and `ember-composable-helpers`:
 
 **Correct:**
+
 ```glimmer-js
 // app/components/user-badge.gjs
 import Component from '@glimmer/component';
@@ -54,7 +58,8 @@ class UserBadge extends Component {
       <span class="badge">Admin</span>
     {{/if}}
   </template>
-}```
+}
+```
 
 ## Comparison Helpers (ember-truth-helpers)
 
@@ -83,7 +88,8 @@ class ComparisonExamples extends Component {
     {{#if (gt @score 100)}}High Score!{{/if}}
     {{#if (lte @attempts 3)}}Try again{{/if}}
   </template>
-}```
+}
+```
 
 ## Array and Object Helpers (ember-composable-helpers)
 
@@ -110,7 +116,8 @@ class CollectionHelpers extends Component {
     {{! Dynamic property access }}
     <p>{{get @user @propertyName}}</p>
   </template>
-}```
+}
+```
 
 ## String Helpers
 
@@ -132,7 +139,8 @@ class StringHelpers extends Component {
       alt={{concat "Image of " @title}}
     />
   </template>
-}```
+}
+```
 
 ## Action Helpers (fn)
 
@@ -166,7 +174,8 @@ class ActionHelpers extends Component {
       </li>
     {{/each}}
   </template>
-}```
+}
+```
 
 ## Conditional Helpers (if/unless)
 
@@ -190,11 +199,13 @@ class ConditionalInline extends Component {
     {{! With default value }}
     <p>{{ifHelper @description @description "No description provided"}}</p>
   </template>
-}```
+}
+```
 
 ## Practical Combinations
 
 **Dynamic Classes:**
+
 ```glimmer-js
 // app/components/dynamic-classes.gjs
 import Component from '@glimmer/component';
@@ -212,9 +223,11 @@ class DynamicClasses extends Component {
       <h3>{{@title}}</h3>
     </div>
   </template>
-}```
+}
+```
 
 **List Filtering:**
+
 ```glimmer-js
 // app/components/filtered-list.gjs
 import Component from '@glimmer/component';
@@ -252,7 +265,8 @@ class FilteredList extends Component {
       </div>
     {{/each}}
   </template>
-}```
+}
+```
 
 ## Complex Example
 
@@ -301,7 +315,8 @@ class UserProfileCard extends Component {
       </p>
     </div>
   </template>
-}```
+}
+```
 
 ## Performance Impact
 
@@ -320,12 +335,14 @@ class UserProfileCard extends Component {
 **Note:** These helpers will be built into Ember 7 core. Until then:
 
 **Actually Built-in to Ember (from `@ember/helper`):**
+
 - `concat` - Concatenate strings
 - `fn` - Partial application / bind arguments
 - `if` - Ternary-like conditional value
 - `mut` - Create settable binding (use sparingly)
 
 **From `ember-truth-helpers` package:**
+
 - `eq` - Equality (===)
 - `not` - Negation (!)
 - `and` - Logical AND
@@ -333,6 +350,7 @@ class UserProfileCard extends Component {
 - `lt`, `lte`, `gt`, `gte` - Numeric comparisons
 
 **From `ember-composable-helpers` package:**
+
 - `array` - Create array inline
 - `hash` - Create object inline
 - `get` - Dynamic property access

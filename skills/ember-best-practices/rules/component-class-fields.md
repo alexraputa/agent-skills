@@ -40,7 +40,8 @@ class DataManager extends Component {
   <template>
     <div>{{this.currentUser.name}}</div>
   </template>
-}```
+}
+```
 
 **Correct (class fields with proper patterns):**
 
@@ -83,6 +84,7 @@ class DataManager extends Component {
 **Understanding "roots of state":**
 
 Tracked fields should represent **independent state** that your component owns - not derived data or loaded data. Examples of good tracked fields:
+
 - User selections (selected tab, filter option)
 - UI state (is modal open, is expanded)
 - Form input values (not yet persisted)
@@ -156,7 +158,8 @@ class FormContainer extends Component {
       </button>
     </form>
   </template>
-}```
+}
+```
 
 **Mixin-like composition with class fields:**
 
@@ -232,7 +235,8 @@ class PaginatedList extends Component {
       </div>
     </div>
   </template>
-}```
+}
+```
 
 **Shareable state objects:**
 
@@ -265,7 +269,7 @@ export class SelectionState {
   };
 
   selectAll = (items) => {
-    items.forEach(item => this.selectedIds.add(item.id));
+    items.forEach((item) => this.selectedIds.add(item.id));
   };
 
   clear = () => {
@@ -319,7 +323,8 @@ class SelectableList extends Component {
       </div>
     {{/if}}
   </template>
-}```
+}
+```
 
 Class fields provide clean composition patterns, better initialization, and shareable state objects that can be tested independently.
 

@@ -13,6 +13,7 @@ Rely on native `<form>` elements and the browser's Constraint Validation API ins
 Over-engineering forms with JavaScript when native browser features provide validation, accessibility, and UX patterns for free.
 
 **Incorrect (Too much JavaScript):**
+
 ```glimmer-js
 // app/components/signup-form.gjs
 import Component from '@glimmer/component';
@@ -49,13 +50,15 @@ class SignupForm extends Component {
       <button type="button" {{on "click" this.handleSubmit}}>Submit</button>
     </div>
   </template>
-}```
+}
+```
 
 ## Solution: Let the Platform Do the Work
 
 Use native `<form>` with proper input types and browser validation:
 
 **Correct (Native form with platform validation):**
+
 ```glimmer-js
 // app/components/signup-form.gjs
 import Component from '@glimmer/component';
@@ -104,7 +107,8 @@ class SignupForm extends Component {
       <button type="submit">Sign Up</button>
     </form>
   </template>
-}```
+}
+```
 
 **Performance: -15KB** (no validation libraries needed)
 **Accessibility: +100%** (native form semantics and error announcements)
@@ -187,7 +191,8 @@ class ValidatedForm extends Component {
       <button type="submit">Submit</button>
     </form>
   </template>
-}```
+}
+```
 
 ## Constraint Validation API Properties
 
@@ -279,7 +284,8 @@ class PasswordMatchForm extends Component {
       <button type="submit">Create Account</button>
     </form>
   </template>
-}```
+}
+```
 
 ## When You Need Controlled State
 
@@ -312,9 +318,11 @@ class LiveSearch extends Component {
       <p>Searching for: {{this.query}}</p>
     {{/if}}
   </template>
-}```
+}
+```
 
 **Use controlled state when you need:**
+
 - Real-time validation display as user types
 - Character counters
 - Live search/filtering
@@ -322,6 +330,7 @@ class LiveSearch extends Component {
 - Form state that affects other components
 
 **Use native forms when:**
+
 - Simple submit-and-validate workflows
 - Standard HTML5 validation is sufficient
 - You want browser-native UX and accessibility

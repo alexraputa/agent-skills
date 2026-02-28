@@ -42,7 +42,8 @@ import { formatDate } from '../utils/format-date';
     <h2>{{@post.title}}</h2>
     <time>{{formatDate @post.publishedAt}}</time>
   </article>
-</template>```
+</template>
+```
 
 **With Multiple Arguments:**
 
@@ -51,7 +52,7 @@ import { formatDate } from '../utils/format-date';
 export function formatCurrency(amount, currency = 'USD') {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
-    currency
+    currency,
   }).format(amount);
 }
 ```
@@ -64,7 +65,8 @@ import { formatCurrency } from '../utils/format-currency';
   <span class="price">
     {{formatCurrency @amount @currency}}
   </span>
-</template>```
+</template>
+```
 
 **For Helpers that Need Services (use class-based):**
 
@@ -135,7 +137,8 @@ import { capitalize, truncate, pluralize } from '../utils/string-helpers';
   <h1>{{capitalize @title}}</h1>
   <p>{{truncate @description 100}}</p>
   <span>{{@count}} {{pluralize @count "item" "items"}}</span>
-</template>```
+</template>
+```
 
 Plain functions are the modern way to create helpers in Ember. Only use classes when you need dependency injection.
 

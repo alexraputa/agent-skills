@@ -12,6 +12,7 @@ Instrument async code with test waiters instead of using `waitFor()` or `waitUnt
 **Why Test Waiters Matter:**
 
 Test waiters allow `settled()` and other test helpers to automatically wait for your async operations. This means:
+
 - Tests don't need to know about implementation details (timeouts, polling intervals, etc.)
 - Tests are written from a user's perspective ("click button, see result")
 - Code refactoring doesn't break tests

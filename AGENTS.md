@@ -28,7 +28,7 @@ skills/
 
 ### SKILL.md Format
 
-```markdown
+````markdown
 ---
 name: {skill-name}
 description: {One sentence describing when to use this skill. Include trigger phrases like "Deploy my app", "Check logs", etc.}
@@ -49,6 +49,7 @@ bash /mnt/skills/user/{skill-name}/scripts/{script}.sh [args]
 ```
 
 **Arguments:**
+
 - `arg1` - Description (defaults to X)
 
 **Examples:**
@@ -65,7 +66,7 @@ bash /mnt/skills/user/{skill-name}/scripts/{script}.sh [args]
 ## Troubleshooting
 
 {Common issues and solutions, especially network/permissions errors}
-```
+````
 
 ### Best Practices for Context Efficiency
 
@@ -100,6 +101,7 @@ zip -r {skill-name}.zip {skill-name}/
 Document these two installation methods for users:
 
 **Claude Code:**
+
 ```bash
 cp -r skills/{skill-name} ~/.claude/skills/
 ```

@@ -44,7 +44,7 @@ export default class DashboardRoute extends Route {
     return hash({
       user: this.store.request({ url: '/users/me' }),
       posts: this.store.request({ url: '/posts?recent=true' }),
-      notifications: this.store.request({ url: '/notifications?unread=true' })
+      notifications: this.store.request({ url: '/notifications?unread=true' }),
     });
   }
 }

@@ -14,6 +14,7 @@ Comprehensive performance optimization and accessibility guide for Ember.js appl
 ## When to Apply
 
 Reference these guidelines when:
+
 - Writing new Ember components or routes
 - Implementing data fetching with WarpDrive
 - Reviewing code for performance issues
@@ -23,18 +24,18 @@ Reference these guidelines when:
 
 ## Rule Categories by Priority
 
-| Priority | Category | Impact | Prefix |
-|----------|----------|--------|--------|
-| 1 | Route Loading and Data Fetching | CRITICAL | `route-` |
-| 2 | Build and Bundle Optimization | CRITICAL | `bundle-` |
-| 3 | Component and Reactivity | HIGH | `component-` |
-| 4 | Accessibility Best Practices | HIGH | `a11y-` |
-| 5 | Service and State Management | MEDIUM-HIGH | `service-` |
-| 6 | Template Optimization | MEDIUM | `template-` |
-| 7 | Performance Optimization | MEDIUM | `performance-` |
-| 8 | Testing Best Practices | MEDIUM | `testing-` |
-| 9 | Tooling and Configuration | MEDIUM | `tooling-` |
-| 10 | Advanced Patterns | MEDIUM-HIGH | `advanced-` |
+| Priority | Category                        | Impact      | Prefix         |
+| -------- | ------------------------------- | ----------- | -------------- |
+| 1        | Route Loading and Data Fetching | CRITICAL    | `route-`       |
+| 2        | Build and Bundle Optimization   | CRITICAL    | `bundle-`      |
+| 3        | Component and Reactivity        | HIGH        | `component-`   |
+| 4        | Accessibility Best Practices    | HIGH        | `a11y-`        |
+| 5        | Service and State Management    | MEDIUM-HIGH | `service-`     |
+| 6        | Template Optimization           | MEDIUM      | `template-`    |
+| 7        | Performance Optimization        | MEDIUM      | `performance-` |
+| 8        | Testing Best Practices          | MEDIUM      | `testing-`     |
+| 9        | Tooling and Configuration       | MEDIUM      | `tooling-`     |
+| 10       | Advanced Patterns               | MEDIUM-HIGH | `advanced-`    |
 
 ## Quick Reference
 
@@ -137,6 +138,7 @@ rules/a11y-automated-testing.md
 ```
 
 Each rule file contains:
+
 - Brief explanation of why it matters
 - Incorrect code example with explanation
 - Correct code example with explanation

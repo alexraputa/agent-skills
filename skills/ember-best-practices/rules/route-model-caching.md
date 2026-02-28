@@ -31,7 +31,8 @@ export default class PostRoute extends Route {
     </article>
     {{outlet}}
   </template>
-}```
+}
+```
 
 **Correct (with smart caching):**
 
@@ -75,7 +76,8 @@ export default class PostRoute extends Route {
     </article>
     {{outlet}}
   </template>
-}```
+}
+```
 
 **Service-based caching layer:**
 
@@ -95,7 +97,7 @@ export default class PostCacheService extends Service {
   async getPost(id, { forceRefresh = false } = {}) {
     const now = Date.now();
     const cacheTime = this.cacheTimes.get(id) || 0;
-    const isFresh = (now - cacheTime) < this.cacheTimeout;
+    const isFresh = now - cacheTime < this.cacheTimeout;
 
     if (!forceRefresh && isFresh && this.cache.has(id)) {
       return this.cache.get(id);
@@ -147,7 +149,8 @@ export default class PostRoute extends Route {
     </article>
     {{outlet}}
   </template>
-}```
+}
+```
 
 **Using query params for cache control:**
 
@@ -188,7 +191,8 @@ export default class PostsRoute extends Route {
     </div>
     {{outlet}}
   </template>
-}```
+}
+```
 
 **Background refresh pattern:**
 
@@ -220,7 +224,8 @@ export default class DashboardRoute extends Route {
     </div>
     {{outlet}}
   </template>
-}```
+}
+```
 
 Smart caching reduces server load, improves perceived performance, and provides better offline support while keeping data fresh.
 

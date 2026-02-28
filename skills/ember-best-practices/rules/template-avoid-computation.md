@@ -10,6 +10,7 @@ tags: templates, performance, getters, helpers
 Move expensive computations from templates to cached getters in the component class or in-scope functions for template-only components. Templates should only display data, not compute it. Keep templates easy for humans to read by minimizing nested function invocations.
 
 **Why this matters:**
+
 - Templates should be easy to read and understand
 - Nested function calls create cognitive overhead
 - Computations should be cached and reused, not recalculated on every render
@@ -31,7 +32,8 @@ import { sum, map, div, max, multiply, sortBy } from '../helpers/math';
       <div>{{item.name}}: {{multiply item.price item.quantity}}</div>
     {{/each}}
   </div>
-</template>```
+</template>
+```
 
 **Correct (computation in component with cached getters):**
 

@@ -42,6 +42,7 @@ export class UserCard extends Component {
 ```
 
 **Why This Is Wrong:**
+
 - Classes add visual clutter that obscures the actual concepts
 - Learners focus on naming conventions instead of the pattern being taught
 - Makes copy-paste more work (need to remove or change class names)
@@ -75,6 +76,7 @@ export class UserCard extends Component {
 ```
 
 **Benefits:**
+
 - **Clarity**: Easier to understand the component structure
 - **Focus**: Reader attention stays on the concepts being taught
 - **Simplicity**: Less code to process mentally
@@ -151,6 +153,7 @@ export class Button extends Component {
 **Default Stance:**
 
 When writing learning examples or documentation:
+
 1. **Start without classes** - Add them only if needed
 2. **Ask**: Does this class help explain the concept?
 3. **Remove** any decorative or structural classes that aren't essential

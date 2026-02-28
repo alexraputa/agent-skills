@@ -84,7 +84,8 @@ import chart from '../modifiers/chart';
 
 <template>
   <canvas {{chart @config}}></canvas>
-</template>```
+</template>
+```
 
 **Use function modifiers** for simple side effects. Use class-based modifiers only when you need complex state management.
 
@@ -105,7 +106,8 @@ import autofocus from '../modifiers/autofocus';
 
 <template>
   <input {{autofocus}} type="text" />
-</template>```
+</template>
+```
 
 **Use ember-resize-observer-modifier for resize handling:**
 
@@ -121,7 +123,8 @@ import onResize from 'ember-resize-observer-modifier';
   <div {{onResize this.handleResize}}>
     Content that responds to size changes
   </div>
-</template>```
+</template>
+```
 
 Modifiers provide a clean, reusable way to manage DOM side effects without coupling to specific components.
 

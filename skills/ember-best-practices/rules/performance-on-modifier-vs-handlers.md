@@ -10,6 +10,7 @@ tags: performance, events, modifiers, best-practices
 Always use the `{{on}}` modifier for event handling instead of HTML event handler properties. The `{{on}}` modifier provides better memory management, automatic cleanup, and clearer intent.
 
 **Why {{on}} is Better:**
+
 - Automatic cleanup when element is removed (prevents memory leaks)
 - Supports event options (`capture`, `passive`, `once`)
 - More explicit and searchable in templates
@@ -83,6 +84,7 @@ export default class Scrollable extends Component {
 ```
 
 **Available options:**
+
 - `capture` - Use capture phase instead of bubble phase
 - `once` - Remove listener after first invocation
 - `passive` - Indicates handler won't call `preventDefault()` (better scroll performance)
@@ -246,6 +248,7 @@ myMethod() {
 Always use the `{{on}}` modifier for cleaner, safer, and more performant event handling in Ember applications.
 
 **References:**
+
 - [Ember Modifiers Guide](https://guides.emberjs.com/release/components/template-lifecycle-dom-and-modifiers/)
 - [{{on}} Modifier RFC](https://github.com/emberjs/rfcs/blob/master/text/0471-on-modifier.md)
 - [Event Listener Options](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener#parameters)

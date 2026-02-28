@@ -13,7 +13,7 @@ Use MSW (Mock Service Worker) for API mocking in tests. MSW provides a cleaner a
 
 ```javascript
 // mirage/config.js
-export default function() {
+export default function () {
   this.namespace = '/api';
 
   // Complex schema and factories
@@ -40,14 +40,14 @@ export const handlers = [
   http.get('/api/users', () => {
     return HttpResponse.json([
       { id: 1, name: 'Alice' },
-      { id: 2, name: 'Bob' }
+      { id: 2, name: 'Bob' },
     ]);
   }),
 
   http.post('/api/users', async ({ request }) => {
     const user = await request.json();
     return HttpResponse.json({ id: 3, ...user }, { status: 201 });
-  })
+  }),
 ];
 ```
 
@@ -84,15 +84,15 @@ const defaultHandlers = [
 export function setupMSW(hooks, handlers = []) {
   const server = setupServer(...defaultHandlers, ...handlers);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function () {
     server.listen({ onUnhandledRequest: 'warn' });
   });
 
-  hooks.afterEach(function() {
+  hooks.afterEach(function () {
     server.resetHandlers();
   });
 
-  hooks.after(function() {
+  hooks.after(function () {
     server.close();
   });
 
@@ -112,11 +112,11 @@ import { visit, currentURL, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { setupMSW, http, HttpResponse } from 'my-app/tests/helpers/msw';
 
-module('Acceptance | users', function(hooks) {
+module('Acceptance | users', function (hooks) {
   setupApplicationTest(hooks);
   const { server } = setupMSW(hooks);
 
-  test('displays list of users', async function(assert) {
+  test('displays list of users', async function (assert) {
     server.use(
       http.get('/api/users', () => {
         return HttpResponse.json({
@@ -124,16 +124,16 @@ module('Acceptance | users', function(hooks) {
             {
               id: '1',
               type: 'user',
-              attributes: { name: 'Alice', email: 'alice@example.com' }
+              attributes: { name: 'Alice', email: 'alice@example.com' },
             },
             {
               id: '2',
               type: 'user',
-              attributes: { name: 'Bob', email: 'bob@example.com' }
-            }
-          ]
+              attributes: { name: 'Bob', email: 'bob@example.com' },
+            },
+          ],
         });
-      })
+      }),
     );
 
     await visit('/users');
@@ -143,14 +143,11 @@ module('Acceptance | users', function(hooks) {
     assert.dom('[data-test-user-name]').hasText('Alice');
   });
 
-  test('handles server errors gracefully', async function(assert) {
+  test('handles server errors gracefully', async function (assert) {
     server.use(
       http.get('/api/users', () => {
-        return HttpResponse.json(
-          { errors: [{ title: 'Server Error' }] },
-          { status: 500 }
-        );
-      })
+        return HttpResponse.json({ errors: [{ title: 'Server Error' }] }, { status: 500 });
+      }),
     );
 
     await visit('/users');
@@ -166,21 +163,24 @@ module('Acceptance | users', function(hooks) {
 ```javascript
 import { visit, click, fillIn } from '@ember/test-helpers';
 
-test('creates a new user', async function(assert) {
+test('creates a new user', async function (assert) {
   let capturedRequest = null;
 
   server.use(
     http.post('/api/users', async ({ request }) => {
       capturedRequest = await request.json();
 
-      return HttpResponse.json({
-        data: {
-          id: '3',
-          type: 'user',
-          attributes: capturedRequest.data.attributes
-        }
-      }, { status: 201 });
-    })
+      return HttpResponse.json(
+        {
+          data: {
+            id: '3',
+            type: 'user',
+            attributes: capturedRequest.data.attributes,
+          },
+        },
+        { status: 201 },
+      );
+    }),
   );
 
   await visit('/users/new');
@@ -191,19 +191,19 @@ test('creates a new user', async function(assert) {
   assert.strictEqual(currentURL(), '/users/3');
   assert.deepEqual(capturedRequest.data.attributes, {
     name: 'Charlie',
-    email: 'charlie@example.com'
+    email: 'charlie@example.com',
   });
 });
 
-test('updates an existing user', async function(assert) {
+test('updates an existing user', async function (assert) {
   server.use(
     http.get('/api/users/1', () => {
       return HttpResponse.json({
         data: {
           id: '1',
           type: 'user',
-          attributes: { name: 'Alice', email: 'alice@example.com' }
-        }
+          attributes: { name: 'Alice', email: 'alice@example.com' },
+        },
       });
     }),
     http.patch('/api/users/1', async ({ request }) => {
@@ -212,10 +212,10 @@ test('updates an existing user', async function(assert) {
         data: {
           id: '1',
           type: 'user',
-          attributes: body.data.attributes
-        }
+          attributes: body.data.attributes,
+        },
       });
-    })
+    }),
   );
 
   await visit('/users/1/edit');
@@ -225,18 +225,16 @@ test('updates an existing user', async function(assert) {
   assert.dom('[data-test-user-name]').hasText('Alice Updated');
 });
 
-test('deletes a user', async function(assert) {
+test('deletes a user', async function (assert) {
   server.use(
     http.get('/api/users', () => {
       return HttpResponse.json({
-        data: [
-          { id: '1', type: 'user', attributes: { name: 'Alice' } }
-        ]
+        data: [{ id: '1', type: 'user', attributes: { name: 'Alice' } }],
       });
     }),
     http.delete('/api/users/1', () => {
       return new HttpResponse(null, { status: 204 });
-    })
+    }),
   );
 
   await visit('/users');
@@ -249,7 +247,7 @@ test('deletes a user', async function(assert) {
 ### Query Parameters and Dynamic Routes
 
 ```javascript
-test('filters users by query parameter', async function(assert) {
+test('filters users by query parameter', async function (assert) {
   server.use(
     http.get('/api/users', ({ request }) => {
       const url = new URL(request.url);
@@ -257,15 +255,15 @@ test('filters users by query parameter', async function(assert) {
 
       const users = [
         { id: '1', type: 'user', attributes: { name: 'Alice' } },
-        { id: '2', type: 'user', attributes: { name: 'Bob' } }
+        { id: '2', type: 'user', attributes: { name: 'Bob' } },
       ];
 
       const filtered = searchQuery
-        ? users.filter(u => u.attributes.name.includes(searchQuery))
+        ? users.filter((u) => u.attributes.name.includes(searchQuery))
         : users;
 
       return HttpResponse.json({ data: filtered });
-    })
+    }),
   );
 
   await visit('/users?filter[name]=Alice');
@@ -274,17 +272,17 @@ test('filters users by query parameter', async function(assert) {
   assert.dom('[data-test-user-name]').hasText('Alice');
 });
 
-test('handles dynamic route segments', async function(assert) {
+test('handles dynamic route segments', async function (assert) {
   server.use(
     http.get('/api/users/:id', ({ params }) => {
       return HttpResponse.json({
         data: {
           id: params.id,
           type: 'user',
-          attributes: { name: `User ${params.id}` }
-        }
+          attributes: { name: `User ${params.id}` },
+        },
       });
-    })
+    }),
   );
 
   await visit('/users/42');
@@ -296,18 +294,16 @@ test('handles dynamic route segments', async function(assert) {
 ### Network Delays and Race Conditions
 
 ```javascript
-test('handles slow network responses', async function(assert) {
+test('handles slow network responses', async function (assert) {
   server.use(
     http.get('/api/users', async () => {
       // Simulate network delay
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       return HttpResponse.json({
-        data: [
-          { id: '1', type: 'user', attributes: { name: 'Alice' } }
-        ]
+        data: [{ id: '1', type: 'user', attributes: { name: 'Alice' } }],
       });
-    })
+    }),
   );
 
   const visitPromise = visit('/users');
@@ -343,15 +339,18 @@ export const userHandlers = {
 
   create: (attributes) => {
     return http.post('/api/users', () => {
-      return HttpResponse.json({
-        data: {
-          id: String(Math.random()),
-          type: 'user',
-          attributes
-        }
-      }, { status: 201 });
+      return HttpResponse.json(
+        {
+          data: {
+            id: String(Math.random()),
+            type: 'user',
+            attributes,
+          },
+        },
+        { status: 201 },
+      );
     });
-  }
+  },
 };
 
 // Common fixtures
@@ -360,14 +359,14 @@ export const fixtures = {
     alice: {
       id: '1',
       type: 'user',
-      attributes: { name: 'Alice', email: 'alice@example.com' }
+      attributes: { name: 'Alice', email: 'alice@example.com' },
     },
     bob: {
       id: '2',
       type: 'user',
-      attributes: { name: 'Bob', email: 'bob@example.com' }
-    }
-  }
+      attributes: { name: 'Bob', email: 'bob@example.com' },
+    },
+  },
 };
 ```
 
@@ -375,10 +374,8 @@ export const fixtures = {
 // tests/acceptance/users-test.js
 import { userHandlers, fixtures } from 'my-app/tests/helpers/msw-handlers';
 
-test('displays list of users', async function(assert) {
-  server.use(
-    userHandlers.list([fixtures.users.alice, fixtures.users.bob])
-  );
+test('displays list of users', async function (assert) {
+  server.use(userHandlers.list([fixtures.users.alice, fixtures.users.bob]));
 
   await visit('/users');
 
@@ -398,24 +395,24 @@ import { render, waitFor } from '@ember/test-helpers';
 import { setupMSW, http, HttpResponse } from 'my-app/tests/helpers/msw';
 import UserList from 'my-app/components/user-list';
 
-module('Integration | Component | user-list', function(hooks) {
+module('Integration | Component | user-list', function (hooks) {
   setupRenderingTest(hooks);
   const { server } = setupMSW(hooks);
 
-  test('fetches and displays users', async function(assert) {
+  test('fetches and displays users', async function (assert) {
     server.use(
       http.get('/api/users', () => {
         return HttpResponse.json({
-          data: [
-            { id: '1', type: 'user', attributes: { name: 'Alice' } }
-          ]
+          data: [{ id: '1', type: 'user', attributes: { name: 'Alice' } }],
         });
-      })
+      }),
     );
 
-    await render(<template>
-      <UserList />
-    </template>);
+    await render(
+      <template>
+        <UserList />
+      </template>,
+    );
 
     // Wait for async data to load
     await waitFor('[data-test-user-item]');
@@ -450,10 +447,10 @@ const defaultHandlers = [
       data: {
         id: '1',
         type: 'user',
-        attributes: { name: 'Test User', role: 'admin' }
-      }
+        attributes: { name: 'Test User', role: 'admin' },
+      },
     });
-  })
+  }),
 ];
 ```
 
@@ -463,11 +460,11 @@ const defaultHandlers = [
 // MSW handlers persist until resetHandlers() is called
 // The test helper automatically resets after each test
 // For a one-time handler within a test, manually reset:
-test('one-time response', async function(assert) {
+test('one-time response', async function (assert) {
   server.use(
     http.get('/api/special', () => {
       return HttpResponse.json({ data: 'special' });
-    })
+    }),
   );
 
   // First request gets mocked response
@@ -489,15 +486,12 @@ http.post('/api/login', async ({ request }) => {
 
   if (email === 'test@example.com' && password === 'password') {
     return HttpResponse.json({
-      data: { token: 'abc123' }
+      data: { token: 'abc123' },
     });
   }
 
-  return HttpResponse.json(
-    { errors: [{ title: 'Invalid credentials' }] },
-    { status: 401 }
-  );
-})
+  return HttpResponse.json({ errors: [{ title: 'Invalid credentials' }] }, { status: 401 });
+});
 ```
 
 ### Migration from Mirage
@@ -515,8 +509,9 @@ If migrating from Mirage:
    - `this.server.createList()` → Return array of JSON objects
 
 **Before (Mirage):**
+
 ```javascript
-test('lists posts', async function(assert) {
+test('lists posts', async function (assert) {
   this.server.createList('post', 3);
   await visit('/posts');
   assert.dom('[data-test-post]').exists({ count: 3 });
@@ -524,18 +519,19 @@ test('lists posts', async function(assert) {
 ```
 
 **After (MSW):**
+
 ```javascript
-test('lists posts', async function(assert) {
+test('lists posts', async function (assert) {
   server.use(
     http.get('/api/posts', () => {
       return HttpResponse.json({
         data: [
           { id: '1', type: 'post', attributes: { title: 'Post 1' } },
           { id: '2', type: 'post', attributes: { title: 'Post 2' } },
-          { id: '3', type: 'post', attributes: { title: 'Post 3' } }
-        ]
+          { id: '3', type: 'post', attributes: { title: 'Post 3' } },
+        ],
       });
-    })
+    }),
   );
   await visit('/posts');
   assert.dom('[data-test-post]').exists({ count: 3 });

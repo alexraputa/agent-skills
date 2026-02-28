@@ -28,7 +28,8 @@ Use semantic HTML elements and proper ARIA attributes to make your application a
   <div class="alert">
     {{this.message}}
   </div>
-</template>```
+</template>
+```
 
 **Correct (semantic HTML with proper ARIA):**
 
@@ -51,7 +52,8 @@ import { LinkTo } from '@ember/routing';
   <div role="alert" aria-live="polite" aria-atomic="true">
     {{this.message}}
   </div>
-</template>```
+</template>
+```
 
 **For interactive custom elements:**
 
@@ -87,11 +89,13 @@ class CustomButton extends Component {
       <XIcon />
     </div>
   </template>
-}```
+}
+```
 
 Always use native semantic elements when possible. When creating custom interactive elements, ensure they're keyboard accessible and have proper ARIA attributes.
 
 **References:**
+
 - [ARIA Authoring Practices Guide (W3C)](https://www.w3.org/WAI/ARIA/apg/)
 - [Using ARIA (W3C)](https://www.w3.org/TR/using-aria/)
 - [ARIA in HTML (WHATWG)](https://html.spec.whatwg.org/multipage/aria.html#aria)

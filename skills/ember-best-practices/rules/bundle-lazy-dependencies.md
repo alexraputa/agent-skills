@@ -63,7 +63,8 @@ class Dashboard extends Component {
       <canvas {{on "click" this.loadChart}}></canvas>
     {{/if}}
   </template>
-}```
+}
+```
 
 **Note**: Always model promise state (loading/error/resolved) using `getPromiseState` from `reactiveweb/promise` to handle slow networks and errors properly.
 

@@ -27,7 +27,8 @@ module('Integration | Component | user-form', function(hooks) {
     await click('button');
     assert.ok(true);
   });
-});```
+});
+```
 
 **Correct (with a11y testing):**
 
@@ -52,7 +53,8 @@ module('Integration | Component | user-form', function(hooks) {
     await click('button');
     assert.ok(true);
   });
-});```
+});
+```
 
 **Setup (install and configure):**
 

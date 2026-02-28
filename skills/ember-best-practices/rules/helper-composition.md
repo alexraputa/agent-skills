@@ -37,9 +37,7 @@ Compose helpers to create reusable, testable logic that can be combined in templ
 export function displayName(name, { maxLength = 20 } = {}) {
   if (!name) return '';
 
-  const truncated = name.length > maxLength
-    ? name.slice(0, maxLength) + '...'
-    : name;
+  const truncated = name.length > maxLength ? name.slice(0, maxLength) + '...' : name;
 
   return truncated.toUpperCase();
 }
@@ -131,7 +129,7 @@ export function partialApply(fn, ...args) {
 ```javascript
 // app/helpers/map-by.js
 export function mapBy(array, property) {
-  return array?.map(item => item[property]) || [];
+  return array?.map((item) => item[property]) || [];
 }
 ```
 
@@ -212,14 +210,14 @@ import { transform } from '../helpers/transform';
 ```javascript
 // app/helpers/when.js
 export function when(condition, trueFn, falseFn) {
-  return condition ? trueFn() : (falseFn ? falseFn() : null);
+  return condition ? trueFn() : falseFn ? falseFn() : null;
 }
 ```
 
 ```javascript
 // app/helpers/unless.js
 export function unless(condition, falseFn, trueFn) {
-  return !condition ? falseFn() : (trueFn ? trueFn() : null);
+  return !condition ? falseFn() : trueFn ? trueFn() : null;
 }
 ```
 
@@ -230,22 +228,19 @@ export function unless(condition, falseFn, trueFn) {
 import { module, test } from 'qunit';
 import { displayName } from 'my-app/helpers/display-name';
 
-module('Unit | Helper | display-name', function() {
-  test('it formats name correctly', function(assert) {
-    assert.strictEqual(
-      displayName('John Doe'),
-      'JOHN DOE'
-    );
+module('Unit | Helper | display-name', function () {
+  test('it formats name correctly', function (assert) {
+    assert.strictEqual(displayName('John Doe'), 'JOHN DOE');
   });
 
-  test('it truncates long names', function(assert) {
+  test('it truncates long names', function (assert) {
     assert.strictEqual(
       displayName('A Very Long Name That Should Be Truncated', { maxLength: 10 }),
-      'A VERY LON...'
+      'A VERY LON...',
     );
   });
 
-  test('it handles null', function(assert) {
+  test('it handles null', function (assert) {
     assert.strictEqual(displayName(null), '');
   });
 });

@@ -23,7 +23,8 @@ export default class DashboardRoute extends Route {
     <Sidebar @theme={{@model.currentTheme}} />
     <MainContent @theme={{@model.currentTheme}} />
   </template>
-}```
+}
+```
 
 **Correct (using service):**
 

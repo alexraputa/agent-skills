@@ -10,6 +10,7 @@ tags: testing, qunit-dom, assertions, best-practices
 Use `qunit-dom` for DOM assertions in tests. It provides expressive, chainable assertions that make tests more readable and provide better error messages than raw QUnit assertions.
 
 **Why qunit-dom:**
+
 - More expressive and readable test assertions
 - Better error messages when tests fail
 - Type-safe with TypeScript
@@ -67,7 +68,11 @@ module('Integration | Component | greeting', function (hooks) {
 
 ```javascript
 test('element visibility', async function (assert) {
-  await render(<template><MyComponent /></template>);
+  await render(
+    <template>
+      <MyComponent />
+    </template>,
+  );
 
   // Element exists in DOM
   assert.dom('[data-test-output]').exists();
@@ -150,16 +155,18 @@ test('class assertions', async function (assert) {
 
 ```javascript
 test('form assertions', async function (assert) {
-  await render(<template>
-    <form>
-      <input type="text" value="hello" />
-      <input type="checkbox" checked />
-      <input type="radio" disabled />
-      <select>
-        <option selected>Option 1</option>
-      </select>
-    </form>
-  </template>);
+  await render(
+    <template>
+      <form>
+        <input type="text" value="hello" />
+        <input type="checkbox" checked />
+        <input type="radio" disabled />
+        <select>
+          <option selected>Option 1</option>
+        </select>
+      </form>
+    </template>,
+  );
 
   // Input value
   assert.dom('input[type="text"]').hasValue('hello');
@@ -261,6 +268,7 @@ test('accessibility', async function (assert) {
 ### Best Practices
 
 1. **Use data-test attributes** for test selectors instead of classes:
+
    ```javascript
    // Good
    assert.dom('[data-test-submit-button]').exists();
@@ -270,6 +278,7 @@ test('accessibility', async function (assert) {
    ```
 
 2. **Make assertions specific**:
+
    ```javascript
    // Better - exact match
    assert.dom('h1').hasText('Welcome');
@@ -279,12 +288,13 @@ test('accessibility', async function (assert) {
    ```
 
 3. **Use meaningful custom messages**:
+
    ```javascript
-   assert.dom('[data-test-error]')
-     .hasText('Invalid email', 'shows correct validation error');
+   assert.dom('[data-test-error]').hasText('Invalid email', 'shows correct validation error');
    ```
 
 4. **Combine with @ember/test-helpers**:
+
    ```javascript
    import { click, fillIn } from '@ember/test-helpers';
 
@@ -295,6 +305,7 @@ test('accessibility', async function (assert) {
    ```
 
 5. **Test user-visible behavior**, not implementation:
+
    ```javascript
    // Good - tests what user sees
    assert.dom('[data-test-greeting]').hasText('Hello, Alice');
@@ -306,6 +317,7 @@ test('accessibility', async function (assert) {
 qunit-dom makes your tests more maintainable and easier to understand. It comes pre-installed with `ember-qunit`, so you can start using it immediately.
 
 **References:**
+
 - [qunit-dom Documentation](https://github.com/mainmatter/qunit-dom)
 - [qunit-dom API](https://github.com/mainmatter/qunit-dom/blob/master/API.md)
 - [Ember Testing Guide](https://guides.emberjs.com/release/testing/)

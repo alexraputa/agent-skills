@@ -23,7 +23,8 @@ import UserCard from './user-card';
       </li>
     {{/each}}
   </ul>
-</template>```
+</template>
+```
 
 **Correct (with key):**
 
@@ -39,7 +40,8 @@ import UserCard from './user-card';
       </li>
     {{/each}}
   </ul>
-</template>```
+</template>
+```
 
 **For arrays of primitives (strings, numbers):**
 
@@ -52,7 +54,8 @@ import UserCard from './user-card';
   {{#each this.tags as |tag|}}
     <span class="tag">{{tag}}</span>
   {{/each}}
-</template>```
+</template>
+```
 
 **For complex scenarios with @index:**
 
@@ -64,21 +67,25 @@ import UserCard from './user-card';
       {{item.name}}
     </div>
   {{/each}}
-</template>```
+</template>
+```
 
 Using proper keys allows Ember's rendering engine to efficiently update, reorder, and remove items without re-rendering the entire list.
 
 **When to use `key=`:**
+
 - Objects recreated between renders (`.map()`, generators, fresh API responses) → use `key="id"` or similar
 - High-frequency updates (animations, real-time data) → always specify a key
 - Stable object references (Apollo cache, Ember Data) → default `@identity` is fine
 - Items never reorder → `key="@index"` is acceptable
 
 **Performance comparison (dbmon benchmark, 40 rows at 60fps):**
+
 - Without key (objects recreated): Destroys/recreates DOM every frame
 - With `key="data.db.id"`: DOM reuse, **2x FPS improvement**
 
-### References: 
+### References:
+
 - [Ember API: each helper](https://api.emberjs.com/ember/release/classes/Ember.Templates.helpers/methods/each)
 - [Ember template lint: equire-each-key](https://github.com/ember-template-lint/ember-template-lint/blob/main/docs/rule/require-each-key.md)
 - [Example PR showing the fps improvement on updated lists](https://github.com/universal-ember/table/pull/68)

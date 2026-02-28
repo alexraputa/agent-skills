@@ -18,9 +18,9 @@ class DataTable extends Component {
   get filteredAndSortedData() {
     // Expensive: runs on every access, even if nothing changed
     return this.args.data
-      .filter(item => item.status === this.args.filter)
+      .filter((item) => item.status === this.args.filter)
       .sort((a, b) => a[this.args.sortBy] - b[this.args.sortBy])
-      .map(item => this.transformItem(item));
+      .map((item) => this.transformItem(item));
   }
 }
 ```
@@ -36,9 +36,9 @@ class DataTable extends Component {
   get filteredAndSortedData() {
     // Computed once per unique combination of dependencies
     return this.args.data
-      .filter(item => item.status === this.args.filter)
+      .filter((item) => item.status === this.args.filter)
       .sort((a, b) => a[this.args.sortBy] - b[this.args.sortBy])
-      .map(item => this.transformItem(item));
+      .map((item) => this.transformItem(item));
   }
 
   transformItem(item) {

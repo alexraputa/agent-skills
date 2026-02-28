@@ -51,7 +51,8 @@ class ShoppingCart extends Component {
       <div>Total: ${{this.total}}</div>
     </div>
   </template>
-}```
+}
+```
 
 **Correct (reactive getter chains):**
 
@@ -126,7 +127,8 @@ class ShoppingCart extends Component {
       <div class="total">Total: {{this.formattedTotal}}</div>
     </div>
   </template>
-}```
+}
+```
 
 **Complex reactive chains with @cached:**
 
@@ -198,7 +200,8 @@ class DataAnalysis extends Component {
       <div>Outliers: {{this.outliers.length}}</div>
     </div>
   </template>
-}```
+}
+```
 
 **Combining multiple tracked sources:**
 
@@ -285,7 +288,8 @@ class FilteredList extends Component {
       {{/each}}
     </div>
   </template>
-}```
+}
+```
 
 Reactive getter chains provide automatic updates, clear data dependencies, and better performance through intelligent caching with @cached.
 

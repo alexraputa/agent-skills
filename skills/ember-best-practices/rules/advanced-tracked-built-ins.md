@@ -177,11 +177,11 @@ export default class TagSelector extends Component {
 
 ### When to Use Each Type
 
-| Type | Use Case |
-|------|----------|
+| Type           | Use Case                                                           |
+| -------------- | ------------------------------------------------------------------ |
 | `trackedArray` | Ordered lists that need mutation methods (push, pop, splice, etc.) |
-| `trackedMap` | Key-value pairs with non-string keys or when you need `size` |
-| `trackedSet` | Unique values, membership testing |
+| `trackedMap`   | Key-value pairs with non-string keys or when you need `size`       |
+| `trackedSet`   | Unique values, membership testing                                  |
 
 ### Common Patterns
 
@@ -193,13 +193,13 @@ import { trackedArray, trackedMap, trackedSet } from '@ember/reactive/collection
 // Array
 const todos = trackedArray([
   { id: 1, text: 'First' },
-  { id: 2, text: 'Second' }
+  { id: 2, text: 'Second' },
 ]);
 
 // Map
 const userMap = trackedMap([
   [1, { name: 'Alice' }],
-  [2, { name: 'Bob' }]
+  [2, { name: 'Bob' }],
 ]);
 
 // Set
@@ -251,12 +251,13 @@ export default class TodoList extends Component {
   @action
   removeTodo(id) {
     // Reassignment is reactive
-    this.todos = this.todos.filter(t => t.id !== id);
+    this.todos = this.todos.filter((t) => t.id !== id);
   }
 }
 ```
 
 **When to use each approach:**
+
 - Use reactive collections when you need mutable operations (better performance for large lists)
 - Use immutable updates when you want simpler mental model or need history/undo
 
@@ -270,6 +271,7 @@ export default class TodoList extends Component {
 Reactive collections from `@ember/reactive/collections` provide the best of both worlds: mutable operations with full reactivity. They're especially valuable for large lists or frequent updates where immutable updates would be expensive.
 
 **References:**
+
 - [Ember Reactivity System](https://guides.emberjs.com/release/in-depth-topics/autotracking-in-depth/)
 - [JavaScript Built-in Objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)
 - [Reactive Collections RFC](https://github.com/emberjs/rfcs/blob/master/text/0869-reactive-collections.md)

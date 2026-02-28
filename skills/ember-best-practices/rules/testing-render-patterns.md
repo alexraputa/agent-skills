@@ -16,11 +16,13 @@ Choose the right rendering pattern based on whether your component needs argumen
 import { render } from '@ember/test-helpers';
 import LoadingSpinner from 'my-app/components/loading-spinner';
 
-test('it renders', async function(assert) {
+test('it renders', async function (assert) {
   // ❌ Unnecessary template wrapper for component with no args
-  await render(<template>
-    <LoadingSpinner />
-  </template>);
+  await render(
+    <template>
+      <LoadingSpinner />
+    </template>,
+  );
 
   assert.dom('[data-test-spinner]').exists();
 });
@@ -33,7 +35,7 @@ test('it renders', async function(assert) {
 import { render } from '@ember/test-helpers';
 import LoadingSpinner from 'my-app/components/loading-spinner';
 
-test('it renders', async function(assert) {
+test('it renders', async function (assert) {
   // ✅ Simple: pass component directly when no args needed
   await render(LoadingSpinner);
 
@@ -50,10 +52,10 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import LoadingSpinner from 'my-app/components/loading-spinner';
 
-module('Integration | Component | loading-spinner', function(hooks) {
+module('Integration | Component | loading-spinner', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders without arguments', async function(assert) {
+  test('it renders without arguments', async function (assert) {
     // ✅ Simple: pass component directly when no args needed
     await render(LoadingSpinner);
 
@@ -108,7 +110,8 @@ module('Integration | Component | user-card', function(hooks) {
     assert.dom('[data-test-featured]').exists();
     assert.dom('[data-test-featured]').hasClass('featured');
   });
-});```
+});
+```
 
 **Complete example showing both patterns:**
 
@@ -162,7 +165,8 @@ module('Integration | Component | button', function(hooks) {
 
     assert.dom('button').hasClass('btn-primary');
   });
-});```
+});
+```
 
 **Testing template-only components:**
 
@@ -192,17 +196,18 @@ module('Integration | Component | icon', function(hooks) {
     assert.dom('[data-test-icon]').hasAttribute('data-icon', 'check');
     assert.dom('[data-test-icon]').hasClass('icon-large');
   });
-});```
+});
+```
 
 **Decision guide:**
 
-| Scenario | Pattern | Example |
-|----------|---------|---------|
-| No arguments, blocks, or attributes | `render(Component)` | `render(LoadingSpinner)` |
-| Component needs arguments | `render(<template>...</template>)` | `render(<template><Card @title="Hello" /></template>)` |
-| Component receives block content | `render(<template>...</template>)` | `render(<template><Card>Content</Card></template>)` |
-| Component needs HTML attributes | `render(<template>...</template>)` | `render(<template><Card class="featured" /></template>)` |
-| Multiple test context properties | `render(<template>...</template>)` | `render(<template><Card @data={{this.data}} /></template>)` |
+| Scenario                            | Pattern                            | Example                                                     |
+| ----------------------------------- | ---------------------------------- | ----------------------------------------------------------- |
+| No arguments, blocks, or attributes | `render(Component)`                | `render(LoadingSpinner)`                                    |
+| Component needs arguments           | `render(<template>...</template>)` | `render(<template><Card @title="Hello" /></template>)`      |
+| Component receives block content    | `render(<template>...</template>)` | `render(<template><Card>Content</Card></template>)`         |
+| Component needs HTML attributes     | `render(<template>...</template>)` | `render(<template><Card class="featured" /></template>)`    |
+| Multiple test context properties    | `render(<template>...</template>)` | `render(<template><Card @data={{this.data}} /></template>)` |
 
 **Why this matters:**
 
@@ -238,7 +243,8 @@ await render(<template>
   <Card class="highlighted" data-test-card role="article">
     Card content
   </Card>
-</template>);```
+</template>);
+```
 
 Using the appropriate render pattern keeps tests clean and expressive.
 
