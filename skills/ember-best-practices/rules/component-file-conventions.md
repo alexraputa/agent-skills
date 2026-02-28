@@ -1,6 +1,13 @@
-# Component File Naming and Export Conventions
+---
+title: Component File Naming and Export Conventions
+impact: HIGH
+impactDescription: Enforces consistent component structure and predictable imports
+tags: components, naming, file-conventions, gjs, strict-mode
+---
 
-## Rule
+## Component File Naming and Export Conventions
+
+### Rule
 
 Follow modern Ember component file conventions: use `.gjs`/`.gts` files with `<template>` tags (never `.hbs` files), use kebab-case filenames, match class names to file names (in PascalCase), and avoid `export default` in .gjs/.gts files.
 
