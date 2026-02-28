@@ -36,7 +36,7 @@ module.exports = require('@embroider/compat').compatBuild(app, Vite, {
   staticHelpers: true,
   staticModifiers: true,
   staticComponents: true,
-  splitAtRoutes: ['admin', 'reports', 'settings'] // Routes to split
+  splitAtRoutes: ['admin', 'reports', 'settings'], // Routes to split
 });
 ```
 

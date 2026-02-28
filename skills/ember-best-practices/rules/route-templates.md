@@ -29,7 +29,8 @@ export default class PostsRoute extends Route {
       <li>{{post.title}}</li>
     {{/each}}
   </ul>
-</template>```
+</template>
+```
 
 **Correct (co-located route template):**
 
@@ -52,7 +53,8 @@ export default class PostsRoute extends Route {
 
     {{outlet}}
   </template>
-}```
+}
+```
 
 **With loading and error states:**
 
@@ -83,7 +85,8 @@ export default class PostsRoute extends Route {
       {{outlet}}
     </div>
   </template>
-}```
+}
+```
 
 **Template-only routes:**
 
@@ -94,7 +97,8 @@ export default class PostsRoute extends Route {
     <h1>About Us</h1>
     <p>Welcome to our application!</p>
   </div>
-</template>```
+</template>
+```
 
 Co-located route templates keep route logic and presentation together, making the codebase easier to navigate and maintain.
 

@@ -26,7 +26,8 @@ class Search extends Component {
     {{! Wrong - no arguments being bound}}
     <input {{on "input" (fn this.handleSearch)}} />
   </template>
-}```
+}
+```
 
 **Correct (direct function reference):**
 
@@ -45,7 +46,8 @@ class Search extends Component {
     {{! Correct - pass function directly}}
     <input {{on "input" this.handleSearch}} />
   </template>
-}```
+}
+```
 
 **When to Use {{fn}} - Partial Application:**
 
@@ -76,7 +78,8 @@ class UserList extends Component {
       {{/each}}
     </ul>
   </template>
-}```
+}
+```
 
 **Multiple Arguments:**
 
@@ -103,7 +106,8 @@ class DataGrid extends Component {
       {{/each}}
     {{/each}}
   </template>
-}```
+}
+```
 
 **Think of {{fn}} like .bind():**
 

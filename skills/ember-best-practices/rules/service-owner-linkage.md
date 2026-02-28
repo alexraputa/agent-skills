@@ -30,7 +30,8 @@ class UserProfile extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}```
+}
+```
 
 **Correct (proper service injection with owner):**
 
@@ -51,7 +52,8 @@ class UserProfile extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}```
+}
+```
 
 ### Manual Owner Passing (Without Libraries)
 
@@ -91,7 +93,8 @@ class DataProcessor extends Component {
   <template>
     <div>Processing...</div>
   </template>
-}```
+}
+```
 
 **Factory pattern with owner:**
 
@@ -138,7 +141,8 @@ class My extends Component {
   <template>
     <button {{on "click" this.performAction}}>Do Something</button>
   </template>
-}```
+}
+```
 
 ### Owner Passing with Modern Libraries
 
@@ -187,6 +191,7 @@ export class AdvancedForm extends Component {
 ```
 
 **Why use link():**
+
 - Automatically transfers owner from parent to child instance
 - Registers destructor so child is cleaned up when parent is destroyed
 - No manual `setOwner` or `registerDestructor` calls needed
@@ -235,6 +240,7 @@ export class AnalyticsTracker extends Component {
 ```
 
 **Why createService:**
+
 - No need to extend Service class
 - Automatic owner linkage and cleanup
 - Simpler than manual setOwner/registerDestructor
@@ -263,7 +269,7 @@ export class CartService extends Service {
 
   @action
   removeItem(id) {
-    const index = this.items.findIndex(item => item.id === id);
+    const index = this.items.findIndex((item) => item.id === id);
     if (index > -1) this.items.splice(index, 1);
   }
 
@@ -304,7 +310,8 @@ class ShoppingCart extends Component {
       <button {{on "click" this.cart.clear}}>Clear Cart</button>
     </div>
   </template>
-}```
+}
+```
 
 **Service-like utilities in utils/ directory:**
 
@@ -328,7 +335,7 @@ export class NotificationManager {
       id: Math.random().toString(36),
       message,
       type,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
 
     this.notifications.push(notification);
@@ -339,7 +346,7 @@ export class NotificationManager {
 
   @action
   dismiss(id) {
-    const index = this.notifications.findIndex(n => n.id === id);
+    const index = this.notifications.findIndex((n) => n.id === id);
     if (index > -1) this.notifications.splice(index, 1);
   }
 }
@@ -371,7 +378,8 @@ class NotificationContainer extends Component {
       Show Notification
     </button>
   </template>
-}```
+}
+```
 
 ### Registering Custom Services Dynamically
 
@@ -381,16 +389,19 @@ class NotificationContainer extends Component {
 // app/instance-initializers/dynamic-services.js
 export function initialize(appInstance) {
   // Register service dynamically without app/services file
-  appInstance.register('service:feature-flags', class FeatureFlagsService {
-    flags = {
-      newDashboard: true,
-      betaFeatures: false
-    };
+  appInstance.register(
+    'service:feature-flags',
+    class FeatureFlagsService {
+      flags = {
+        newDashboard: true,
+        betaFeatures: false,
+      };
 
-    isEnabled(flag) {
-      return this.flags[flag] || false;
-    }
-  });
+      isEnabled(flag) {
+        return this.flags[flag] || false;
+      }
+    },
+  );
 
   // Make it a singleton
   appInstance.inject('route', 'featureFlags', 'service:feature-flags');
@@ -398,7 +409,7 @@ export function initialize(appInstance) {
 }
 
 export default {
-  initialize
+  initialize,
 };
 ```
 
@@ -423,7 +434,8 @@ class FeatureGated extends Component {
       <div class="feature-disabled">This feature is not available</div>
     {{/if}}
   </template>
-}```
+}
+```
 
 ### Best Practices
 

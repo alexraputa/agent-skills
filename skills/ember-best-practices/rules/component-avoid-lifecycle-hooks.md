@@ -43,7 +43,8 @@ class UserGreeting extends Component {
       Hello, {{this.displayName}}
     </div>
   </template>
-}```
+}
+```
 
 **✅ Correct (derived data with getter):**
 
@@ -62,7 +63,8 @@ class UserGreeting extends Component {
       Hello, {{this.displayName}}
     </div>
   </template>
-}```
+}
+```
 
 **✅ Even better (use @cached for expensive computations):**
 
@@ -102,7 +104,8 @@ class UserStats extends Component {
       </ul>
     </div>
   </template>
-}```
+}
+```
 
 ### Alternative 2: Use Custom Modifiers
 
@@ -132,7 +135,8 @@ class Chart extends Component {
   <template>
     <canvas {{did-insert this.setupChart}}></canvas>
   </template>
-}```
+}
+```
 
 **✅ Correct (custom modifier with automatic cleanup):**
 
@@ -158,7 +162,8 @@ import chart from '../modifiers/chart';
 
 <template>
   <canvas {{chart @config}}></canvas>
-</template>```
+</template>
+```
 
 ### Alternative 3: Use Resources for Lifecycle Management
 
@@ -204,7 +209,8 @@ class UserProfile extends Component {
       {{/if}}
     </div>
   </template>
-}```
+}
+```
 
 **✅ Correct (Resource with automatic cleanup):**
 
@@ -227,7 +233,7 @@ export default class UserDataResource extends Resource {
     this.loading = true;
     try {
       const response = await fetch(`/api/users/${userId}`, {
-        signal: this.controller.signal
+        signal: this.controller.signal,
       });
       this.data = await response.json();
     } finally {
@@ -257,17 +263,18 @@ class UserProfile extends Component {
       {{this.userData.data.name}}
     {{/if}}
   </template>
-}```
+}
+```
 
 ### When to Use Each Alternative
 
-| Use Case | Solution | Why |
-|----------|----------|-----|
-| Computed values | Getters + `@cached` | Reactive, efficient, no lifecycle needed |
-| DOM manipulation | Custom modifiers | Encapsulated, reusable, automatic cleanup |
-| Data fetching | getPromiseState from warp-drive | Declarative, automatic cleanup |
-| Event listeners | `{{on}}` modifier | Built-in, automatic cleanup |
-| Focus management | Custom modifier or ember-focus-trap | Proper lifecycle, accessibility |
+| Use Case         | Solution                            | Why                                       |
+| ---------------- | ----------------------------------- | ----------------------------------------- |
+| Computed values  | Getters + `@cached`                 | Reactive, efficient, no lifecycle needed  |
+| DOM manipulation | Custom modifiers                    | Encapsulated, reusable, automatic cleanup |
+| Data fetching    | getPromiseState from warp-drive     | Declarative, automatic cleanup            |
+| Event listeners  | `{{on}}` modifier                   | Built-in, automatic cleanup               |
+| Focus management | Custom modifier or ember-focus-trap | Proper lifecycle, accessibility           |
 
 ### Migration Strategy
 
@@ -309,6 +316,7 @@ Modern Ember provides superior alternatives to legacy lifecycle hooks:
 **Never use `{{did-insert}}`, `{{will-destroy}}`, or `{{did-update}}` in new code.**
 
 Reference:
+
 - [Ember Modifiers](https://github.com/ember-modifier/ember-modifier)
 - [warp-drive/reactiveweb](https://github.com/emberjs/data/tree/main/packages/reactiveweb)
 - [Glimmer Tracking](https://guides.emberjs.com/release/in-depth-topics/autotracking-in-depth/)

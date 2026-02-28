@@ -77,9 +77,8 @@ export default class DataService extends Service {
 
   async getData() {
     const now = Date.now();
-    const isCacheValid = this._cache &&
-      this._cacheTimestamp &&
-      (now - this._cacheTimestamp) < this._cacheDuration;
+    const isCacheValid =
+      this._cache && this._cacheTimestamp && now - this._cacheTimestamp < this._cacheDuration;
 
     if (!isCacheValid) {
       this._cache = await this.fetchData();

@@ -137,13 +137,14 @@ export class FormatCurrencyHelper {
   compute(amount, { currency = 'USD' } = {}) {
     return this.intl.formatNumber(amount, {
       style: 'currency',
-      currency
+      currency,
     });
   }
 }
 ```
 
 **Common helpers to create:**
+
 - Date/time formatting
 - Number formatting
 - String manipulation

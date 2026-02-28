@@ -18,7 +18,7 @@ import { action } from '@ember/object';
 
 class Form extends Component {
   @tracked firstName = ''; // Used in template ✓
-  @tracked lastName = '';  // Used in template ✓
+  @tracked lastName = ''; // Used in template ✓
   @tracked _formId = Date.now(); // Internal, never rendered ✗
   @tracked _validationCache = new Map(); // Internal state ✗
 
@@ -39,7 +39,7 @@ import { action } from '@ember/object';
 
 class Form extends Component {
   @tracked firstName = ''; // Rendered in template
-  @tracked lastName = '';  // Rendered in template
+  @tracked lastName = ''; // Rendered in template
   @tracked isValid = false; // Rendered status
 
   _formId = Date.now(); // Not tracked - internal only

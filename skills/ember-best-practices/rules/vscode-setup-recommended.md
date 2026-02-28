@@ -47,18 +47,21 @@ Create a `.vscode/extensions.json` file in your project root to recommend extens
 ### Core Ember Extensions
 
 **ember-extension-pack** (or individual extensions):
+
 - `emberjs.vscode-ember` - Ember.js language support
 - Syntax highlighting for `.hbs`, `.gjs`, `.gts` files
 - IntelliSense for Ember-specific patterns
 - Code snippets for common Ember patterns
 
 **Glint 2 Extension** (for TypeScript projects):
+
 - `vunguyentuan.vscode-glint` - Type checking for Glimmer templates
 - Real-time type errors in `.gts`/`.gjs` files
 - Template-aware autocomplete
 - Hover information for template helpers and components
 
 Install instructions:
+
 ```bash
 # Via command palette
 # Press Cmd+Shift+P (Mac) or Ctrl+Shift+P (Windows/Linux)
@@ -101,18 +104,21 @@ Configure MCP servers in `.vscode/settings.json` to integrate AI coding assistan
 ### MCP Server Benefits
 
 **Ember MCP Server** (`@ember/mcp-server`):
+
 - Ember API documentation lookup
 - Component and helper discovery
 - Addon documentation integration
 - Routing and data layer context
 
 **Chrome DevTools MCP** (`@modelcontextprotocol/server-chrome-devtools`):
+
 - Live browser inspection
 - Console debugging assistance
 - Network request analysis
 - Performance profiling integration
 
 **Playwright MCP** (optional, `@playwright/mcp-server`):
+
 - Test generation assistance
 - Browser automation context
 - E2E testing patterns
@@ -172,10 +178,7 @@ Ensure your `tsconfig.json` has Glint configuration:
     // ... standard TS options
   },
   "glint": {
-    "environment": [
-      "ember-loose",
-      "ember-template-imports"
-    ]
+    "environment": ["ember-loose", "ember-template-imports"]
   }
 }
 ```

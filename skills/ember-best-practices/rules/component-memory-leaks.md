@@ -31,7 +31,8 @@ class LiveClock extends Component {
   <template>
     <div>{{this.time}}</div>
   </template>
-}```
+}
+```
 
 **Correct (proper cleanup with registerDestructor):**
 
@@ -60,7 +61,8 @@ class LiveClock extends Component {
   <template>
     <div>{{this.time}}</div>
   </template>
-}```
+}
+```
 
 **Event listener cleanup:**
 
@@ -92,7 +94,8 @@ class WindowSize extends Component {
   <template>
     <div>Window: {{this.width}} x {{this.height}}</div>
   </template>
-}```
+}
+```
 
 **Using modifiers for automatic cleanup:**
 
@@ -131,7 +134,8 @@ class ResizeAware extends Component {
       {{this.size.width}} x {{this.size.height}}
     </div>
   </template>
-}```
+}
+```
 
 **Abort controller for fetch requests:**
 
@@ -173,7 +177,8 @@ class DataLoader extends Component {
       <div>{{this.data.content}}</div>
     {{/if}}
   </template>
-}```
+}
+```
 
 **Using ember-resources for automatic cleanup:**
 
@@ -204,7 +209,8 @@ class WebsocketData extends Component {
       <div>{{message}}</div>
     {{/each}}
   </template>
-}```
+}
+```
 
 Always clean up timers, event listeners, subscriptions, and pending requests to prevent memory leaks and performance degradation.
 

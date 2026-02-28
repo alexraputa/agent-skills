@@ -27,7 +27,8 @@ class Button extends Component {
       {{@label}}
     </button>
   </template>
-}```
+}
+```
 
 **Correct (using {{on}} modifier):**
 
@@ -46,7 +47,8 @@ class Button extends Component {
       {{@label}}
     </button>
   </template>
-}```
+}
+```
 
 **With event options:**
 
@@ -68,7 +70,8 @@ class ScrollTracker extends Component {
       {{yield}}
     </div>
   </template>
-}```
+}
+```
 
 **Multiple event handlers:**
 
@@ -103,7 +106,8 @@ class InputField extends Component {
       value={{@value}}
     />
   </template>
-}```
+}
+```
 
 **Using fn helper for arguments:**
 
@@ -123,7 +127,8 @@ import { on } from '@ember/modifier';
       </li>
     {{/each}}
   </ul>
-</template>```
+</template>
+```
 
 The `{{on}}` modifier properly cleans up event listeners, supports event options (passive, capture, once), and makes event handling more explicit.
 

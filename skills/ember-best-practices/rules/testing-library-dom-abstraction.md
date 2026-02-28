@@ -13,6 +13,7 @@ impact: MEDIUM
 When building reusable components or libraries, consumers should not need to know implementation details or interact directly with the component's DOM. DOM structure should be considered **private** unless the author of the tests is the **owner** of the code being tested.
 
 Without abstracted test utilities:
+
 - Component refactoring breaks consumer tests
 - Tests are tightly coupled to implementation details
 - Teams waste time updating tests when internals change
@@ -60,6 +61,7 @@ test('sorting works', async function(assert) {
 ```
 
 **Problems:**
+
 - Consumer knows about `.data-grid__header`, `.sort-button`, `[data-column]`
 - Refactoring component structure breaks consumer tests
 - No clear public API for testing
@@ -167,6 +169,7 @@ test('sorting works', async function(assert) {
 ```
 
 **Benefits:**
+
 - Component internals can change without breaking consumer tests
 - Clear, documented testing API
 - Consumer tests are declarative and readable
@@ -177,6 +180,7 @@ test('sorting works', async function(assert) {
 ### Team-Based Projects (Critical)
 
 On projects with teams, DOM abstraction prevents:
+
 - Merge conflicts from test changes
 - Cross-team coordination overhead
 - Broken tests from uncoordinated refactoring
@@ -185,6 +189,7 @@ On projects with teams, DOM abstraction prevents:
 ### Solo Projects (Less Critical)
 
 For solo projects, the benefit is smaller but still valuable:
+
 - Easier refactoring without test maintenance
 - Better separation of concerns
 - Professional API design practice
@@ -236,15 +241,16 @@ export class FormTestHelper {
     const field = this.container.querySelector(`[data-test-field="${fieldName}"]`);
     if (!field) {
       throw new Error(
-        `Field "${fieldName}" not found. Available fields: ${this.getFieldNames().join(', ')}`
+        `Field "${fieldName}" not found. Available fields: ${this.getFieldNames().join(', ')}`,
       );
     }
     await fillIn(field, value);
   }
 
   getFieldNames() {
-    return Array.from(this.container.querySelectorAll('[data-test-field]'))
-      .map(el => el.dataset.testField);
+    return Array.from(this.container.querySelectorAll('[data-test-field]')).map(
+      (el) => el.dataset.testField,
+    );
   }
 }
 ```
@@ -295,14 +301,10 @@ export class ModalTestHelper {
 
   async clickButton(buttonText) {
     const buttons = findAll('[data-test-modal-button]', this.element);
-    const button = buttons.find(btn =>
-      btn.textContent.trim() === buttonText
-    );
+    const button = buttons.find((btn) => btn.textContent.trim() === buttonText);
     if (!button) {
-      const available = buttons.map(b => b.textContent.trim()).join(', ');
-      throw new Error(
-        `Button "${buttonText}" not found. Available: ${available}`
-      );
+      const available = buttons.map((b) => b.textContent.trim()).join(', ');
+      throw new Error(`Button "${buttonText}" not found. Available: ${available}`);
     }
     await click(button);
   }

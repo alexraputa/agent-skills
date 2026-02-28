@@ -13,6 +13,7 @@ Use proper patterns for data fetching including parallel requests, error handlin
 Naive data fetching creates waterfall requests, doesn't handle errors properly, and can cause race conditions or memory leaks from uncanceled requests.
 
 **Incorrect:**
+
 ```javascript
 // app/routes/dashboard.js
 import Route from '@ember/routing/route';
@@ -45,7 +46,7 @@ export default class DashboardRoute extends Route {
     return hash({
       user: this.store.request({ url: '/users/me' }),
       posts: this.store.request({ url: '/posts?recent=true' }),
-      notifications: this.store.request({ url: '/notifications?unread=true' })
+      notifications: this.store.request({ url: '/notifications?unread=true' }),
     });
   }
 }
@@ -82,7 +83,7 @@ export default class ApiService extends Service {
         return await this.store.request({ url });
       } catch (error) {
         if (attempt === maxRetries - 1) throw error;
-        await new Promise(resolve => setTimeout(resolve, delay * (attempt + 1)));
+        await new Promise((resolve) => setTimeout(resolve, delay * (attempt + 1)));
       }
     }
   }
@@ -138,7 +139,8 @@ class SearchResults extends Component {
       </ul>
     {{/if}}
   </template>
-}```
+}
+```
 
 ## Manual AbortController Pattern
 
@@ -174,7 +176,7 @@ export default class DataFetcherService extends Service {
       // Note: WarpDrive handles AbortSignal internally
       const response = await this.store.request({
         url,
-        signal: this.abortController.signal
+        signal: this.abortController.signal,
       });
       this.data = response.content;
     } catch (error) {
@@ -201,21 +203,21 @@ export default class PostRoute extends Route {
   async model({ post_id }) {
     // First fetch the post
     const post = await this.store.request({
-      url: `/posts/${post_id}`
+      url: `/posts/${post_id}`,
     });
 
     // Then fetch related data in parallel
     return hash({
       post,
       author: this.store.request({
-        url: `/users/${post.content.authorId}`
+        url: `/users/${post.content.authorId}`,
       }),
       comments: this.store.request({
-        url: `/posts/${post_id}/comments`
+        url: `/posts/${post_id}/comments`,
       }),
       relatedPosts: this.store.request({
-        url: `/posts/${post_id}/related`
-      })
+        url: `/posts/${post_id}/related`,
+      }),
     });
   }
 }
@@ -302,11 +304,11 @@ export default class BatchLoaderService extends Service {
     this.batchTimeout = null;
 
     const response = await this.store.request({
-      url: `/users?ids=${ids.join(',')}`
+      url: `/users?ids=${ids.join(',')}`,
     });
 
     // Resolve all pending promises
-    response.content.forEach(user => {
+    response.content.forEach((user) => {
       this.resolveCallback(user.id, user);
     });
   }

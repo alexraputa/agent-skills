@@ -31,7 +31,8 @@ import { LoadingSpinner } from './loading-spinner';
     <span class="sr-only">Loading posts...</span>
     <LoadingSpinner />
   </div>
-</template>```
+</template>
+```
 
 ```javascript
 // app/routes/posts.js

@@ -41,7 +41,8 @@ class UserCard extends Component {
       {{/if}}
     </div>
   </template>
-}```
+}
+```
 
 **Correct (composable with named blocks):**
 
@@ -76,7 +77,8 @@ class UserCard extends Component {
       {{/if}}
     </div>
   </template>
-}```
+}
+```
 
 **Usage with flexible composition:**
 
@@ -111,7 +113,8 @@ import UserCard from './user-card';
       </:footer>
     </UserCard>
   {{/each}}
-</template>```
+</template>
+```
 
 **Contextual components pattern:**
 
@@ -155,7 +158,8 @@ class DataTable extends Component {
       )}}
     </table>
   </template>
-}```
+}
+```
 
 **Using contextual components:**
 
@@ -182,7 +186,8 @@ import DataTable from './data-table';
       {{/each}}
     </tbody>
   </DataTable>
-</template>```
+</template>
+```
 
 **Renderless component pattern:**
 
@@ -213,7 +218,8 @@ class Dropdown extends Component {
       close=this.close
     )}}
   </template>
-}```
+}
+```
 
 ```glimmer-js
 // Usage
@@ -233,7 +239,8 @@ import Dropdown from './dropdown';
       </ul>
     {{/if}}
   </Dropdown>
-</template>```
+</template>
+```
 
 Component composition provides flexibility, reusability, and clean separation of concerns while maintaining type safety and clarity.
 

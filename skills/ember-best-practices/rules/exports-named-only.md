@@ -19,7 +19,8 @@ export default class UserCard extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}```
+}
+```
 
 **Correct (named exports):**
 
@@ -31,7 +32,8 @@ export class UserCard extends Component {
   <template>
     <div>{{@user.name}}</div>
   </template>
-}```
+}
+```
 
 **Why Named Exports:**
 
@@ -118,7 +120,8 @@ export default class DashboardRoute extends Route {
       <DashboardCard @item={{item}} />
     {{/each}}
   </template>
-</template>```
+</template>
+```
 
 This is because Ember's router expects a default export from route files.
 
@@ -158,9 +161,15 @@ import { MyComponent as MyComp } from './my-component'; // Rename explicitly if 
 
 ```javascript
 // app/utils/string-utils.js
-export function capitalize(text) { /* ... */ }
-export function lowercase(text) { /* ... */ }
-export function uppercase(text) { /* ... */ }
+export function capitalize(text) {
+  /* ... */
+}
+export function lowercase(text) {
+  /* ... */
+}
+export function uppercase(text) {
+  /* ... */
+}
 
 // Only imports what's used - unused exports can be removed
 import { capitalize } from './utils/string-utils';

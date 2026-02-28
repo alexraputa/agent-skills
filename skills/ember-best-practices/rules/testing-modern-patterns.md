@@ -27,7 +27,8 @@ module('Integration | Component | user-card', function(hooks) {
     // Using find() instead of qunit-dom
     assert.ok(find('.user-card'));
   });
-});```
+});
+```
 
 **Correct (modern testing patterns):**
 
@@ -76,7 +77,8 @@ module('Integration | Component | user-card', function(hooks) {
 
     await click('[data-test-edit-button]');
   });
-});```
+});
+```
 
 **Component testing with reactive state:**
 
@@ -214,21 +216,21 @@ import { setupApplicationTest } from 'ember-qunit';
 import { http, HttpResponse } from 'msw';
 import { setupMSW } from 'my-app/tests/helpers/msw';
 
-module('Acceptance | posts', function(hooks) {
+module('Acceptance | posts', function (hooks) {
   setupApplicationTest(hooks);
   const { server } = setupMSW(hooks);
 
-  test('visiting /posts', async function(assert) {
+  test('visiting /posts', async function (assert) {
     server.use(
       http.get('/api/posts', () => {
         return HttpResponse.json({
           data: [
             { id: '1', type: 'post', attributes: { title: 'Post 1' } },
             { id: '2', type: 'post', attributes: { title: 'Post 2' } },
-            { id: '3', type: 'post', attributes: { title: 'Post 3' } }
-          ]
+            { id: '3', type: 'post', attributes: { title: 'Post 3' } },
+          ],
         });
-      })
+      }),
     );
 
     await visit('/posts');
@@ -237,20 +239,18 @@ module('Acceptance | posts', function(hooks) {
     assert.dom('[data-test-post-item]').exists({ count: 3 });
   });
 
-  test('clicking a post navigates to detail', async function(assert) {
+  test('clicking a post navigates to detail', async function (assert) {
     server.use(
       http.get('/api/posts', () => {
         return HttpResponse.json({
-          data: [
-            { id: '1', type: 'post', attributes: { title: 'Test Post', slug: 'test-post' } }
-          ]
+          data: [{ id: '1', type: 'post', attributes: { title: 'Test Post', slug: 'test-post' } }],
         });
       }),
       http.get('/api/posts/test-post', () => {
         return HttpResponse.json({
-          data: { id: '1', type: 'post', attributes: { title: 'Test Post', slug: 'test-post' } }
+          data: { id: '1', type: 'post', attributes: { title: 'Test Post', slug: 'test-post' } },
         });
-      })
+      }),
     );
 
     await visit('/posts');
@@ -302,7 +302,8 @@ module('Integration | Component | modal', function(hooks) {
     await click('[data-test-last]');
     assert.dom('[data-test-last]').isFocused();
   });
-});```
+});
+```
 
 **Testing with data-test attributes:**
 
@@ -331,7 +332,8 @@ class UserProfile extends Component {
       {{/if}}
     </div>
   </template>
-}```
+}
+```
 
 Modern testing patterns with `@ember/test-helpers`, `qunit-dom`, and data-test attributes provide better test reliability, readability, and maintainability.
 

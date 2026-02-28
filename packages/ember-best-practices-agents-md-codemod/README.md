@@ -27,12 +27,12 @@ The root AGENTS.md stays small (~2KB). Agents load the index and read specific r
 
 ## Differences from Next.js agents-md
 
-| Next.js | Ember |
-|---------|-------|
-| Detects Next.js version | No version detection |
+| Next.js                    | Ember                                  |
+| -------------------------- | -------------------------------------- |
+| Detects Next.js version    | No version detection                   |
 | Downloads docs from GitHub | Uses bundled content from this package |
-| `.next-docs/` | `.ember-best-practices/` |
-| Version-specific docs | Single best-practices set |
+| `.next-docs/`              | `.ember-best-practices/`               |
+| Version-specific docs      | Single best-practices set              |
 
 ## For Agent Tool Authors
 

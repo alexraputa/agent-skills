@@ -32,7 +32,8 @@ export default class UserCardComponent extends Component {
       {{@name}}
     </div>
   </template>
-}```
+}
+```
 
 ```glimmer-js
 // app/components/UserProfile.gjs - WRONG: PascalCase filename
@@ -84,6 +85,7 @@ export class UserProfile extends Component {
 ## Why
 
 **Never use .hbs files:**
+
 - `.gjs`/`.gts` files with `<template>` tags are the modern standard
 - Co-located templates and logic in a single file improve maintainability
 - Better tooling support (type checking, imports, refactoring)
@@ -91,16 +93,19 @@ export class UserProfile extends Component {
 - Avoid split between `.js` and `.hbs` files which makes components harder to understand
 
 **Filename conventions:**
+
 - Kebab-case filenames (`user-card.gjs`, not `UserCard.gjs`) follow web component standards and Ember conventions
 - Predictable: component name maps directly to filename (UserCard → user-card.gjs)
 - Avoids filesystem case-sensitivity issues across platforms
 
 **Class naming:**
+
 - No "Component" suffix - it's redundant (extends Component already declares the type)
 - PascalCase class name matches the capitalized component invocation: `<UserCard />`
 - Cleaner code: `UserCard` vs `UserCardComponent`
 
 **No default export:**
+
 - Modern .gjs/.gts files don't need `export default`
 - The template compiler automatically exports the component
 - Simpler syntax, less boilerplate
@@ -108,15 +113,16 @@ export class UserProfile extends Component {
 
 ## Naming Pattern Reference
 
-| Filename | Class Name | Template Invocation |
-|----------|-----------|---------------------|
-| `user-card.gjs` | `class UserCard` | `<UserCard />` |
+| Filename              | Class Name             | Template Invocation  |
+| --------------------- | ---------------------- | -------------------- |
+| `user-card.gjs`       | `class UserCard`       | `<UserCard />`       |
 | `loading-spinner.gjs` | `class LoadingSpinner` | `<LoadingSpinner />` |
-| `nav-bar.gjs` | `class NavBar` | `<NavBar />` |
-| `todo-list.gjs` | `class TodoList` | `<TodoList />` |
-| `search-input.gjs` | `class SearchInput` | `<SearchInput />` |
+| `nav-bar.gjs`         | `class NavBar`         | `<NavBar />`         |
+| `todo-list.gjs`       | `class TodoList`       | `<TodoList />`       |
+| `search-input.gjs`    | `class SearchInput`    | `<SearchInput />`    |
 
 **Conversion rule:**
+
 - Filename: all lowercase, words separated by hyphens
 - Class: PascalCase, same words, no hyphens
 - `user-card.gjs` → `class UserCard`
@@ -131,7 +137,8 @@ export class UserProfile extends Component {
   <div class="card">
     {{yield}}
   </div>
-</template>```
+</template>
+```
 
 **Components in subdirectories:**
 
@@ -170,6 +177,7 @@ export class ProfileCard extends Component {
 ## Impact
 
 **Positive:**
+
 - ⚡️ Cleaner, more maintainable code
 - 🎯 Predictable mapping between files and classes
 - 🌐 Follows web standards (kebab-case)
@@ -177,6 +185,7 @@ export class ProfileCard extends Component {
 - 🚀 Better alignment with modern Ember/Glimmer
 
 **Negative:**
+
 - None - this is the modern standard
 
 ## Metrics

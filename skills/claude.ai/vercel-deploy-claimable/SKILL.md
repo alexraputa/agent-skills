@@ -24,6 +24,7 @@ bash /mnt/skills/user/vercel-deploy/scripts/deploy.sh [path]
 ```
 
 **Arguments:**
+
 - `path` - Directory to deploy, or a `.tgz` file (defaults to current directory)
 
 **Examples:**
@@ -80,6 +81,7 @@ For static HTML projects (no `package.json`), framework is set to `null`.
 ## Static HTML Projects
 
 For projects without a `package.json`:
+
 - If there's a single `.html` file not named `index.html`, it gets renamed automatically
 - This ensures the page is served at the root URL (`/`)
 

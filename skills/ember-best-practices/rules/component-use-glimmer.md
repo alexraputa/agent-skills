@@ -20,14 +20,14 @@ export default Component.extend({
   tagName: 'div',
   classNames: ['user-card'],
 
-  fullName: computed('user.{firstName,lastName}', function() {
+  fullName: computed('user.{firstName,lastName}', function () {
     return `${this.user.firstName} ${this.user.lastName}`;
   }),
 
   didInsertElement() {
     this._super(...arguments);
     // Complex lifecycle management
-  }
+  },
 });
 ```
 
@@ -48,7 +48,8 @@ class UserCard extends Component {
       <p>{{@user.email}}</p>
     </div>
   </template>
-}```
+}
+```
 
 Glimmer components are 30-50% faster, have cleaner APIs, and integrate better with tracked properties.
 

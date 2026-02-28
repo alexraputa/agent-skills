@@ -22,7 +22,7 @@ export default class PostsRoute extends Route {
     const posts = response.content.data;
 
     // Then filters in memory
-    return posts.filter(post => post.attributes.status === 'published');
+    return posts.filter((post) => post.attributes.status === 'published');
   }
 }
 ```
@@ -36,7 +36,7 @@ export default class PostsRoute extends Route {
 
   queryParams = {
     page: { refreshModel: true },
-    filter: { refreshModel: true }
+    filter: { refreshModel: true },
   };
 
   model(params) {
@@ -45,18 +45,19 @@ export default class PostsRoute extends Route {
       url: '/posts',
       data: {
         filter: {
-          status: 'published'
+          status: 'published',
         },
         page: {
           number: params.page || 1,
-          size: 20
+          size: 20,
         },
         include: 'author', // Sideload related data
-        fields: { // Sparse fieldsets
+        fields: {
+          // Sparse fieldsets
           posts: 'title,excerpt,publishedAt,author',
-          users: 'name,avatar'
-        }
-      }
+          users: 'name,avatar',
+        },
+      },
     });
   }
 }
@@ -73,8 +74,8 @@ export default class PostRoute extends Route {
     return this.store.request({
       url: `/posts/${params.post_id}`,
       data: {
-        include: 'author,comments.user' // Nested relationships
-      }
+        include: 'author,comments.user', // Nested relationships
+      },
     });
   }
 }
@@ -91,7 +92,7 @@ class UserBadge extends Component {
     // Check cache first, avoiding API call if already loaded
     const cached = this.store.cache.peek({
       type: 'user',
-      id: this.args.userId
+      id: this.args.userId,
     });
 
     if (cached) {
@@ -100,7 +101,7 @@ class UserBadge extends Component {
 
     // Only fetch if not in cache
     return this.store.request({
-      url: `/users/${this.args.userId}`
+      url: `/users/${this.args.userId}`,
     });
   }
 }

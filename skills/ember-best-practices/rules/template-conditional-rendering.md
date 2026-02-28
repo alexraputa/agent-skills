@@ -13,6 +13,7 @@ Use efficient conditional rendering patterns to minimize unnecessary DOM updates
 Inefficient conditional logic causes excessive re-renders, creates complex template code, and can lead to poor performance in lists and dynamic UIs.
 
 **Incorrect:**
+
 ```glimmer-js
 // app/components/user-list.gjs
 import Component from '@glimmer/component';
@@ -34,13 +35,15 @@ class UserList extends Component {
       </div>
     {{/each}}
   </template>
-}```
+}
+```
 
 ## Solution
 
 Use `{{#if}}` / `{{#else if}}` / `{{#else}}` chains and extract computed logic to getters for better performance and readability.
 
 **Correct:**
+
 ```glimmer-js
 // app/components/user-list.gjs
 import Component from '@glimmer/component';
@@ -59,7 +62,8 @@ class UserList extends Component {
       </div>
     {{/each}}
   </template>
-}```
+}
+```
 
 ## Extracted Logic Pattern
 
@@ -102,7 +106,8 @@ class UserCard extends Component {
       {{/if}}
     </div>
   </template>
-}```
+}
+```
 
 ## Conditional Lists
 
@@ -133,12 +138,14 @@ class TaskList extends Component {
       <p class="empty-state">No tasks yet</p>
     {{/if}}
   </template>
-}```
+}
+```
 
 ## Avoid Nested Conditionals
 
 **Bad:**
-```gjs
+
+```glimmer-js
 {{#if @user}}
   {{#if @user.isPremium}}
     {{#if @user.hasAccess}}
@@ -149,6 +156,7 @@ class TaskList extends Component {
 ```
 
 **Good:**
+
 ```glimmer-js
 // app/components/content-gate.gjs
 import Component from '@glimmer/component';
@@ -167,7 +175,8 @@ class ContentGate extends Component {
       <UpgradeCTA />
     {{/if}}
   </template>
-}```
+}
+```
 
 ## Component Switching Pattern
 
@@ -198,7 +207,8 @@ class MediaViewer extends Component {
       <p>Unsupported media type</p>
     {{/if}}
   </template>
-}```
+}
+```
 
 ## Loading States
 
@@ -249,7 +259,8 @@ class DataDisplay extends Component {
       </div>
     {{/if}}
   </template>
-}```
+}
+```
 
 ## Performance Impact
 
