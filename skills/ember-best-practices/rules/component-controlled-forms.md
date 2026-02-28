@@ -1,6 +1,5 @@
 ---
 title: Use Native Forms with Platform Validation
-category: component
 impact: HIGH
 impactDescription: Reduces JavaScript form complexity and improves built-in a11y
 tags: components, forms, validation, accessibility, platform

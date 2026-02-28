@@ -1,6 +1,5 @@
 ---
 title: Implement Robust Data Requesting Patterns
-category: service
 impact: HIGH
 impactDescription: Prevents request waterfalls and race conditions in data flows
 tags: services, data-fetching, concurrency, cancellation, reliability

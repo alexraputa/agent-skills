@@ -1,6 +1,5 @@
 ---
 title: Use Helper Libraries Effectively
-category: template
 impact: MEDIUM
 impactDescription: Reduces custom helper maintenance and keeps templates concise
 tags: templates, helpers, ember-truth-helpers, ember-composable-helpers

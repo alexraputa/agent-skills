@@ -1,6 +1,5 @@
 ---
 title: Provide DOM-Abstracted Test Utilities for Library Components
-category: testing
 impact: MEDIUM
 impactDescription: Stabilizes consumer tests against internal DOM refactors
 tags: testing, test-support, libraries, dom-abstraction, maintainability

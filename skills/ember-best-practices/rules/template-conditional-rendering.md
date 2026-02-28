@@ -1,6 +1,5 @@
 ---
 title: Optimize Conditional Rendering
-category: template
 impact: HIGH
 impactDescription: Reduces unnecessary rerenders in dynamic template branches
 tags: templates, conditionals, rendering, performance, glimmer
