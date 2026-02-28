@@ -1,7 +1,8 @@
 ---
 title: VSCode Extensions and MCP Configuration for Ember Projects
-category: tooling
 impact: HIGH
+impactDescription: Improves editor consistency and AI-assisted debugging setup
+tags: tooling, vscode, mcp, glint, developer-experience
 ---
 
 ## VSCode Extensions and MCP Configuration for Ember Projects

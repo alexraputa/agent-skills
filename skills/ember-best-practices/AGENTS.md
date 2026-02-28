@@ -29,22 +29,22 @@ Comprehensive performance optimization and accessibility guide for Ember.js appl
    - 0.6 [Avoid Unnecessary Tracking](#06-avoid-unnecessary-tracking)
    - 0.7 [Build Reactive Chains with Dependent Getters](#07-build-reactive-chains-with-dependent-getters)
    - 0.8 [Cache API Responses in Services](#08-cache-api-responses-in-services)
-   - 0.9 [Compose Helpers for Reusable Logic](#09-compose-helpers-for-reusable-logic)
-   - 0.10 [Form Labels and Error Announcements](#010-form-labels-and-error-announcements)
-   - 0.11 [Implement Robust Data Requesting Patterns](#011-implement-robust-data-requesting-patterns)
-   - 0.12 [Implement Smart Route Model Caching](#012-implement-smart-route-model-caching)
-   - 0.13 [Import Helpers Directly in Templates](#013-import-helpers-directly-in-templates)
-   - 0.14 [Keyboard Navigation Support](#014-keyboard-navigation-support)
-   - 0.15 [Manage Service Owner and Linkage Patterns](#015-manage-service-owner-and-linkage-patterns)
-   - 0.16 [MSW (Mock Service Worker) Setup for Testing](#016-msw-mock-service-worker-setup-for-testing)
-   - 0.17 [No Default Exports (Except Route Templates)](#017-no-default-exports-except-route-templates)
-   - 0.18 [No helper() Wrapper for Plain Functions](#018-no-helper-wrapper-for-plain-functions)
-   - 0.19 [Optimize Conditional Rendering](#019-optimize-conditional-rendering)
-   - 0.20 [Optimize WarpDrive Queries](#020-optimize-warpdrive-queries)
-   - 0.21 [Parallel Data Loading in Model Hooks](#021-parallel-data-loading-in-model-hooks)
-   - 0.22 [Prevent Memory Leaks in Components](#022-prevent-memory-leaks-in-components)
-   - 0.23 [Provide DOM-Abstracted Test Utilities for Library Components](#023-provide-dom-abstracted-test-utilities-for-library-components)
-   - 0.24 [Rule](#024-rule)
+   - 0.9 [Component File Naming and Export Conventions](#09-component-file-naming-and-export-conventions)
+   - 0.10 [Compose Helpers for Reusable Logic](#010-compose-helpers-for-reusable-logic)
+   - 0.11 [Form Labels and Error Announcements](#011-form-labels-and-error-announcements)
+   - 0.12 [Implement Robust Data Requesting Patterns](#012-implement-robust-data-requesting-patterns)
+   - 0.13 [Implement Smart Route Model Caching](#013-implement-smart-route-model-caching)
+   - 0.14 [Import Helpers Directly in Templates](#014-import-helpers-directly-in-templates)
+   - 0.15 [Keyboard Navigation Support](#015-keyboard-navigation-support)
+   - 0.16 [Manage Service Owner and Linkage Patterns](#016-manage-service-owner-and-linkage-patterns)
+   - 0.17 [MSW (Mock Service Worker) Setup for Testing](#017-msw-mock-service-worker-setup-for-testing)
+   - 0.18 [No Default Exports (Except Route Templates)](#018-no-default-exports-except-route-templates)
+   - 0.19 [No helper() Wrapper for Plain Functions](#019-no-helper-wrapper-for-plain-functions)
+   - 0.20 [Optimize Conditional Rendering](#020-optimize-conditional-rendering)
+   - 0.21 [Optimize WarpDrive Queries](#021-optimize-warpdrive-queries)
+   - 0.22 [Parallel Data Loading in Model Hooks](#022-parallel-data-loading-in-model-hooks)
+   - 0.23 [Prevent Memory Leaks in Components](#023-prevent-memory-leaks-in-components)
+   - 0.24 [Provide DOM-Abstracted Test Utilities for Library Components](#024-provide-dom-abstracted-test-utilities-for-library-components)
    - 0.25 [Semantic HTML and ARIA Attributes](#025-semantic-html-and-aria-attributes)
    - 0.26 [Template-Only Components with In-Scope Functions](#026-template-only-components-with-in-scope-functions)
    - 0.27 [Use {{#each}} with @key for Lists](#027-use-each-with-key-for-lists)
@@ -189,6 +189,39 @@ class UserProfile extends Component {
     {{else if this.data}}
       <h1>{{this.data.name}}</h1>
     {{/if}}
+  </template>
+}
+```
+
+**Correct: use class fields and declarative async state**
+
+```glimmer-js
+// app/components/user-profile.gjs
+import Component from '@glimmer/component';
+import { cached } from '@glimmer/tracking';
+import { service } from '@ember/service';
+import { getRequestState } from '@warp-drive/ember';
+
+class UserProfile extends Component {
+  @service store;
+
+  @cached
+  get userRequest() {
+    return this.store.request({
+      url: `/users/${this.args.userId}`,
+    });
+  }
+
+  <template>
+    {{#let (getRequestState this.userRequest) as |state|}}
+      {{#if state.isPending}}
+        <div>Loading...</div>
+      {{else if state.isError}}
+        <div>Error loading user</div>
+      {{else}}
+        <h1>{{state.value.name}}</h1>
+      {{/if}}
+    {{/let}}
   </template>
 }
 ```
@@ -1244,7 +1277,190 @@ export default class DataService extends Service {
 
 Caching in services prevents duplicate API requests and improves performance significantly.
 
-### 0.9 Compose Helpers for Reusable Logic
+### 0.9 Component File Naming and Export Conventions
+
+**Impact: HIGH (Enforces consistent component structure and predictable imports)**
+
+Follow modern Ember component file conventions: use `.gjs`/`.gts` files with `<template>` tags (never `.hbs` files), use kebab-case filenames, match class names to file names (in PascalCase), and avoid `export default` in .gjs/.gts files.
+
+**Incorrect:**
+
+```glimmer-js
+// app/components/UserProfile.gjs - WRONG: PascalCase filename
+import Component from '@glimmer/component';
+
+export default class UserProfile extends Component {
+  <template>
+    <div class="profile">
+      {{@name}}
+    </div>
+  </template>
+}
+```
+
+**Correct:**
+
+```glimmer-js
+// app/components/user-profile.gjs - CORRECT: All conventions followed
+import Component from '@glimmer/component';
+import { service } from '@ember/service';
+
+export class UserProfile extends Component {
+  @service session;
+
+  <template>
+    <div class="profile">
+      <h1>{{@name}}</h1>
+      {{#if this.session.isAuthenticated}}
+        <button>Edit Profile</button>
+      {{/if}}
+    </div>
+  </template>
+}
+```
+
+**Never use .hbs files:**
+
+- `.gjs`/`.gts` files with `<template>` tags are the modern standard
+
+- Co-located templates and logic in a single file improve maintainability
+
+- Better tooling support (type checking, imports, refactoring)
+
+- Enables strict mode and proper scope
+
+- Avoid split between `.js` and `.hbs` files which makes components harder to understand
+
+**Filename conventions:**
+
+- Kebab-case filenames (`user-card.gjs`, not `UserCard.gjs`) follow web component standards and Ember conventions
+
+- Predictable: component name maps directly to filename (UserCard → user-card.gjs)
+
+- Avoids filesystem case-sensitivity issues across platforms
+
+**Class naming:**
+
+- No "Component" suffix - it's redundant (extends Component already declares the type)
+
+- PascalCase class name matches the capitalized component invocation: `<UserCard />`
+
+- Cleaner code: `UserCard` vs `UserCardComponent`
+
+**No default export:**
+
+- Modern .gjs/.gts files don't need `export default`
+
+- The template compiler automatically exports the component
+
+- Simpler syntax, less boilerplate
+
+- Consistent with strict-mode semantics
+
+| Filename              | Class Name             | Template Invocation  |
+
+| --------------------- | ---------------------- | -------------------- |
+
+| `user-card.gjs`       | `class UserCard`       | `<UserCard />`       |
+
+| `loading-spinner.gjs` | `class LoadingSpinner` | `<LoadingSpinner />` |
+
+| `nav-bar.gjs`         | `class NavBar`         | `<NavBar />`         |
+
+| `todo-list.gjs`       | `class TodoList`       | `<TodoList />`       |
+
+| `search-input.gjs`    | `class SearchInput`    | `<SearchInput />`    |
+
+**Conversion rule:**
+
+- Filename: all lowercase, words separated by hyphens
+
+- Class: PascalCase, same words, no hyphens
+
+- `user-card.gjs` → `class UserCard`
+
+**Template-only components:**
+
+```glimmer-js
+// app/components/simple-card.gjs - Template-only, no class needed
+<template>
+  <div class="card">
+    {{yield}}
+  </div>
+</template>
+```
+
+**Components in subdirectories:**
+
+```glimmer-js
+// app/components/ui/button.gjs
+import Component from '@glimmer/component';
+
+export class Button extends Component {
+  <template>
+    <button type="button">
+      {{yield}}
+    </button>
+  </template>
+}
+
+// Usage: <Ui::Button />
+```
+
+**Nested namespaces:**
+
+```glimmer-js
+// app/components/admin/user/profile-card.gjs
+import Component from '@glimmer/component';
+
+export class ProfileCard extends Component {
+  <template>
+    <div class="admin-profile">
+      {{@user.name}}
+    </div>
+  </template>
+}
+
+// Usage: <Admin::User::ProfileCard />
+```
+
+**Positive:**
+
+- ⚡️ Cleaner, more maintainable code
+
+- 🎯 Predictable mapping between files and classes
+
+- 🌐 Follows web standards (kebab-case)
+
+- 📦 Smaller bundle size (less export overhead)
+
+- 🚀 Better alignment with modern Ember/Glimmer
+
+**Negative:**
+
+- None - this is the modern standard
+
+- **Code clarity**: +30% (shorter, clearer names)
+
+- **Bundle size**: -5-10 bytes per component (no export overhead)
+
+- **Developer experience**: Improved (predictable naming)
+
+- [Ember Components Guide](https://guides.emberjs.com/release/components/)
+
+- [Glimmer Components](https://github.com/glimmerjs/glimmer.js)
+
+- [Template Tag Format RFC](https://github.com/emberjs/rfcs/pull/779)
+
+- [Strict Mode Semantics](https://github.com/emberjs/rfcs/blob/master/text/0496-handlebars-strict-mode.md)
+
+- component-use-glimmer.md - Modern Glimmer component patterns
+
+- component-strict-mode.md - Template-only components and strict mode
+
+- route-templates.md - Route file naming conventions
+
+### 0.10 Compose Helpers for Reusable Logic
 
 **Impact: MEDIUM-HIGH (Better code reuse and testability)**
 
@@ -1408,7 +1624,7 @@ Composed helpers provide testable, reusable logic that keeps templates clean and
 
 Reference: [https://guides.emberjs.com/release/components/helper-functions/](https://guides.emberjs.com/release/components/helper-functions/)
 
-### 0.10 Form Labels and Error Announcements
+### 0.11 Form Labels and Error Announcements
 
 **Impact: HIGH (Essential for screen reader users)**
 
@@ -1560,13 +1776,37 @@ Always associate labels with inputs and announce dynamic changes to screen reade
 
 Reference: [https://guides.emberjs.com/release/accessibility/application-considerations/](https://guides.emberjs.com/release/accessibility/application-considerations/)
 
-### 0.11 Implement Robust Data Requesting Patterns
+### 0.12 Implement Robust Data Requesting Patterns
 
-**Impact: HIGH**
+**Impact: HIGH (Prevents request waterfalls and race conditions in data flows)**
+
+Use proper patterns for data fetching including parallel requests, error handling, request cancellation, and retry logic.
 
 Naive data fetching creates waterfall requests, doesn't handle errors properly, and can cause race conditions or memory leaks from uncanceled requests.
 
 **Incorrect:**
+
+```javascript
+// app/routes/dashboard.js
+import Route from '@ember/routing/route';
+
+export default class DashboardRoute extends Route {
+  async model() {
+    // Sequential waterfall - slow!
+    const user = await this.store.request({ url: '/users/me' });
+    const posts = await this.store.request({ url: '/posts' });
+    const notifications = await this.store.request({ url: '/notifications' });
+
+    // No error handling
+    // No cancellation
+    return { user, posts, notifications };
+  }
+}
+```
+
+Use `RSVP.hash` or `Promise.all` for parallel loading:
+
+**Correct: parallelized model loading**
 
 ```javascript
 // app/services/batch-loader.js
@@ -1608,8 +1848,6 @@ export default class BatchLoaderService extends Service {
 }
 ```
 
-Use `RSVP.hash` or `Promise.all` for parallel loading:
-
 Handle errors gracefully with fallbacks:
 
 Prevent race conditions by canceling stale requests:
@@ -1648,7 +1886,7 @@ Optimize multiple similar requests:
 
 - [AbortController MDN](https://developer.mozilla.org/en-US/docs/Web/API/AbortController)
 
-### 0.12 Implement Smart Route Model Caching
+### 0.13 Implement Smart Route Model Caching
 
 **Impact: MEDIUM-HIGH (Reduce redundant API calls and improve UX)**
 
@@ -1834,7 +2072,7 @@ Smart caching reduces server load, improves perceived performance, and provides 
 
 Reference: [https://warp-drive.io/](https://warp-drive.io/)
 
-### 0.13 Import Helpers Directly in Templates
+### 0.14 Import Helpers Directly in Templates
 
 **Impact: MEDIUM (Better tree-shaking and clarity)**
 
@@ -1936,7 +2174,7 @@ Explicit helper imports enable better tree-shaking, make dependencies clear, and
 
 Reference: [https://github.com/ember-template-imports/ember-template-imports](https://github.com/ember-template-imports/ember-template-imports)
 
-### 0.14 Keyboard Navigation Support
+### 0.15 Keyboard Navigation Support
 
 **Impact: HIGH (Critical for keyboard-only users)**
 
@@ -2066,7 +2304,7 @@ Proper keyboard navigation ensures all users can interact with your application 
 
 Reference: [https://guides.emberjs.com/release/accessibility/keyboard/](https://guides.emberjs.com/release/accessibility/keyboard/)
 
-### 0.15 Manage Service Owner and Linkage Patterns
+### 0.16 Manage Service Owner and Linkage Patterns
 
 **Impact: MEDIUM-HIGH (Better service organization and dependency management)**
 
@@ -2429,7 +2667,7 @@ class FeatureGated extends Component {
 
 Reference: [https://api.emberjs.com/ember/release/functions/@ember%2Fapplication/getOwner](https://api.emberjs.com/ember/release/functions/@ember%2Fapplication/getOwner), [https://guides.emberjs.com/release/applications/dependency-injection/](https://guides.emberjs.com/release/applications/dependency-injection/), [https://reactive.nullvoxpopuli.com/functions/link.link.html](https://reactive.nullvoxpopuli.com/functions/link.link.html), [https://ce1d7e18.ember-primitives.pages.dev/6-utils/createService.md](https://ce1d7e18.ember-primitives.pages.dev/6-utils/createService.md)
 
-### 0.16 MSW (Mock Service Worker) Setup for Testing
+### 0.17 MSW (Mock Service Worker) Setup for Testing
 
 **Impact: HIGH (Proper API mocking without ORM complexity)**
 
@@ -2619,7 +2857,7 @@ test('lists posts', async function (assert) {
 
 Reference: [https://discuss.emberjs.com/t/my-cookbook-for-various-emberjs-things/19679](https://discuss.emberjs.com/t/my-cookbook-for-various-emberjs-things/19679), [https://mswjs.io/docs/](https://mswjs.io/docs/)
 
-### 0.17 No Default Exports (Except Route Templates)
+### 0.18 No Default Exports (Except Route Templates)
 
 **Impact: LOW (Better tree-shaking and consistency)**
 
@@ -2782,7 +3020,7 @@ Use named exports everywhere except route template files for better maintainabil
 
 Reference: [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
 
-### 0.18 No helper() Wrapper for Plain Functions
+### 0.19 No helper() Wrapper for Plain Functions
 
 **Impact: LOW-MEDIUM (Simpler code, better performance)**
 
@@ -2901,9 +3139,11 @@ Plain functions are the modern way to create helpers in Ember. Only use classes 
 
 Reference: [https://guides.emberjs.com/release/components/helper-functions/](https://guides.emberjs.com/release/components/helper-functions/)
 
-### 0.19 Optimize Conditional Rendering
+### 0.20 Optimize Conditional Rendering
 
-**Impact: HIGH**
+**Impact: HIGH (Reduces unnecessary rerenders in dynamic template branches)**
+
+Use efficient conditional rendering patterns to minimize unnecessary DOM updates and improve rendering performance.
 
 Inefficient conditional logic causes excessive re-renders, creates complex template code, and can lead to poor performance in lists and dynamic UIs.
 
@@ -3055,7 +3295,7 @@ Pattern for async data with loading/error states:
 
 - [@cached decorator](https://api.emberjs.com/ember/release/functions/@glimmer%2Ftracking/cached)
 
-### 0.20 Optimize WarpDrive Queries
+### 0.21 Optimize WarpDrive Queries
 
 **Impact: MEDIUM-HIGH (40-70% reduction in API calls)**
 
@@ -3180,7 +3420,7 @@ Efficient WarpDrive usage reduces network overhead and improves application perf
 
 Reference: [https://warp-drive.io/](https://warp-drive.io/)
 
-### 0.21 Parallel Data Loading in Model Hooks
+### 0.22 Parallel Data Loading in Model Hooks
 
 **Impact: CRITICAL (2-10× improvement)**
 
@@ -3229,7 +3469,7 @@ export default class DashboardRoute extends Route {
 
 Using `hash()` from RSVP allows Ember to resolve all promises concurrently, significantly reducing load time.
 
-### 0.22 Prevent Memory Leaks in Components
+### 0.23 Prevent Memory Leaks in Components
 
 **Impact: HIGH (Avoid memory leaks and resource exhaustion)**
 
@@ -3428,9 +3668,9 @@ Always clean up timers, event listeners, subscriptions, and pending requests to 
 
 Reference: [https://api.emberjs.com/ember/release/modules/@ember%2Fdestroyable](https://api.emberjs.com/ember/release/modules/@ember%2Fdestroyable)
 
-### 0.23 Provide DOM-Abstracted Test Utilities for Library Components
+### 0.24 Provide DOM-Abstracted Test Utilities for Library Components
 
-**Impact: MEDIUM**
+**Impact: MEDIUM (Stabilizes consumer tests against internal DOM refactors)**
 
 When building reusable components or libraries, consumers should not need to know implementation details or interact directly with the component's DOM. DOM structure should be considered **private** unless the author of the tests is the **owner** of the code being tested.
 
@@ -3597,189 +3837,6 @@ For solo projects, the benefit is smaller but still valuable:
 - [ember-test-selectors](https://github.com/mainmatter/ember-test-selectors) - Addon for stripping test selectors from production
 
 - [Page Objects Pattern](https://martinfowler.com/bliki/PageObject.html) - Related testing abstraction pattern
-
-### 0.24 Rule
-
-**Impact: MEDIUM**
-
-Follow modern Ember component file conventions: use `.gjs`/`.gts` files with `<template>` tags (never `.hbs` files), use kebab-case filenames, match class names to file names (in PascalCase), and avoid `export default` in .gjs/.gts files.
-
-**Incorrect:**
-
-```glimmer-js
-// app/components/UserProfile.gjs - WRONG: PascalCase filename
-import Component from '@glimmer/component';
-
-export default class UserProfile extends Component {
-  <template>
-    <div class="profile">
-      {{@name}}
-    </div>
-  </template>
-}
-```
-
-**Correct:**
-
-```glimmer-js
-// app/components/user-profile.gjs - CORRECT: All conventions followed
-import Component from '@glimmer/component';
-import { service } from '@ember/service';
-
-export class UserProfile extends Component {
-  @service session;
-
-  <template>
-    <div class="profile">
-      <h1>{{@name}}</h1>
-      {{#if this.session.isAuthenticated}}
-        <button>Edit Profile</button>
-      {{/if}}
-    </div>
-  </template>
-}
-```
-
-**Never use .hbs files:**
-
-- `.gjs`/`.gts` files with `<template>` tags are the modern standard
-
-- Co-located templates and logic in a single file improve maintainability
-
-- Better tooling support (type checking, imports, refactoring)
-
-- Enables strict mode and proper scope
-
-- Avoid split between `.js` and `.hbs` files which makes components harder to understand
-
-**Filename conventions:**
-
-- Kebab-case filenames (`user-card.gjs`, not `UserCard.gjs`) follow web component standards and Ember conventions
-
-- Predictable: component name maps directly to filename (UserCard → user-card.gjs)
-
-- Avoids filesystem case-sensitivity issues across platforms
-
-**Class naming:**
-
-- No "Component" suffix - it's redundant (extends Component already declares the type)
-
-- PascalCase class name matches the capitalized component invocation: `<UserCard />`
-
-- Cleaner code: `UserCard` vs `UserCardComponent`
-
-**No default export:**
-
-- Modern .gjs/.gts files don't need `export default`
-
-- The template compiler automatically exports the component
-
-- Simpler syntax, less boilerplate
-
-- Consistent with strict-mode semantics
-
-| Filename              | Class Name             | Template Invocation  |
-
-| --------------------- | ---------------------- | -------------------- |
-
-| `user-card.gjs`       | `class UserCard`       | `<UserCard />`       |
-
-| `loading-spinner.gjs` | `class LoadingSpinner` | `<LoadingSpinner />` |
-
-| `nav-bar.gjs`         | `class NavBar`         | `<NavBar />`         |
-
-| `todo-list.gjs`       | `class TodoList`       | `<TodoList />`       |
-
-| `search-input.gjs`    | `class SearchInput`    | `<SearchInput />`    |
-
-**Conversion rule:**
-
-- Filename: all lowercase, words separated by hyphens
-
-- Class: PascalCase, same words, no hyphens
-
-- `user-card.gjs` → `class UserCard`
-
-**Template-only components:**
-
-```glimmer-js
-// app/components/simple-card.gjs - Template-only, no class needed
-<template>
-  <div class="card">
-    {{yield}}
-  </div>
-</template>
-```
-
-**Components in subdirectories:**
-
-```glimmer-js
-// app/components/ui/button.gjs
-import Component from '@glimmer/component';
-
-export class Button extends Component {
-  <template>
-    <button type="button">
-      {{yield}}
-    </button>
-  </template>
-}
-
-// Usage: <Ui::Button />
-```
-
-**Nested namespaces:**
-
-```glimmer-js
-// app/components/admin/user/profile-card.gjs
-import Component from '@glimmer/component';
-
-export class ProfileCard extends Component {
-  <template>
-    <div class="admin-profile">
-      {{@user.name}}
-    </div>
-  </template>
-}
-
-// Usage: <Admin::User::ProfileCard />
-```
-
-**Positive:**
-
-- ⚡️ Cleaner, more maintainable code
-
-- 🎯 Predictable mapping between files and classes
-
-- 🌐 Follows web standards (kebab-case)
-
-- 📦 Smaller bundle size (less export overhead)
-
-- 🚀 Better alignment with modern Ember/Glimmer
-
-**Negative:**
-
-- None - this is the modern standard
-
-- **Code clarity**: +30% (shorter, clearer names)
-
-- **Bundle size**: -5-10 bytes per component (no export overhead)
-
-- **Developer experience**: Improved (predictable naming)
-
-- [Ember Components Guide](https://guides.emberjs.com/release/components/)
-
-- [Glimmer Components](https://github.com/glimmerjs/glimmer.js)
-
-- [Template Tag Format RFC](https://github.com/emberjs/rfcs/pull/779)
-
-- [Strict Mode Semantics](https://github.com/emberjs/rfcs/blob/master/text/0496-handlebars-strict-mode.md)
-
-- component-use-glimmer.md - Modern Glimmer component patterns
-
-- component-strict-mode.md - Template-only components and strict mode
-
-- route-templates.md - Route file naming conventions
 
 ### 0.25 Semantic HTML and ARIA Attributes
 
@@ -5525,7 +5582,9 @@ Reference: [https://guides.emberjs.com/release/components/component-state-and-ac
 
 ### 0.38 Use Helper Libraries Effectively
 
-**Impact: MEDIUM**
+**Impact: MEDIUM (Reduces custom helper maintenance and keeps templates concise)**
+
+Leverage community helper libraries to write cleaner templates and avoid creating unnecessary custom helpers for common operations.
 
 Reinventing common functionality with custom helpers adds maintenance burden and bundle size when well-maintained helper libraries already provide the needed functionality.
 
@@ -6062,7 +6121,9 @@ Reference: [https://guides.emberjs.com/release/testing/](https://guides.emberjs.
 
 ### 0.41 Use Native Forms with Platform Validation
 
-**Impact: HIGH**
+**Impact: HIGH (Reduces JavaScript form complexity and improves built-in a11y)**
+
+Rely on native `<form>` elements and the browser's Constraint Validation API instead of reinventing form handling with JavaScript. The platform is really good at forms.
 
 Over-engineering forms with JavaScript when native browser features provide validation, accessibility, and UX patterns for free.
 
@@ -7218,7 +7279,7 @@ Reference: [https://guides.emberjs.com/release/typescript/](https://guides.ember
 
 ### 0.50 VSCode Extensions and MCP Configuration for Ember Projects
 
-**Impact: HIGH**
+**Impact: HIGH (Improves editor consistency and AI-assisted debugging setup)**
 
 Set up recommended VSCode extensions and Model Context Protocol (MCP) servers for optimal Ember development experience.
 

@@ -1,10 +1,11 @@
 ---
 title: Implement Robust Data Requesting Patterns
-category: service
 impact: HIGH
+impactDescription: Prevents request waterfalls and race conditions in data flows
+tags: services, data-fetching, concurrency, cancellation, reliability
 ---
 
-# Implement Robust Data Requesting Patterns
+## Implement Robust Data Requesting Patterns
 
 Use proper patterns for data fetching including parallel requests, error handling, request cancellation, and retry logic.
 
@@ -35,6 +36,8 @@ export default class DashboardRoute extends Route {
 ## Solution: Parallel Requests
 
 Use `RSVP.hash` or `Promise.all` for parallel loading:
+
+**Correct (parallelized model loading):**
 
 ```javascript
 // app/routes/dashboard.js

@@ -12,6 +12,16 @@ export interface CodeExample {
   additionalText?: string // Optional text after code block (explanations, reasons)
 }
 
+/**
+ * Source-level metadata extracted from markdown files before normalization.
+ */
+export interface RuleSourceMetadata {
+  hasFrontmatter: boolean
+  frontmatter: Record<string, string>
+  body: string
+  errors: string[]
+}
+
 export interface Rule {
   id: string // e.g., "1.1", "2.3"
   title: string

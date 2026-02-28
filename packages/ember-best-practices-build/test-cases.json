@@ -297,6 +297,14 @@
   },
   {
     "ruleId": "",
+    "ruleTitle": "Avoid Constructors in Components",
+    "type": "good",
+    "code": "// app/components/user-profile.gjs\nimport Component from '@glimmer/component';\nimport { cached } from '@glimmer/tracking';\nimport { service } from '@ember/service';\nimport { getRequestState } from '@warp-drive/ember';\n\nclass UserProfile extends Component {\n  @service store;\n\n  @cached\n  get userRequest() {\n    return this.store.request({\n      url: `/users/${this.args.userId}`,\n    });\n  }\n\n  <template>\n    {{#let (getRequestState this.userRequest) as |state|}}\n      {{#if state.isPending}}\n        <div>Loading...</div>\n      {{else if state.isError}}\n        <div>Error loading user</div>\n      {{else}}\n        <h1>{{state.value.name}}</h1>\n      {{/if}}\n    {{/let}}\n  </template>\n}",
+    "language": "glimmer-js",
+    "description": "use class fields and declarative async state"
+  },
+  {
+    "ruleId": "",
     "ruleTitle": "Avoid Legacy Lifecycle Hooks (did-insert, will-destroy, did-update)",
     "type": "bad",
     "code": "// app/components/user-greeting.gjs\nimport Component from '@glimmer/component';\nimport { tracked } from '@glimmer/tracking';\nimport { action } from '@ember/object';\n\nclass UserGreeting extends Component {\n  @tracked displayName = '';\n\n  @action\n  updateDisplayName() {\n    // Runs on every render - inefficient and error-prone\n    this.displayName = `${this.args.user.firstName} ${this.args.user.lastName}`;\n  }\n\n  <template>\n    <div {{did-update this.updateDisplayName @user}}>\n      Hello, {{this.displayName}}\n    </div>\n  </template>\n}",
@@ -409,19 +417,19 @@
   },
   {
     "ruleId": "",
-    "ruleTitle": "Rule",
+    "ruleTitle": "Component File Naming and Export Conventions",
     "type": "bad",
     "code": "// app/components/UserProfile.gjs - WRONG: PascalCase filename\nimport Component from '@glimmer/component';\n\nexport default class UserProfile extends Component {\n  <template>\n    <div class=\"profile\">\n      {{@name}}\n    </div>\n  </template>\n}",
     "language": "glimmer-js",
-    "description": "Incorrect example for Rule"
+    "description": "Incorrect example for Component File Naming and Export Conventions"
   },
   {
     "ruleId": "",
-    "ruleTitle": "Rule",
+    "ruleTitle": "Component File Naming and Export Conventions",
     "type": "good",
     "code": "// app/components/user-profile.gjs - CORRECT: All conventions followed\nimport Component from '@glimmer/component';\nimport { service } from '@ember/service';\n\nexport class UserProfile extends Component {\n  @service session;\n\n  <template>\n    <div class=\"profile\">\n      <h1>{{@name}}</h1>\n      {{#if this.session.isAuthenticated}}\n        <button>Edit Profile</button>\n      {{/if}}\n    </div>\n  </template>\n}",
     "language": "glimmer-js",
-    "description": "Correct example for Rule"
+    "description": "Correct example for Component File Naming and Export Conventions"
   },
   {
     "ruleId": "",
@@ -715,9 +723,17 @@
     "ruleId": "",
     "ruleTitle": "Implement Robust Data Requesting Patterns",
     "type": "bad",
-    "code": "// app/services/batch-loader.js\nimport Service, { service } from '@ember/service';\n\nexport default class BatchLoaderService extends Service {\n  @service store;\n\n  pendingIds = new Set();\n  batchTimeout = null;\n\n  async loadUser(id) {\n    this.pendingIds.add(id);\n\n    if (!this.batchTimeout) {\n      this.batchTimeout = setTimeout(() => this.executeBatch(), 50);\n    }\n\n    // Return a promise that resolves when batch completes\n    return new Promise((resolve) => {\n      this.registerCallback(id, resolve);\n    });\n  }\n\n  async executeBatch() {\n    const ids = Array.from(this.pendingIds);\n    this.pendingIds.clear();\n    this.batchTimeout = null;\n\n    const response = await this.store.request({\n      url: `/users?ids=${ids.join(',')}`,\n    });\n\n    // Resolve all pending promises\n    response.content.forEach((user) => {\n      this.resolveCallback(user.id, user);\n    });\n  }\n}",
+    "code": "// app/routes/dashboard.js\nimport Route from '@ember/routing/route';\n\nexport default class DashboardRoute extends Route {\n  async model() {\n    // Sequential waterfall - slow!\n    const user = await this.store.request({ url: '/users/me' });\n    const posts = await this.store.request({ url: '/posts' });\n    const notifications = await this.store.request({ url: '/notifications' });\n\n    // No error handling\n    // No cancellation\n    return { user, posts, notifications };\n  }\n}",
     "language": "javascript",
     "description": "Incorrect example for Implement Robust Data Requesting Patterns"
+  },
+  {
+    "ruleId": "",
+    "ruleTitle": "Implement Robust Data Requesting Patterns",
+    "type": "good",
+    "code": "// app/services/batch-loader.js\nimport Service, { service } from '@ember/service';\n\nexport default class BatchLoaderService extends Service {\n  @service store;\n\n  pendingIds = new Set();\n  batchTimeout = null;\n\n  async loadUser(id) {\n    this.pendingIds.add(id);\n\n    if (!this.batchTimeout) {\n      this.batchTimeout = setTimeout(() => this.executeBatch(), 50);\n    }\n\n    // Return a promise that resolves when batch completes\n    return new Promise((resolve) => {\n      this.registerCallback(id, resolve);\n    });\n  }\n\n  async executeBatch() {\n    const ids = Array.from(this.pendingIds);\n    this.pendingIds.clear();\n    this.batchTimeout = null;\n\n    const response = await this.store.request({\n      url: `/users?ids=${ids.join(',')}`,\n    });\n\n    // Resolve all pending promises\n    response.content.forEach((user) => {\n      this.resolveCallback(user.id, user);\n    });\n  }\n}",
+    "language": "javascript",
+    "description": "parallelized model loading"
   },
   {
     "ruleId": "",
