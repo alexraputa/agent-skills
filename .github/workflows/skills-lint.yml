@@ -1,0 +1,34 @@
+name: Skills Command Lint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+      - 'packages/skills-lint/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'skills/**'
+      - 'packages/skills-lint/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: packages/skills-lint
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 10.24.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: packages/skills-lint/pnpm-lock.yaml
+      - run: pnpm install
+      - run: pnpm lint

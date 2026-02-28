@@ -165,7 +165,7 @@ CLEANUP_TEMP=true
 
 cleanup() {
     if [ "$CLEANUP_TEMP" = true ]; then
-        rm -rf "$TEMP_DIR"
+        find "$TEMP_DIR" -depth -delete || echo "Warning: failed to clean up temp directory $TEMP_DIR" >&2
     fi
 }
 trap cleanup EXIT
