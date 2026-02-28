@@ -3,12 +3,86 @@
  */
 
 import { readFile } from 'fs/promises'
-import { Rule, ImpactLevel } from './types.js'
+import { Rule, ImpactLevel, RuleSourceMetadata } from './types.js'
 
 export interface RuleFile {
   section: number
   subsection?: number
   rule: Rule
+  source: RuleSourceMetadata
+}
+
+/**
+ * Parse raw markdown into frontmatter + body.
+ * This is intentionally tolerant: missing frontmatter is allowed for legacy files.
+ */
+export function parseRuleSource(content: string): RuleSourceMetadata {
+  const frontmatter: Record<string, string> = {}
+  const errors: string[] = []
+  const lines = content.split(/\r?\n/)
+
+  if (lines[0]?.trim() !== '---') {
+    return {
+      hasFrontmatter: false,
+      frontmatter,
+      body: content,
+      errors,
+    }
+  }
+
+  let frontmatterEnd = -1
+  for (let i = 1; i < lines.length; i++) {
+    if (lines[i].trim() === '---') {
+      frontmatterEnd = i
+      break
+    }
+  }
+
+  if (frontmatterEnd === -1) {
+    errors.push('Unclosed YAML frontmatter block (missing closing ---)')
+    return {
+      hasFrontmatter: true,
+      frontmatter,
+      body: '',
+      errors,
+    }
+  }
+
+  for (let i = 1; i < frontmatterEnd; i++) {
+    const line = lines[i].trim()
+    if (!line) continue
+
+    const separatorIndex = line.indexOf(':')
+    if (separatorIndex === -1) {
+      errors.push(
+        `Invalid frontmatter line ${i + 1}: "${lines[i]}" (expected key: value)`
+      )
+      continue
+    }
+
+    const key = line.slice(0, separatorIndex).trim()
+    const rawValue = line.slice(separatorIndex + 1).trim()
+    const value = rawValue.replace(/^["']|["']$/g, '')
+
+    if (!key) {
+      errors.push(`Invalid frontmatter line ${i + 1}: empty key`)
+      continue
+    }
+
+    if (!value) {
+      errors.push(`Invalid frontmatter field "${key}": value cannot be empty`)
+      continue
+    }
+
+    frontmatter[key] = value
+  }
+
+  return {
+    hasFrontmatter: true,
+    frontmatter,
+    body: lines.slice(frontmatterEnd + 1).join('\n'),
+    errors,
+  }
 }
 
 /**
@@ -16,29 +90,11 @@ export interface RuleFile {
  */
 export async function parseRuleFile(filePath: string): Promise<RuleFile> {
   const content = await readFile(filePath, 'utf-8')
-  const lines = content.split('\n')
-
-  // Extract frontmatter if present
-  let frontmatter: Record<string, any> = {}
-  let contentStart = 0
-
-  if (content.startsWith('---')) {
-    const frontmatterEnd = content.indexOf('---', 3)
-    if (frontmatterEnd !== -1) {
-      const frontmatterText = content.slice(3, frontmatterEnd).trim()
-      frontmatterText.split('\n').forEach((line) => {
-        const [key, ...valueParts] = line.split(':')
-        if (key && valueParts.length) {
-          const value = valueParts.join(':').trim()
-          frontmatter[key.trim()] = value.replace(/^["']|["']$/g, '')
-        }
-      })
-      contentStart = frontmatterEnd + 3
-    }
-  }
+  const source = parseRuleSource(content)
+  const frontmatter = source.frontmatter
 
   // Parse the rule content
-  const ruleContent = content.slice(contentStart).trim()
+  const ruleContent = source.body.trim()
   const ruleLines = ruleContent.split('\n')
 
   // Extract title (first # or ## heading)
@@ -208,14 +264,24 @@ export async function parseRuleFile(filePath: string): Promise<RuleFile> {
 
   // Extract area from filename (first part before first dash)
   const area = filename.split('-')[0]
-  const section = frontmatter.section || sectionMap[area] || 0
+  const frontmatterSection = frontmatter.section
+    ? Number(frontmatter.section)
+    : undefined
+  const section =
+    frontmatterSection !== undefined && Number.isInteger(frontmatterSection)
+      ? frontmatterSection
+      : sectionMap[area] || 0
+
+  const frontmatterImpact = frontmatter.impact
+    ? (frontmatter.impact.toUpperCase().replace(/-/g, '-') as ImpactLevel)
+    : undefined
 
   const rule: Rule = {
     id: '', // Will be assigned by build script based on sorted order
     title: frontmatter.title || title,
     section: section,
     subsection: undefined,
-    impact: frontmatter.impact || impact,
+    impact: frontmatterImpact || impact,
     impactDescription: frontmatter.impactDescription || impactDescription,
     explanation: frontmatter.explanation || explanation.trim(),
     examples,
@@ -231,5 +297,6 @@ export async function parseRuleFile(filePath: string): Promise<RuleFile> {
     section,
     subsection: 0,
     rule,
+    source,
   }
 }
