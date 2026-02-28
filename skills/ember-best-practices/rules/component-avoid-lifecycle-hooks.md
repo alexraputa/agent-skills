@@ -5,7 +5,7 @@ impactDescription: Prevents memory leaks and enforces modern patterns
 tags: components, lifecycle, anti-pattern, modifiers, derived-data
 ---
 
-## Avoid Legacy Lifecycle Hooks
+## Avoid Legacy Lifecycle Hooks (did-insert, will-destroy, did-update)
 
 **Never use `{{did-insert}}`, `{{will-destroy}}`, or `{{did-update}}` in new code.** These legacy helpers create coupling between templates and component lifecycle, making code harder to test and maintain. Modern Ember provides better alternatives through derived data and custom modifiers.
 
