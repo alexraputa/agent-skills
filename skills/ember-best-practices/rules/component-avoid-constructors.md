@@ -59,6 +59,39 @@ class UserProfile extends Component {
 }
 ```
 
+**Correct (use class fields and declarative async state):**
+
+```glimmer-js
+// app/components/user-profile.gjs
+import Component from '@glimmer/component';
+import { cached } from '@glimmer/tracking';
+import { service } from '@ember/service';
+import { getRequestState } from '@warp-drive/ember';
+
+class UserProfile extends Component {
+  @service store;
+
+  @cached
+  get userRequest() {
+    return this.store.request({
+      url: `/users/${this.args.userId}`,
+    });
+  }
+
+  <template>
+    {{#let (getRequestState this.userRequest) as |state|}}
+      {{#if state.isPending}}
+        <div>Loading...</div>
+      {{else if state.isError}}
+        <div>Error loading user</div>
+      {{else}}
+        <h1>{{state.value.name}}</h1>
+      {{/if}}
+    {{/let}}
+  </template>
+}
+```
+
 **When You Might Need a Constructor (Very Rare):**
 
 Very rarely, you might need a constructor for truly exceptional cases. Even then, use modern patterns:
