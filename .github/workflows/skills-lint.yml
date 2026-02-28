@@ -17,9 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    defaults:
-      run:
-        working-directory: packages/skills-lint
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
@@ -29,7 +26,7 @@ jobs:
         with:
           node-version: '24'
           cache: 'pnpm'
-          cache-dependency-path: packages/skills-lint/pnpm-lock.yaml
+          cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install
-      - run: pnpm test
-      - run: pnpm lint
+      - run: pnpm --filter skills-lint test
+      - run: pnpm --filter skills-lint lint
