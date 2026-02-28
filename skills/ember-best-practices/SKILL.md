@@ -9,7 +9,7 @@ metadata:
 
 # Ember.js Best Practices
 
-Comprehensive performance optimization and accessibility guide for Ember.js applications. Contains 58 rules across 9 categories, prioritized by impact to guide automated refactoring and code generation.
+Comprehensive performance optimization and accessibility guide for Ember.js applications. Contains 58 rules across 10 categories, prioritized by impact to guide automated refactoring and code generation.
 
 ## When to Apply
 
@@ -24,18 +24,18 @@ Reference these guidelines when:
 
 ## Rule Categories by Priority
 
-| Priority | Category                        | Impact      | Prefix         |
-| -------- | ------------------------------- | ----------- | -------------- |
-| 1        | Route Loading and Data Fetching | CRITICAL    | `route-`       |
-| 2        | Build and Bundle Optimization   | CRITICAL    | `bundle-`      |
-| 3        | Component and Reactivity        | HIGH        | `component-`   |
-| 4        | Accessibility Best Practices    | HIGH        | `a11y-`        |
-| 5        | Service and State Management    | MEDIUM-HIGH | `service-`     |
-| 6        | Template Optimization           | MEDIUM      | `template-`    |
-| 7        | Performance Optimization        | MEDIUM      | `performance-` |
-| 8        | Testing Best Practices          | MEDIUM      | `testing-`     |
-| 9        | Tooling and Configuration       | MEDIUM      | `tooling-`     |
-| 10       | Advanced Patterns               | MEDIUM-HIGH | `advanced-`    |
+| Priority | Category                        | Impact      | Prefix                     |
+| -------- | ------------------------------- | ----------- | -------------------------- |
+| 1        | Route Loading and Data Fetching | CRITICAL    | `route-`                   |
+| 2        | Build and Bundle Optimization   | CRITICAL    | `bundle-`                  |
+| 3        | Component and Reactivity        | HIGH        | `component-`, `exports-`   |
+| 4        | Accessibility Best Practices    | HIGH        | `a11y-`                    |
+| 5        | Service and State Management    | MEDIUM-HIGH | `service-`                 |
+| 6        | Template Optimization           | MEDIUM      | `template-`, `helper-`     |
+| 7        | Performance Optimization        | MEDIUM      | `performance-`             |
+| 8        | Testing Best Practices          | MEDIUM      | `testing-`                 |
+| 9        | Tooling and Configuration       | MEDIUM      | `vscode-`                  |
+| 10       | Advanced Patterns               | MEDIUM-HIGH | `advanced-`                |
 
 ## Quick Reference
 
