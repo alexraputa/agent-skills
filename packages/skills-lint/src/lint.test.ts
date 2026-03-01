@@ -50,9 +50,10 @@ describe('scanLines', () => {
     expect(violations).toHaveLength(0)
   })
 
-  it('skips full-line comments', () => {
+  it('flags rm inside a full-line comment', () => {
     const violations = scanLines('# rm -rf /tmp is used here', 'test.sh', 0)
-    expect(violations).toHaveLength(0)
+    expect(violations).toHaveLength(1)
+    expect(violations[0].command).toBe('rm')
   })
 
   it('skips blank lines', () => {

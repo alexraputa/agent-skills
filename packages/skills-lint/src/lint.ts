@@ -60,10 +60,9 @@ export interface Violation {
 
 /**
  * Scan a block of text line-by-line and return violations.
- * Full-line comments (first non-whitespace char is #) are skipped.
- * Inline comments are intentionally NOT stripped: a skill file should not
- * contain dangerous command names even within comments, since Claude may read
- * and act on any text it encounters.
+ * Comments (lines starting with #) are intentionally NOT skipped: skill files
+ * should not contain dangerous command names even in comments, since the AI
+ * may read and act on any text it encounters.
  * `lineOffset` is the 0-based line index of the first line in the parent file.
  */
 export function scanLines(
@@ -78,8 +77,8 @@ export function scanLines(
     const line = lines[i]
     const trimmed = line.trim()
 
-    // Skip blank lines and full-line comments
-    if (!trimmed || trimmed.startsWith('#')) continue
+    // Skip blank lines
+    if (!trimmed) continue
 
     for (const { cmd, re } of BLOCKED_PATTERNS) {
       if (re.test(line)) {
