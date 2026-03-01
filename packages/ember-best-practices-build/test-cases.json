@@ -545,19 +545,19 @@
   },
   {
     "ruleId": "",
-    "ruleTitle": "No Default Exports (Except Route Templates)",
+    "ruleTitle": "Prefer Named Exports Outside Resolver Modules",
     "type": "bad",
-    "code": "// app/components/user-card.gjs\nimport Component from '@glimmer/component';\n\nexport default class UserCard extends Component {\n  <template>\n    <div>{{@user.name}}</div>\n  </template>\n}",
-    "language": "glimmer-js",
-    "description": "default exports"
+    "code": "// app/utils/format-date.js\nexport default function formatDate(date) {\n  return new Date(date).toLocaleDateString();\n}",
+    "language": "javascript",
+    "description": "default export in a shared utility module"
   },
   {
     "ruleId": "",
-    "ruleTitle": "No Default Exports (Except Route Templates)",
+    "ruleTitle": "Prefer Named Exports Outside Resolver Modules",
     "type": "good",
-    "code": "// app/components/user-card.gjs\nimport Component from '@glimmer/component';\n\nexport class UserCard extends Component {\n  <template>\n    <div>{{@user.name}}</div>\n  </template>\n}",
-    "language": "glimmer-js",
-    "description": "named exports"
+    "code": "// app/utils/validators.js\nexport function isEmail(value) {\n  return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(value);\n}\n\nexport function isPhoneNumber(value) {\n  return /^\\d{3}-\\d{3}-\\d{4}$/.test(value);\n}",
+    "language": "javascript",
+    "description": "named export in a shared utility module"
   },
   {
     "ruleId": "",

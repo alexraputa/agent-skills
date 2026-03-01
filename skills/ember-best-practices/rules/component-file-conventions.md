@@ -9,7 +9,8 @@ tags: components, naming, file-conventions, gjs, strict-mode
 
 ### Rule
 
-Follow modern Ember component file conventions: use `.gjs`/`.gts` files with `<template>` tags (never `.hbs` files), use kebab-case filenames, match class names to file names (in PascalCase), and avoid `export default` in .gjs/.gts files.
+Follow modern Ember component file conventions: use `.gjs`/`.gts` files with `<template>` tags (never `.hbs` files), use kebab-case filenames, match class names to file names (in PascalCase), and avoid `export default` in .gjs/.gts component files.
+This export guidance applies to components only; resolver modules (routes/services/etc.) typically use `export default` in convention-based resolution, while strict resolver can also accept explicit shorthand registration in `App.modules`.
 
 **Incorrect:**
 

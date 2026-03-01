@@ -37,7 +37,7 @@ Comprehensive performance optimization and accessibility guide for Ember.js appl
    - 3.4 [Avoid Unnecessary Tracking](#34-avoid-unnecessary-tracking)
    - 3.5 [Build Reactive Chains with Dependent Getters](#35-build-reactive-chains-with-dependent-getters)
    - 3.6 [Component File Naming and Export Conventions](#36-component-file-naming-and-export-conventions)
-   - 3.7 [No Default Exports (Except Route Templates)](#37-no-default-exports-except-route-templates)
+   - 3.7 [Prefer Named Exports Outside Resolver Modules](#37-prefer-named-exports-outside-resolver-modules)
    - 3.8 [Prevent Memory Leaks in Components](#38-prevent-memory-leaks-in-components)
    - 3.9 [Use {{on}} Modifier for Event Handling](#39-use-on-modifier-for-event-handling)
    - 3.10 [Use @cached for Expensive Getters](#310-use-cached-for-expensive-getters)
@@ -288,6 +288,8 @@ Reference: [https://warp-drive.io/](https://warp-drive.io/)
 **Impact: CRITICAL (2-10× improvement)**
 
 When fetching multiple independent data sources in a route's model hook, use `Promise.all()` or RSVP.hash() to load them in parallel instead of sequentially.
+
+`export default` in these route examples is intentional for convention-based resolution (classic resolver and strict-resolver `import.meta.glob` usage). With strict resolver, explicit `modules` shorthand can also register values directly.
 
 **Incorrect: sequential loading, 3 round trips**
 
@@ -1668,7 +1670,9 @@ Reference: [https://guides.emberjs.com/release/in-depth-topics/autotracking-in-d
 
 **Impact: HIGH (Enforces consistent component structure and predictable imports)**
 
-Follow modern Ember component file conventions: use `.gjs`/`.gts` files with `<template>` tags (never `.hbs` files), use kebab-case filenames, match class names to file names (in PascalCase), and avoid `export default` in .gjs/.gts files.
+Follow modern Ember component file conventions: use `.gjs`/`.gts` files with `<template>` tags (never `.hbs` files), use kebab-case filenames, match class names to file names (in PascalCase), and avoid `export default` in .gjs/.gts component files.
+
+This export guidance applies to components only; resolver modules (routes/services/etc.) typically use `export default` in convention-based resolution, while strict resolver can also accept explicit shorthand registration in `App.modules`.
 
 **Incorrect:**
 
@@ -1847,115 +1851,22 @@ export class ProfileCard extends Component {
 
 - route-templates.md - Route file naming conventions
 
-### 3.7 No Default Exports (Except Route Templates)
+### 3.7 Prefer Named Exports Outside Resolver Modules
 
-**Impact: LOW (Better tree-shaking and consistency)**
+**Impact: LOW (Clear module contracts without conflicting with Ember resolver conventions)**
 
-Use named exports instead of default exports for better tree-shaking, explicit imports, and easier refactoring. The only exception is route template files.
+Use named exports for shared utility modules and template-tag component classes. For resolver-bound modules, requirements depend on resolver mode: classic `ember-resolver` expects module default exports across resolver types, while `ember-strict-application-resolver` convention globs typically enforce that for routes, services, and templates.
 
-**Incorrect: default exports**
-
-```glimmer-js
-// app/components/user-card.gjs
-import Component from '@glimmer/component';
-
-export default class UserCard extends Component {
-  <template>
-    <div>{{@user.name}}</div>
-  </template>
-}
-```
-
-**Correct: named exports**
-
-```glimmer-js
-// app/components/user-card.gjs
-import Component from '@glimmer/component';
-
-export class UserCard extends Component {
-  <template>
-    <div>{{@user.name}}</div>
-  </template>
-}
-```
-
-**Why Named Exports:**
-
-1. **Explicit Imports**: Clear what you're importing
-
-2. **Better Tree-shaking**: Bundlers can remove unused exports
-
-3. **Easier Refactoring**: Rename refactoring works better
-
-4. **No Name Confusion**: Import name must match export name
-
-5. **Multiple Exports**: Can export multiple items from one file
-
-**For Helpers:**
+**Incorrect: default export in a shared utility module**
 
 ```javascript
-// ❌ Wrong - default export
 // app/utils/format-date.js
 export default function formatDate(date) {
   return new Date(date).toLocaleDateString();
 }
-
-// ✅ Correct - named export
-// app/utils/format-date.js
-export function formatDate(date) {
-  return new Date(date).toLocaleDateString();
-}
 ```
 
-**For Services:**
-
-```javascript
-// ❌ Wrong - default export
-// app/services/auth.js
-import Service from '@ember/service';
-
-export default class AuthService extends Service {
-  // ...
-}
-
-// ✅ Correct - named export
-// app/services/auth.js
-import Service from '@ember/service';
-
-export class AuthService extends Service {
-  // ...
-}
-```
-
-**For Modifiers:**
-
-```glimmer-js
-// ✅ Correct - default export for route template
-// app/routes/dashboard.gjs
-import Route from '@ember/routing/route';
-
-export default class DashboardRoute extends Route {
-  model() {
-    return this.store.findAll('dashboard-item');
-  }
-}
-
-<template>
-  <div class="dashboard">
-    {{#each this.model as |item|}}
-      <DashboardCard @item={{item}} />
-    {{/each}}
-  </template>
-</template>
-```
-
-**Exception: Route Templates**
-
-Route templates are the ONLY place where default exports are used in modern Ember:
-
-This is because Ember's router expects a default export from route files.
-
-**Multiple Exports from One File:**
+**Correct: named export in a shared utility module**
 
 ```javascript
 // app/utils/validators.js
@@ -1966,49 +1877,96 @@ export function isEmail(value) {
 export function isPhoneNumber(value) {
   return /^\d{3}-\d{3}-\d{4}$/.test(value);
 }
-
-export function isZipCode(value) {
-  return /^\d{5}(-\d{4})?$/.test(value);
-}
-
-// Import specific validators
-import { isEmail, isPhoneNumber } from '../utils/validators';
 ```
 
-**Import Comparison:**
+Use named exports when the module is imported directly by other modules and is not resolved by Ember's file-based resolver.
+
+Benefits:
+
+1. Explicit import contracts
+
+2. Better refactor safety (symbol rename tracking)
+
+3. Better tree-shaking for utility modules
+
+4. Easier multi-export module organization
+
+Use default exports for modules consumed by Ember's resolver according to the active resolver mode.
+
+With classic `ember-resolver`, this applies broadly (routes, services, controllers, helpers, modifiers, templates, adapters, serializers).
+
+With `ember-strict-application-resolver` in the common `import.meta.glob` setup, this convention requirement applies to routes, services, and templates.
+
+**Service:**
 
 ```javascript
-// Default export - can rename arbitrarily
-import MyComponent from './my-component'; // Can name it anything
-import WhateverIWant from './my-component'; // Still works!
+// app/services/auth.js
+import Service from '@ember/service';
 
-// Named export - explicit and consistent
-import { MyComponent } from './my-component'; // Must use exact name
-import { MyComponent as MyComp } from './my-component'; // Rename explicitly if needed
+export default class AuthService extends Service {
+  // ...
+}
 ```
 
-**Benefits for Tree-shaking:**
+**Route:**
 
 ```javascript
-// app/utils/string-utils.js
-export function capitalize(text) {
-  /* ... */
-}
-export function lowercase(text) {
-  /* ... */
-}
-export function uppercase(text) {
-  /* ... */
-}
+// app/routes/dashboard.js
+import Route from '@ember/routing/route';
+import { service } from '@ember/service';
 
-// Only imports what's used - unused exports can be removed
-import { capitalize } from './utils/string-utils';
-// capitalize is bundled, lowercase and uppercase are tree-shaken
+export default class DashboardRoute extends Route {
+  @service store;
+
+  model() {
+    return this.store.findAll('dashboard-item');
+  }
+}
 ```
 
-Use named exports everywhere except route template files for better maintainability and optimization.
+**Modifier: `ember-resolver` only**
 
-Reference: [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
+```javascript
+// app/modifiers/focus.js
+import { modifier } from 'ember-modifier';
+
+export default modifier((element) => {
+  element.focus();
+});
+```
+
+**Template:**
+
+```ts
+modules = {
+  './services/manual': { default: ManualService },
+  './services/manual-shorthand': ManualService,
+};
+```
+
+Template-tag files must resolve via a module default export in convention-based and `import.meta.glob` flows.
+
+For `app/templates/*.gjs`, the default export is implicit after compilation.
+
+With `ember-strict-application-resolver`, you can register explicit module values in `App.modules`:
+
+In that explicit shorthand case, a direct value works without a default-exported module object.
+
+1. Classic `ember-resolver`: resolver modules should resolve via module default exports.
+
+2. Strict resolver via `import.meta.glob` (common setup): enforce module default export resolution for routes, services, and templates.
+
+3. Strict resolver explicit `modules` entries may use direct shorthand values where appropriate.
+
+4. Plain shared modules (`app/utils`, shared constants, reusable pure functions): prefer named exports.
+
+5. Template-tag components (`.gjs`/`.gts`): follow the component file-conventions rule and use named class exports.
+
+- [ES Modules Best Practices](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules)
+
+- [ember-strict-application-resolver](https://github.com/ember-cli/ember-strict-application-resolver)
+
+- [ember-resolver](https://github.com/ember-cli/ember-resolver)
 
 ### 3.8 Prevent Memory Leaks in Components
 
@@ -3974,6 +3932,8 @@ Caching in services prevents duplicate API requests and improves performance sig
 **Impact: HIGH (Prevents request waterfalls and race conditions in data flows)**
 
 Use proper patterns for data fetching including parallel requests, error handling, request cancellation, and retry logic.
+
+`export default` in route/service snippets below is intentional for convention-based resolution (classic resolver and strict-resolver `import.meta.glob` usage). With strict resolver, explicit `modules` shorthand can also register values directly.
 
 Naive data fetching creates waterfall requests, doesn't handle errors properly, and can cause race conditions or memory leaks from uncanceled requests.
 

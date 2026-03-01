@@ -8,6 +8,7 @@ tags: services, data-fetching, concurrency, cancellation, reliability
 ## Implement Robust Data Requesting Patterns
 
 Use proper patterns for data fetching including parallel requests, error handling, request cancellation, and retry logic.
+`export default` in route/service snippets below is intentional for convention-based resolution (classic resolver and strict-resolver `import.meta.glob` usage). With strict resolver, explicit `modules` shorthand can also register values directly.
 
 ## Problem
 
