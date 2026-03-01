@@ -289,7 +289,7 @@ Reference: [https://warp-drive.io/](https://warp-drive.io/)
 
 When fetching multiple independent data sources in a route's model hook, use `Promise.all()` or RSVP.hash() to load them in parallel instead of sequentially.
 
-`export default` in these route examples is intentional for convention-based resolution (classic resolver and strict-resolver `import.meta.glob` usage). With strict resolver, explicit `modules` shorthand can also register values directly.
+`export default` in these route examples is intentional because route modules are discovered through resolver lookup. In hybrid `.gjs`/`.hbs` codebases, keep route defaults and add named exports only when you need explicit imports elsewhere.
 
 **Incorrect: sequential loading, 3 round trips**
 
@@ -1672,7 +1672,7 @@ Reference: [https://guides.emberjs.com/release/in-depth-topics/autotracking-in-d
 
 Follow modern Ember component file conventions: use `.gjs`/`.gts` files with `<template>` tags (never `.hbs` files), use kebab-case filenames, match class names to file names (in PascalCase), and avoid `export default` in .gjs/.gts component files.
 
-This export guidance applies to components only; resolver modules (routes/services/etc.) typically use `export default` in convention-based resolution, while strict resolver can also accept explicit shorthand registration in `App.modules`.
+This export guidance applies to `.gjs`/`.gts` component files only. If your app still uses `.hbs`, keep default exports for resolver-facing invokables used there (or use a named export plus default alias in hybrid codebases).
 
 **Incorrect:**
 
@@ -1855,7 +1855,7 @@ export class ProfileCard extends Component {
 
 **Impact: LOW (Clear module contracts without conflicting with Ember resolver conventions)**
 
-Use named exports for shared utility modules and template-tag component classes. For resolver-bound modules, requirements depend on resolver mode: classic `ember-resolver` expects module default exports across resolver types, while `ember-strict-application-resolver` convention globs typically enforce that for routes, services, and templates.
+Use named exports for shared utility modules and template-tag component classes. If a module should be invokable from `.hbs` templates, provide a default export. In hybrid `.gjs`/`.hbs` projects, a practical pattern is a named export plus a default export alias.
 
 **Incorrect: default export in a shared utility module**
 
@@ -1891,11 +1891,11 @@ Benefits:
 
 4. Easier multi-export module organization
 
-Use default exports for modules consumed by Ember's resolver according to the active resolver mode.
+Use default exports for modules consumed through resolver/template lookup.
 
-With classic `ember-resolver`, this applies broadly (routes, services, controllers, helpers, modifiers, templates, adapters, serializers).
+If your project uses `.hbs`, invokables that should be accessible from templates should provide `export default`.
 
-With `ember-strict-application-resolver` in the common `import.meta.glob` setup, this convention requirement applies to routes, services, and templates.
+In hybrid `.gjs`/`.hbs` codebases, use named exports plus a default export alias where you want both explicit imports and template compatibility.
 
 **Service:**
 
@@ -1924,7 +1924,7 @@ export default class DashboardRoute extends Route {
 }
 ```
 
-**Modifier: `ember-resolver` only**
+**Modifier: when invoked from `.hbs`**
 
 ```javascript
 // app/modifiers/focus.js
@@ -1952,9 +1952,9 @@ With `ember-strict-application-resolver`, you can register explicit module value
 
 In that explicit shorthand case, a direct value works without a default-exported module object.
 
-1. Classic `ember-resolver`: resolver modules should resolve via module default exports.
+1. If a module should be invokable from `.hbs`, provide a default export.
 
-2. Strict resolver via `import.meta.glob` (common setup): enforce module default export resolution for routes, services, and templates.
+2. In hybrid `.gjs`/`.hbs` projects, use named export + default alias for resolver-facing modules.
 
 3. Strict resolver explicit `modules` entries may use direct shorthand values where appropriate.
 
@@ -3933,7 +3933,7 @@ Caching in services prevents duplicate API requests and improves performance sig
 
 Use proper patterns for data fetching including parallel requests, error handling, request cancellation, and retry logic.
 
-`export default` in route/service snippets below is intentional for convention-based resolution (classic resolver and strict-resolver `import.meta.glob` usage). With strict resolver, explicit `modules` shorthand can also register values directly.
+`export default` in route/service snippets below is intentional because these modules are commonly resolved by convention and referenced from templates. In hybrid `.gjs`/`.hbs` codebases, you can pair named exports with a default alias where needed.
 
 Naive data fetching creates waterfall requests, doesn't handle errors properly, and can cause race conditions or memory leaks from uncanceled requests.
 

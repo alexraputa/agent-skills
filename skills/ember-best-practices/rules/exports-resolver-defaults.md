@@ -7,7 +7,7 @@ tags: exports, modules, resolver, code-organization
 
 ## Prefer Named Exports Outside Resolver Modules
 
-Use named exports for shared utility modules and template-tag component classes. For resolver-bound modules, requirements depend on resolver mode: classic `ember-resolver` expects module default exports across resolver types, while `ember-strict-application-resolver` convention globs typically enforce that for routes, services, and templates.
+Use named exports for shared utility modules and template-tag component classes. If a module should be invokable from `.hbs` templates, provide a default export. In hybrid `.gjs`/`.hbs` projects, a practical pattern is a named export plus a default export alias.
 
 **Incorrect (default export in a shared utility module):**
 
@@ -65,9 +65,9 @@ Benefits:
 
 ## Where Default Exports Are Expected
 
-Use default exports for modules consumed by Ember's resolver according to the active resolver mode.
-With classic `ember-resolver`, this applies broadly (routes, services, controllers, adapters, serializers, and any invokable needed in a loose-mode hbs file).
-With `ember-strict-application-resolver` in the common `import.meta.glob` setup, this convention requirement applies to routes, services, and templates.
+Use default exports for modules consumed through resolver/template lookup.
+If your project uses `.hbs`, invokables that should be accessible from templates should provide `export default`.
+In hybrid `.gjs`/`.hbs` codebases, use named exports plus a default export alias where you want both explicit imports and template compatibility.
 
 **Service:**
 
@@ -96,7 +96,7 @@ export default class DashboardRoute extends Route {
 }
 ```
 
-**Modifier (`ember-resolver` only):**
+**Modifier (when invoked from `.hbs`):**
 
 ```javascript
 // app/modifiers/focus.js
@@ -149,8 +149,8 @@ In that explicit shorthand case, a direct value works without a default-exported
 
 ## Rule of Thumb
 
-1. Classic `ember-resolver`: resolver modules should resolve via module default exports.
-2. Strict resolver via `import.meta.glob` (common setup): enforce module default export resolution for routes, services, and templates.
+1. If a module should be invokable from `.hbs`, provide a default export.
+2. In hybrid `.gjs`/`.hbs` projects, use named export + default alias for resolver-facing modules.
 3. Strict resolver explicit `modules` entries may use direct shorthand values where appropriate.
 4. Plain shared modules (`app/utils`, shared constants, reusable pure functions): prefer named exports.
 5. Template-tag components (`.gjs`/`.gts`): follow the component file-conventions rule and use named class exports.
