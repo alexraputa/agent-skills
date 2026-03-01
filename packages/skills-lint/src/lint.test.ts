@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { scanLines, extractBashBlocks, BLOCKED_COMMANDS } from './lint.ts'
+import { describe, expect, it } from 'vitest'
+import { BLOCKED_COMMANDS, extractBashBlocks, scanLines } from './lint.ts'
 
 describe('scanLines', () => {
   it('flags rm command', () => {
@@ -187,10 +187,12 @@ describe('integration: scanLines on bash block content', () => {
 })
 
 describe('BLOCKED_COMMANDS coverage', () => {
-  it('includes rm', () => expect(BLOCKED_COMMANDS).toContain('rm'))
-  it('includes sudo', () => expect(BLOCKED_COMMANDS).toContain('sudo'))
-  it('includes chmod', () => expect(BLOCKED_COMMANDS).toContain('chmod'))
-  it('includes eval', () => expect(BLOCKED_COMMANDS).toContain('eval'))
-  it('includes shutdown', () => expect(BLOCKED_COMMANDS).toContain('shutdown'))
-  it('includes dd', () => expect(BLOCKED_COMMANDS).toContain('dd'))
+  const blockedCommands = Object.keys(BLOCKED_COMMANDS)
+
+  it('includes rm', () => expect(blockedCommands).toContain('rm'))
+  it('includes sudo', () => expect(blockedCommands).toContain('sudo'))
+  it('includes chmod', () => expect(blockedCommands).toContain('chmod'))
+  it('includes eval', () => expect(blockedCommands).toContain('eval'))
+  it('includes shutdown', () => expect(blockedCommands).toContain('shutdown'))
+  it('includes dd', () => expect(blockedCommands).toContain('dd'))
 })
