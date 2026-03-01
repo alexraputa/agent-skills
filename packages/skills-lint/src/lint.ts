@@ -4,52 +4,57 @@
  */
 
 // ---------------------------------------------------------------------------
-// Block-list: commands that are explicitly NOT permitted in skill files.
+// Block-list: command keys mapped to token patterns that are not permitted in
+// skill files. Patterns are inserted into the command-matching regex as-is.
 // These commands can cause irreversible harm to a user's system.
-// Everything not on this list is implicitly allowed.
+// Everything not in this map is implicitly allowed.
 // ---------------------------------------------------------------------------
-export const BLOCKED_COMMANDS: ReadonlyArray<string> = [
-  'rm',        // Deletes files — can cause permanent data loss
-  'sudo',      // Privilege escalation — runs commands as root
-  'chmod',     // Alters file permissions
-  'chown',     // Alters file ownership
-  'dd',        // Direct disk access — can overwrite drives
-  'mkfs',      // Creates filesystems — destroys existing data
-  'fdisk',     // Partition editor
-  'gdisk',     // Partition editor
-  'parted',    // Partition editor
-  'kill',      // Terminates arbitrary processes
-  'killall',   // Terminates processes by name
-  'pkill',     // Terminates processes by pattern
-  'eval',      // Executes arbitrary code from a string
-  'passwd',    // Changes system passwords
-  'useradd',   // Creates system users
-  'userdel',   // Deletes system users
-  'usermod',   // Modifies system users
-  'groupadd',  // Creates system groups
-  'crontab',   // Modifies scheduled tasks
-  'reboot',    // Reboots the system
-  'shutdown',  // Shuts down the system
-  'halt',      // Halts the system
-  'poweroff',  // Powers off the system
-  'mount',     // Mounts filesystems
-  'umount',    // Unmounts filesystems
-  'iptables',  // Modifies firewall rules
-  'nft',       // Modifies firewall rules
-  'ufw',       // Modifies firewall rules
-]
+export const BLOCKED_COMMANDS: Readonly<Record<string, string>> = {
+  rm: 'rm',                     // Deletes files — can cause permanent data loss
+  sudo: 'sudo',                 // Privilege escalation — runs commands as root
+  chmod: 'chmod',               // Alters file permissions
+  chown: 'chown',               // Alters file ownership
+  dd: 'dd',                     // Direct disk access — can overwrite drives
+  mkfs: 'mkfs(?:\\.[\\w+-]+)?', // Creates filesystems — destroys existing data
+  fdisk: 'fdisk',               // Partition editor
+  gdisk: 'gdisk',               // Partition editor
+  parted: 'parted',             // Partition editor
+  kill: 'kill',                 // Terminates arbitrary processes
+  killall: 'killall',           // Terminates processes by name
+  pkill: 'pkill',               // Terminates processes by pattern
+  eval: 'eval',                 // Executes arbitrary code from a string
+  passwd: 'passwd',             // Changes system passwords
+  useradd: 'useradd',           // Creates system users
+  userdel: 'userdel',           // Deletes system users
+  usermod: 'usermod',           // Modifies system users
+  groupadd: 'groupadd',         // Creates system groups
+  crontab: 'crontab',           // Modifies scheduled tasks
+  reboot: 'reboot',             // Reboots the system
+  shutdown: 'shutdown',         // Shuts down the system
+  halt: 'halt',                 // Halts the system
+  poweroff: 'poweroff',         // Powers off the system
+  mount: 'mount',               // Mounts filesystems
+  umount: 'umount',             // Unmounts filesystems
+  iptables: 'iptables',         // Modifies firewall rules
+  nft: 'nft',                   // Modifies firewall rules
+  ufw: 'ufw',                   // Modifies firewall rules
+} as const
 
 // Pre-compile one regex per blocked command.
 // Matches the bare command name OR a path-prefixed form (e.g. /bin/rm, ./rm).
 // The lookahead ensures we match whole words, not substrings like "framework".
+type BlockedCommand = keyof typeof BLOCKED_COMMANDS
+
 export const BLOCKED_PATTERNS: ReadonlyArray<{ cmd: string; re: RegExp }> =
-  BLOCKED_COMMANDS.map((cmd) => ({
-    cmd,
-    // Matches:  rm ...  |  /bin/rm ...  |  ./rm ...  |  ../bin/rm ...
-    re: new RegExp(
-      `(?:^|[\\s|;&\`$(])(?:[./][\\w./]*/)?${cmd}(?=[\\s|;&\`$()><!]|$)`
-    ),
-  }))
+  (Object.entries(BLOCKED_COMMANDS) as Array<[BlockedCommand, string]>).map(
+    ([cmd, tokenPattern]) => {
+      return {
+        cmd,
+        // Matches:  rm ...  |  /bin/rm ...  |  ./rm ...  |  ../bin/rm ...
+        re: new RegExp(`(?:^|[\\s|;&\`$(])(?:[./][\\w./-]*/)?${tokenPattern}(?=[\\s|;&\`$()><!]|$)`),
+      }
+    }
+  )
 
 export interface Violation {
   file: string
