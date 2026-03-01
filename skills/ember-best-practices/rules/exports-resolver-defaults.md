@@ -66,7 +66,7 @@ Benefits:
 ## Where Default Exports Are Expected
 
 Use default exports for modules consumed by Ember's resolver according to the active resolver mode.
-With classic `ember-resolver`, this applies broadly (routes, services, controllers, helpers, modifiers, templates, adapters, serializers).
+With classic `ember-resolver`, this applies broadly (routes, services, controllers, adapters, serializers, and any invokable needed in a loose-mode hbs file).
 With `ember-strict-application-resolver` in the common `import.meta.glob` setup, this convention requirement applies to routes, services, and templates.
 
 **Service:**
