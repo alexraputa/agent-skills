@@ -25,6 +25,24 @@ describe('scanLines', () => {
     expect(violations[0].command).toBe('nft')
   })
 
+  it('flags mkfs.ext4 command', () => {
+    const violations = scanLines('mkfs.ext4 /dev/sda1', 'test.sh', 0)
+    expect(violations).toHaveLength(1)
+    expect(violations[0].command).toBe('mkfs')
+  })
+
+  it('flags mkfs.xfs command', () => {
+    const violations = scanLines('mkfs.xfs /dev/sdb1', 'test.sh', 0)
+    expect(violations).toHaveLength(1)
+    expect(violations[0].command).toBe('mkfs')
+  })
+
+  it('flags path-prefixed mkfs.ext4 command', () => {
+    const violations = scanLines('/sbin/mkfs.ext4 /dev/sdc1', 'test.sh', 0)
+    expect(violations).toHaveLength(1)
+    expect(violations[0].command).toBe('mkfs')
+  })
+
   it('flags chmod command', () => {
     const violations = scanLines('chmod 777 /etc/passwd', 'test.sh', 0)
     expect(violations).toHaveLength(1)
