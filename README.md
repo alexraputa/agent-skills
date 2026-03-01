@@ -9,7 +9,7 @@ Skills follow the [Agent Skills](https://agentskills.io/) format.
 For Ember.js projects, use the **agents-md codemod** to inject a minimal AGENTS.md that references best practices loaded on demand:
 
 ```bash
-pnpm dlx skills NullVoxPopuli/agent-skills
+pnpm dlx skills add NullVoxPopuli/agent-skills
 ```
 
 See [the skills repo](https://github.com/vercel-labs/skills) for documentation on the skills tool
