@@ -9,16 +9,10 @@ Skills follow the [Agent Skills](https://agentskills.io/) format.
 For Ember.js projects, use the **agents-md codemod** to inject a minimal AGENTS.md that references best practices loaded on demand:
 
 ```bash
-npx ember-best-practices-agents-md
+pnpm dlx skills NullVoxPopuli/agent-skills
 ```
 
-This:
-
-1. Copies 50+ rule files to `.ember-best-practices/` (gitignored)
-2. Injects a ~2KB index into your AGENTS.md
-3. Lets agents (Cursor, Claude, etc.) load specific rules only when needed
-
-The approach mirrors [Vercel's agents-md for Next.js](https://nextjs.org/blog/agentic-future): a small root file + on-demand docs. No Ember version detection—best practices are version-agnostic.
+See [the skills repo](https://github.com/vercel-labs/skills) for documentation on the skills tool
 
 ## Available Skills
 
