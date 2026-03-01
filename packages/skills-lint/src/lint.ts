@@ -35,7 +35,7 @@ export const BLOCKED_COMMANDS: ReadonlyArray<string> = [
   'mount',     // Mounts filesystems
   'umount',    // Unmounts filesystems
   'iptables',  // Modifies firewall rules
-  'nftables',  // Modifies firewall rules
+  'nft',       // Modifies firewall rules
   'ufw',       // Modifies firewall rules
 ]
 
