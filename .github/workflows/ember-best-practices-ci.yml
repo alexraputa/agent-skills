@@ -3,23 +3,14 @@ name: Ember Best Practices CI
 on:
   push:
     branches: [main]
-    paths:
-      - 'skills/ember-best-practices/**'
-      - 'packages/ember-best-practices-build/**'
   pull_request:
     branches: [main]
-    paths:
-      - 'skills/ember-best-practices/**'
-      - 'packages/ember-best-practices-build/**'
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    defaults:
-      run:
-        working-directory: packages/ember-best-practices-build
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
@@ -29,7 +20,8 @@ jobs:
         with:
           node-version: '20'
           cache: 'pnpm'
-          cache-dependency-path: packages/ember-best-practices-build/pnpm-lock.yaml
+          cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install
-      - run: pnpm validate
-      - run: pnpm build
+      - run: pnpm --filter ember-best-practices-build validate
+      - run: pnpm --filter ember-best-practices-build build
+      - uses: wyvox/action-no-git-diff@v1

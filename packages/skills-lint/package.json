@@ -1,0 +1,22 @@
+{
+  "name": "skills-lint",
+  "version": "1.0.0",
+  "description": "Lint skills files to ensure only allow-listed shell commands are used",
+  "type": "module",
+  "packageManager": "pnpm@10.24.0",
+  "scripts": {
+    "lint": "node src/index.ts",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "skills",
+    "lint",
+    "security",
+    "agents"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "vitest": "^4.0.0"
+  }
+}
