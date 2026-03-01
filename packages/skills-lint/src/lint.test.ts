@@ -15,6 +15,16 @@ describe('scanLines', () => {
     expect(violations[0].command).toBe('sudo')
   })
 
+  it('flags nft command', () => {
+    const violations = scanLines(
+      'nft add rule inet filter input tcp dport 22 drop',
+      'test.sh',
+      0
+    )
+    expect(violations).toHaveLength(1)
+    expect(violations[0].command).toBe('nft')
+  })
+
   it('flags chmod command', () => {
     const violations = scanLines('chmod 777 /etc/passwd', 'test.sh', 0)
     expect(violations).toHaveLength(1)
